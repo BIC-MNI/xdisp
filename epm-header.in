@@ -1,0 +1,10 @@
+%product xdisp
+%copyright 1992-2004 Bruce Pike
+%vendor McConnell Brain Imaging Centre
+%packager Andrew Janke <a.janke@gmail.com>
+%license COPYING
+%readme README
+%description Extra minc package
+%version @VERSION@
+%requires netcdf
+%requires minc
