@@ -6,11 +6,16 @@
 @GLOBALS    : 
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : $Log: acr_nema.c,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.5  94/01/06  13:30:57  neelin
- * Changed acr_need_invert to a public function.
+ * Changed acr_need_invert to a function.
  * 
  * Revision 1.4  93/11/30  12:18:34  neelin
  * Handle MALLOC returning NULL because of extremely large data element length.
@@ -39,16 +44,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory.h>
-#include "minc_def.h"
 #include "acr_nema.h"
 
 /* Define constants */
 #if (!defined(TRUE) || !defined(FALSE))
 #  define TRUE 1
 #  define FALSE 0
-#endif
-#ifndef private
-#  define private static
 #endif
 
 /* Private variables */
@@ -69,7 +70,7 @@ static int acr_vax_byte_ordering = TRUE;
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_set_vax_byte_ordering(int has_vax_byte_ordering)
+int acr_set_vax_byte_ordering(int has_vax_byte_ordering)
 {
    int previous;
 
@@ -90,7 +91,7 @@ public int acr_set_vax_byte_ordering(int has_vax_byte_ordering)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_need_invert(void)
+int acr_need_invert(void)
 {
 
 #if (defined(vax))
@@ -114,7 +115,7 @@ public int acr_need_invert(void)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_get_short(long nvals, void *input_value, 
+void acr_get_short(long nvals, void *input_value, 
                           unsigned short *mach_value)
 {
    long i;
@@ -154,7 +155,7 @@ public void acr_get_short(long nvals, void *input_value,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_get_long(long nvals, void *input_value, long *mach_value)
+void acr_get_long(long nvals, void *input_value, long *mach_value)
 {
    long i;
    char *ptr1, *ptr2, v0, v1;
@@ -197,7 +198,7 @@ public void acr_get_long(long nvals, void *input_value, long *mach_value)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_put_short(long nvals, unsigned short *mach_value, 
+void acr_put_short(long nvals, unsigned short *mach_value, 
                           void *output_value)
 {
    long i;
@@ -237,7 +238,7 @@ public void acr_put_short(long nvals, unsigned short *mach_value,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_put_long(long nvals, long *mach_value, void *output_value)
+void acr_put_long(long nvals, long *mach_value, void *output_value)
 {
    long i;
    char *ptr1, *ptr2, v0, v1;
@@ -279,7 +280,7 @@ public void acr_put_long(long nvals, long *mach_value, void *output_value)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_test_byte_ordering(Acr_File *afp)
+Acr_Status acr_test_byte_ordering(Acr_File *afp)
 {
    int ch, i, buflen;
    unsigned char buffer[2*ACR_SIZEOF_SHORT+ACR_SIZEOF_LONG];
@@ -343,7 +344,7 @@ public Acr_Status acr_test_byte_ordering(Acr_File *afp)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_read_one_element(Acr_File *afp,
+Acr_Status acr_read_one_element(Acr_File *afp,
                                        int *group_id, int *element_id,
                                        long *data_length, char **data_pointer)
 {
@@ -410,7 +411,7 @@ public Acr_Status acr_read_one_element(Acr_File *afp,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_write_one_element(Acr_File *afp,
+Acr_Status acr_write_one_element(Acr_File *afp,
                                         int group_id, int element_id,
                                         long data_length, char *data_pointer)
 {

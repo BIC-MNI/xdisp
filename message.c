@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : $Log: message.c,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.3  93/11/24  11:25:59  neelin
@@ -31,7 +36,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "minc_def.h"
 #include "acr_nema.h"
 
 /* Message length group and element id */
@@ -58,7 +62,7 @@ static Acr_Element_Id ACR_Message_length = NULL;
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Message acr_create_message(void)
+Acr_Message acr_create_message(void)
 {
    Acr_Message message;
 
@@ -87,7 +91,7 @@ public Acr_Message acr_create_message(void)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_delete_message(Acr_Message message)
+void acr_delete_message(Acr_Message message)
 {
    if (message->list_head != NULL) {
       acr_delete_group_list(message->list_head);
@@ -112,7 +116,7 @@ public void acr_delete_message(Acr_Message message)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_message_add_group(Acr_Message message, Acr_Group group)
+void acr_message_add_group(Acr_Message message, Acr_Group group)
 {
    Acr_Element length_element;
    int element_id;
@@ -190,7 +194,7 @@ public void acr_message_add_group(Acr_Message message, Acr_Group group)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Group acr_get_message_group_list(Acr_Message message)
+Acr_Group acr_get_message_group_list(Acr_Message message)
 {
    return message->list_head;
 }
@@ -207,7 +211,7 @@ public Acr_Group acr_get_message_group_list(Acr_Message message)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_get_message_total_length(Acr_Message message)
+long acr_get_message_total_length(Acr_Message message)
 {
    return message->total_length;
 }
@@ -224,7 +228,7 @@ public long acr_get_message_total_length(Acr_Message message)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_message_ngroups(Acr_Message message)
+int acr_get_message_ngroups(Acr_Message message)
 {
    return message->ngroups;
 }
@@ -241,7 +245,7 @@ public int acr_get_message_ngroups(Acr_Message message)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_input_message(Acr_File *afp, Acr_Message *message)
+Acr_Status acr_input_message(Acr_File *afp, Acr_Message *message)
 {
    Acr_Status status;
    Acr_Group group;
@@ -314,7 +318,7 @@ public Acr_Status acr_input_message(Acr_File *afp, Acr_Message *message)
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_output_message(Acr_File *afp, Acr_Message message)
+Acr_Status acr_output_message(Acr_File *afp, Acr_Message message)
 {
    long igroup, ngroups;
    Acr_Group cur, next;
@@ -362,7 +366,7 @@ public Acr_Status acr_output_message(Acr_File *afp, Acr_Message message)
 @CREATED    : November 24, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_dump_message(FILE *file_pointer, Acr_Message message)
+void acr_dump_message(FILE *file_pointer, Acr_Message message)
 {
 
    acr_dump_group_list(file_pointer, acr_get_message_group_list(message));

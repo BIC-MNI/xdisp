@@ -2,7 +2,7 @@
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
-# on host crab:
+# on host bluefish:
 #
 # ./configure 
 #
@@ -26,7 +26,7 @@ do
 done
 
 ac_given_srcdir=.
-ac_given_INSTALL="/usr/bin/ginstall -c"
+ac_given_INSTALL="/usr/bin/install -c"
 
 trap 'rm -fr Make.common Makefile include/Makefile lib/Makefile demos/Makefile           demos/GL/Makefile demos/Message/Makefile demos/DnD/Makefile demos/REdit/Makefile           demos/Glass/Makefile examples/Makefile config.h conftest*; exit 1' 1 2 15
 
@@ -36,7 +36,7 @@ sed 's/%@/@@/; s/@%/@@/; s/%g$/@g/; /@g$/s/[\\&%]/\\&/g;
 /^[ 	]*VPATH[ 	]*=[^:]*$/d
 
 s%@SHELL@%/bin/sh%g
-s%@CFLAGS@%-O2 -fpic%g
+s%@CFLAGS@%-static -fpic%g
 s%@CPPFLAGS@%%g
 s%@CXXFLAGS@%%g
 s%@FFLAGS@%%g
@@ -58,11 +58,11 @@ s%@includedir@%${prefix}/include%g
 s%@oldincludedir@%/usr/include%g
 s%@infodir@%${prefix}/info%g
 s%@mandir@%${prefix}/man%g
-s%@host@%i686-pc-linux-gnulibc1%g
-s%@host_alias@%i686-pc-linux-gnulibc1%g
+s%@host@%i686-pc-linux-gnu%g
+s%@host_alias@%i686-pc-linux-gnu%g
 s%@host_cpu@%i686%g
 s%@host_vendor@%pc%g
-s%@host_os@%linux-gnulibc1%g
+s%@host_os@%linux-gnu%g
 s%@SED@%sed%g
 s%@RM@%rm%g
 s%@CP@%cp%g
@@ -88,7 +88,7 @@ s%@X_LIBS@%-lXext  -L/usr/X11R6/lib -lX11%g
 s%@X_EXTRA_LIBS@%%g
 s%@ALLOCA@%%g
 s%@LIBOBJS@%%g
-/@MCOMMON@/r /d/home/mzou/1.50/S/EZWGL-1.50/Make.common
+/@MCOMMON@/r /home/rotor/cvs/visualization/xdisp/EZWGL-1.50/Make.common
 s%@MCOMMON@%%g
 
 CEOF
@@ -264,15 +264,18 @@ ${ac_eA}HAVE_LIMITS_H${ac_eB}HAVE_LIMITS_H${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_MALLOC_H${ac_dB}HAVE_MALLOC_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_MALLOC_H${ac_uB}HAVE_MALLOC_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_MALLOC_H${ac_eB}HAVE_MALLOC_H${ac_eC}1${ac_eD}
-${ac_dA}HAVE_STRINGS_H${ac_dB}HAVE_STRINGS_H${ac_dC}1${ac_dD}
-${ac_uA}HAVE_STRINGS_H${ac_uB}HAVE_STRINGS_H${ac_uC}1${ac_uD}
-${ac_eA}HAVE_STRINGS_H${ac_eB}HAVE_STRINGS_H${ac_eC}1${ac_eD}
+${ac_dA}HAVE_SGTTY_H${ac_dB}HAVE_SGTTY_H${ac_dC}1${ac_dD}
+${ac_uA}HAVE_SGTTY_H${ac_uB}HAVE_SGTTY_H${ac_uC}1${ac_uD}
+${ac_eA}HAVE_SGTTY_H${ac_eB}HAVE_SGTTY_H${ac_eC}1${ac_eD}
 CEOF
   sed -f conftest.frag conftest.in > conftest.out
   rm -f conftest.in
   mv conftest.out conftest.in
 
   cat > conftest.frag <<CEOF
+${ac_dA}HAVE_STRINGS_H${ac_dB}HAVE_STRINGS_H${ac_dC}1${ac_dD}
+${ac_uA}HAVE_STRINGS_H${ac_uB}HAVE_STRINGS_H${ac_uC}1${ac_uD}
+${ac_eA}HAVE_STRINGS_H${ac_eB}HAVE_STRINGS_H${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_SYS_IOCTL_H${ac_dB}HAVE_SYS_IOCTL_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_SYS_IOCTL_H${ac_uB}HAVE_SYS_IOCTL_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_SYS_IOCTL_H${ac_eB}HAVE_SYS_IOCTL_H${ac_eC}1${ac_eD}
@@ -282,75 +285,84 @@ ${ac_eA}HAVE_SYS_TIME_H${ac_eB}HAVE_SYS_TIME_H${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_STRING_H${ac_dB}HAVE_STRING_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_STRING_H${ac_uB}HAVE_STRING_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_STRING_H${ac_eB}HAVE_STRING_H${ac_eC}1${ac_eD}
-${ac_dA}HAVE_STRINGS_H${ac_dB}HAVE_STRINGS_H${ac_dC}1${ac_dD}
-${ac_uA}HAVE_STRINGS_H${ac_uB}HAVE_STRINGS_H${ac_uC}1${ac_uD}
-${ac_eA}HAVE_STRINGS_H${ac_eB}HAVE_STRINGS_H${ac_eC}1${ac_eD}
 CEOF
   sed -f conftest.frag conftest.in > conftest.out
   rm -f conftest.in
   mv conftest.out conftest.in
 
   cat > conftest.frag <<CEOF
+${ac_dA}HAVE_STRINGS_H${ac_dB}HAVE_STRINGS_H${ac_dC}1${ac_dD}
+${ac_uA}HAVE_STRINGS_H${ac_uB}HAVE_STRINGS_H${ac_uC}1${ac_uD}
+${ac_eA}HAVE_STRINGS_H${ac_eB}HAVE_STRINGS_H${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_TERMIOS_H${ac_dB}HAVE_TERMIOS_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_TERMIOS_H${ac_uB}HAVE_TERMIOS_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_TERMIOS_H${ac_eB}HAVE_TERMIOS_H${ac_eC}1${ac_eD}
+${ac_dA}HAVE_SYS_SELECT_H${ac_dB}HAVE_SYS_SELECT_H${ac_dC}1${ac_dD}
+${ac_uA}HAVE_SYS_SELECT_H${ac_uB}HAVE_SYS_SELECT_H${ac_uC}1${ac_uD}
+${ac_eA}HAVE_SYS_SELECT_H${ac_eB}HAVE_SYS_SELECT_H${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_STDARG_H${ac_dB}HAVE_STDARG_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_STDARG_H${ac_uB}HAVE_STDARG_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_STDARG_H${ac_eB}HAVE_STDARG_H${ac_eC}1${ac_eD}
+CEOF
+  sed -f conftest.frag conftest.in > conftest.out
+  rm -f conftest.in
+  mv conftest.out conftest.in
+
+  cat > conftest.frag <<CEOF
 ${ac_dA}HAVE_STDLIB_H${ac_dB}HAVE_STDLIB_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_STDLIB_H${ac_uB}HAVE_STDLIB_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_STDLIB_H${ac_eB}HAVE_STDLIB_H${ac_eC}1${ac_eD}
 ${ac_dA}STDC_HEADERS${ac_dB}STDC_HEADERS${ac_dC}1${ac_dD}
 ${ac_uA}STDC_HEADERS${ac_uB}STDC_HEADERS${ac_uC}1${ac_uD}
 ${ac_eA}STDC_HEADERS${ac_eB}STDC_HEADERS${ac_eC}1${ac_eD}
-CEOF
-  sed -f conftest.frag conftest.in > conftest.out
-  rm -f conftest.in
-  mv conftest.out conftest.in
-
-  cat > conftest.frag <<CEOF
 ${ac_dA}RETSIGTYPE${ac_dB}RETSIGTYPE${ac_dC}void${ac_dD}
 ${ac_uA}RETSIGTYPE${ac_uB}RETSIGTYPE${ac_uC}void${ac_uD}
 ${ac_eA}RETSIGTYPE${ac_eB}RETSIGTYPE${ac_eC}void${ac_eD}
 ${ac_dA}HAVE_ALLOCA_H${ac_dB}HAVE_ALLOCA_H${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_ALLOCA_H${ac_uB}HAVE_ALLOCA_H${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_ALLOCA_H${ac_eB}HAVE_ALLOCA_H${ac_eC}1${ac_eD}
+CEOF
+  sed -f conftest.frag conftest.in > conftest.out
+  rm -f conftest.in
+  mv conftest.out conftest.in
+
+  cat > conftest.frag <<CEOF
 ${ac_dA}HAVE_ALLOCA${ac_dB}HAVE_ALLOCA${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_ALLOCA${ac_uB}HAVE_ALLOCA${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_ALLOCA${ac_eB}HAVE_ALLOCA${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_FNMATCH${ac_dB}HAVE_FNMATCH${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_FNMATCH${ac_uB}HAVE_FNMATCH${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_FNMATCH${ac_eB}HAVE_FNMATCH${ac_eC}1${ac_eD}
-CEOF
-  sed -f conftest.frag conftest.in > conftest.out
-  rm -f conftest.in
-  mv conftest.out conftest.in
-
-  cat > conftest.frag <<CEOF
 ${ac_dA}SETPGRP_VOID${ac_dB}SETPGRP_VOID${ac_dC}1${ac_dD}
 ${ac_uA}SETPGRP_VOID${ac_uB}SETPGRP_VOID${ac_uC}1${ac_uD}
 ${ac_eA}SETPGRP_VOID${ac_eB}SETPGRP_VOID${ac_eC}1${ac_eD}
 ${ac_dA}RETSIGTYPE${ac_dB}RETSIGTYPE${ac_dC}void${ac_dD}
 ${ac_uA}RETSIGTYPE${ac_uB}RETSIGTYPE${ac_uC}void${ac_uD}
 ${ac_eA}RETSIGTYPE${ac_eB}RETSIGTYPE${ac_eC}void${ac_eD}
-${ac_dA}HAVE_GETCWD${ac_dB}HAVE_GETCWD${ac_dC}1${ac_dD}
-${ac_uA}HAVE_GETCWD${ac_uB}HAVE_GETCWD${ac_uC}1${ac_uD}
-${ac_eA}HAVE_GETCWD${ac_eB}HAVE_GETCWD${ac_eC}1${ac_eD}
-${ac_dA}HAVE_GETHOSTNAME${ac_dB}HAVE_GETHOSTNAME${ac_dC}1${ac_dD}
-${ac_uA}HAVE_GETHOSTNAME${ac_uB}HAVE_GETHOSTNAME${ac_uC}1${ac_uD}
-${ac_eA}HAVE_GETHOSTNAME${ac_eB}HAVE_GETHOSTNAME${ac_eC}1${ac_eD}
 CEOF
   sed -f conftest.frag conftest.in > conftest.out
   rm -f conftest.in
   mv conftest.out conftest.in
 
   cat > conftest.frag <<CEOF
+${ac_dA}HAVE_GETCWD${ac_dB}HAVE_GETCWD${ac_dC}1${ac_dD}
+${ac_uA}HAVE_GETCWD${ac_uB}HAVE_GETCWD${ac_uC}1${ac_uD}
+${ac_eA}HAVE_GETCWD${ac_eB}HAVE_GETCWD${ac_eC}1${ac_eD}
+${ac_dA}HAVE_GETHOSTNAME${ac_dB}HAVE_GETHOSTNAME${ac_dC}1${ac_dD}
+${ac_uA}HAVE_GETHOSTNAME${ac_uB}HAVE_GETHOSTNAME${ac_uC}1${ac_uD}
+${ac_eA}HAVE_GETHOSTNAME${ac_eB}HAVE_GETHOSTNAME${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_GETTIMEOFDAY${ac_dB}HAVE_GETTIMEOFDAY${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_GETTIMEOFDAY${ac_uB}HAVE_GETTIMEOFDAY${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_GETTIMEOFDAY${ac_eB}HAVE_GETTIMEOFDAY${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_SELECT${ac_dB}HAVE_SELECT${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_SELECT${ac_uB}HAVE_SELECT${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_SELECT${ac_eB}HAVE_SELECT${ac_eC}1${ac_eD}
+CEOF
+  sed -f conftest.frag conftest.in > conftest.out
+  rm -f conftest.in
+  mv conftest.out conftest.in
+
+  cat > conftest.frag <<CEOF
 ${ac_dA}HAVE_STRTOL${ac_dB}HAVE_STRTOL${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_STRTOL${ac_uB}HAVE_STRTOL${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_STRTOL${ac_eB}HAVE_STRTOL${ac_eC}1${ac_eD}

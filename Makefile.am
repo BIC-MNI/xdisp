@@ -26,7 +26,10 @@ group.c group.h \
 message.c message.h \
 bilinear.c buttons.c color.c compress.c defcolor.c evprocs.c exit.c \
 ezwerror.c ezwfs.c ezwhelp.c ezwinfo.c ezwinit.c ezwinput.c ezwplot.c \
-files.c handler.c help.c image.c init.c keypress.c minc.c minc_def.h mip.c \
+files.c handler.c help.c image.c init.c keypress.c minc.c mip.c \
 motion.c ms_roi.h nneighbour.c olinit.c profile.c read.c reshape.c roi.c \
 roitomin.h roitominc.h scale.c selzoom.c setcicon.c setmicon.c spectral.h \
-tic.c update.c winlev.c xbutton.c xwins.h xwinutil.c
+tic.c update.c winlev.c xbutton.c xwins.h xwinutil.c 
+
+xdisp_LDADD = olgx/libolgx.a EZWGL-1.50/lib/libEZ.a
+

@@ -57,7 +57,6 @@ int ps_file(caddr_t data)
 	sprintf(ps_fname,"%s.eps",basfname,image_number+1);
     cr_time = time(NULL);
     if (Verbose) fprintf(stderr,"Preparing postscript file %s\n",ps_fname);
-#ifdef EZ_WIDGETS
     strncpy(ps_fname,Get_Save_Filename(ps_fname),128); 
     if (ps_fname[0]=='\0' || rindex(ps_fname,' ') ) {
       if (Verbose || Save_Select_Done==1) {
@@ -66,7 +65,6 @@ int ps_file(caddr_t data)
       }
       return(-1);
     }
-#endif
   }
   else {
     ps_fname[0] = '\0';
@@ -364,7 +362,6 @@ int graphics_file(caddr_t data)
       sprintf(gr_fname, "%s.rast",basfname);
     break;
   }
-#ifdef EZ_WIDGETS
     strncpy(gr_fname,Get_Save_Filename(gr_fname),128);
     if (gr_fname[0]=='\0' || rindex(gr_fname,' ') ) {
       if (Verbose || Save_Select_Done==1) {
@@ -373,7 +370,6 @@ int graphics_file(caddr_t data)
       }
       return(-1);
     }
-#endif
   short_to_grfx(&short_Image[i_offset], gr_fname, Width, Height, 
 		zWidth, zHeight, Lower, Upper, type);
 }
@@ -401,7 +397,6 @@ int flat_file(caddr_t data)
     else
       sprintf(byte_fname,"%s.byte",basfname);
     if (Verbose) fprintf(stderr,"Preparing flat byte file %s\n",byte_fname);
-#ifdef EZ_WIDGETS
     strncpy(byte_fname,Get_Save_Filename(byte_fname),128); 
     if (byte_fname[0]=='\0' || rindex(byte_fname,' ') ) {
       if (Verbose || Save_Select_Done==1) {
@@ -410,7 +405,6 @@ int flat_file(caddr_t data)
       }
       return(-1);
     }
-#endif
   }
   else {
     if (num_images>1)
@@ -418,7 +412,6 @@ int flat_file(caddr_t data)
     else
       sprintf(short_fname,"%s.int",basfname);
     if (Verbose) fprintf(stderr,"Preparing flat short int file %s\n",short_fname);
-#ifdef EZ_WIDGETS
     strncpy(short_fname,Get_Save_Filename(short_fname),128); 
     if (short_fname[0]=='\0' || rindex(short_fname,' ') ) {
       if (Verbose || Save_Select_Done==1) {
@@ -427,7 +420,6 @@ int flat_file(caddr_t data)
       }
       return(-1);
     }
-#endif
   }
 
   /* open file */
@@ -794,7 +786,6 @@ int matlab_file(caddr_t data)
   else
     strcat(mat_fname,".mat");
   if (Verbose) fprintf(stderr,"Preparing matlab file %s\n",mat_fname);
-#ifdef EZ_WIDGETS
   strncpy(mat_fname,Get_Save_Filename(mat_fname),128); 
   if (mat_fname[0]=='\0' || rindex(mat_fname,' ') ) {
     if (Verbose || Save_Select_Done==1) {
@@ -803,7 +794,6 @@ int matlab_file(caddr_t data)
     }
     return(-1);
   }
-#endif
 
   /* open file */
   fp = fopen(mat_fname,"wb");

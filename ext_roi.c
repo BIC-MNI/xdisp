@@ -25,10 +25,10 @@ void free_one_roi(ROI_LIST *r, STACKROI_LIST *sp);
 void delete_one_roi(ROI_LIST *r, ROI_LIST **list, STACKROI_LIST *sp);
 void delete_complete_roi_list(struct roi_list **list, STACKROI_LIST *sp);
 void delete_roi_list(STACKROI_LIST slice_array[], int slice_count);
-public void add_ext_roi(byte *tmp_image1);
+void add_ext_roi(byte *tmp_image1);
 
 
-public void add_ext_roi(byte *tmp_image) {
+void add_ext_roi(byte *tmp_image) {
   int roi;
   int vert;
   ROI_LIST *roip;

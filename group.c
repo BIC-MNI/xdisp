@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : $Log: group.c,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.9  93/12/10  09:20:32  neelin
@@ -50,7 +55,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "minc_def.h"
 #include "acr_nema.h"
 
 /* ----------------------------- MNI Header -----------------------------------
@@ -65,7 +69,7 @@
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Group acr_create_group(int group_id)
+Acr_Group acr_create_group(int group_id)
 {
    Acr_Group group;
    Acr_Element length_element;
@@ -107,7 +111,7 @@ public Acr_Group acr_create_group(int group_id)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_delete_group(Acr_Group group)
+void acr_delete_group(Acr_Group group)
 {
    acr_delete_element_list(group->list_head);
 
@@ -128,7 +132,7 @@ public void acr_delete_group(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_delete_group_list(Acr_Group group_list)
+void acr_delete_group_list(Acr_Group group_list)
 {
    Acr_Group next, cur;
 
@@ -158,7 +162,7 @@ public void acr_delete_group_list(Acr_Group group_list)
 @CREATED    : November 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Group acr_copy_group(Acr_Group group)
+Acr_Group acr_copy_group(Acr_Group group)
 {
    Acr_Group copy;
    Acr_Element cur;
@@ -188,7 +192,7 @@ public Acr_Group acr_copy_group(Acr_Group group)
 @CREATED    : November 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Group acr_copy_group_list(Acr_Group group_list)
+Acr_Group acr_copy_group_list(Acr_Group group_list)
 {
    Acr_Group copy_list;
    Acr_Group copy_group;
@@ -222,7 +226,7 @@ public Acr_Group acr_copy_group_list(Acr_Group group_list)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_group_add_element(Acr_Group group, Acr_Element element)
+void acr_group_add_element(Acr_Group group, Acr_Element element)
 {
    Acr_Element length_element;
    long group_length, element_length;
@@ -267,7 +271,7 @@ public void acr_group_add_element(Acr_Group group, Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_set_group_next(Acr_Group group, Acr_Group next)
+void acr_set_group_next(Acr_Group group, Acr_Group next)
 {
    group->next = next;
    return;
@@ -285,7 +289,7 @@ public void acr_set_group_next(Acr_Group group, Acr_Group next)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_group_group(Acr_Group group)
+int acr_get_group_group(Acr_Group group)
 {
    return group->group_id;
 }
@@ -302,7 +306,7 @@ public int acr_get_group_group(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_get_group_element_list(Acr_Group group)
+Acr_Element acr_get_group_element_list(Acr_Group group)
 {
    return group->list_head;
 }
@@ -319,7 +323,7 @@ public Acr_Element acr_get_group_element_list(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_get_group_total_length(Acr_Group group)
+long acr_get_group_total_length(Acr_Group group)
 {
    return group->total_length;
 }
@@ -336,7 +340,7 @@ public long acr_get_group_total_length(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_group_nelements(Acr_Group group)
+int acr_get_group_nelements(Acr_Group group)
 {
    return group->nelements;
 }
@@ -353,7 +357,7 @@ public int acr_get_group_nelements(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Group acr_get_group_next(Acr_Group group)
+Acr_Group acr_get_group_next(Acr_Group group)
 {
    return group->next;
 }
@@ -376,7 +380,7 @@ public Acr_Group acr_get_group_next(Acr_Group group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-private Acr_Status acr_input_group_with_max(Acr_File *afp, Acr_Group *group, 
+static Acr_Status acr_input_group_with_max(Acr_File *afp, Acr_Group *group, 
                                             int max_group_id)
 {
    int group_id, element_id;
@@ -449,7 +453,7 @@ private Acr_Status acr_input_group_with_max(Acr_File *afp, Acr_Group *group,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_input_group(Acr_File *afp, Acr_Group *group)
+Acr_Status acr_input_group(Acr_File *afp, Acr_Group *group)
 {
 
    return acr_input_group_with_max(afp, group, 0);
@@ -469,7 +473,7 @@ public Acr_Status acr_input_group(Acr_File *afp, Acr_Group *group)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_output_group(Acr_File *afp, Acr_Group group)
+Acr_Status acr_output_group(Acr_File *afp, Acr_Group group)
 {
    long ielement, nelements;
    Acr_Element cur, next;
@@ -515,7 +519,7 @@ public Acr_Status acr_output_group(Acr_File *afp, Acr_Group group)
 @CREATED    : November 24, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_input_group_list(Acr_File *afp, Acr_Group *group_list,
+Acr_Status acr_input_group_list(Acr_File *afp, Acr_Group *group_list,
                                        int max_group_id)
 {
    Acr_Group cur_group, next_group;
@@ -560,7 +564,7 @@ public Acr_Status acr_input_group_list(Acr_File *afp, Acr_Group *group_list,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_find_group_element(Acr_Group group_list,
+Acr_Element acr_find_group_element(Acr_Group group_list,
                                           Acr_Element_Id elid)
 {
    Acr_Group group;
@@ -624,7 +628,7 @@ public Acr_Element acr_find_group_element(Acr_Group group_list,
 @CREATED    : November 24, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_dump_group_list(FILE *file_pointer, Acr_Group group_list)
+void acr_dump_group_list(FILE *file_pointer, Acr_Group group_list)
 {
    Acr_Group cur_group;
    Acr_Element cur_element;
@@ -725,7 +729,7 @@ public void acr_dump_group_list(FILE *file_pointer, Acr_Group group_list)
 @CREATED    : December 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_find_short(Acr_Group group_list, Acr_Element_Id elid, 
+int acr_find_short(Acr_Group group_list, Acr_Element_Id elid, 
                           int default_value)
 {
    Acr_Element element;
@@ -752,7 +756,7 @@ public int acr_find_short(Acr_Group group_list, Acr_Element_Id elid,
 @CREATED    : December 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_find_long(Acr_Group group_list, Acr_Element_Id elid, 
+long acr_find_long(Acr_Group group_list, Acr_Element_Id elid, 
                           long default_value)
 {
    Acr_Element element;
@@ -779,7 +783,7 @@ public long acr_find_long(Acr_Group group_list, Acr_Element_Id elid,
 @CREATED    : December 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_find_int(Acr_Group group_list, Acr_Element_Id elid, 
+int acr_find_int(Acr_Group group_list, Acr_Element_Id elid, 
                         int default_value)
 {
    Acr_Element element;
@@ -806,7 +810,7 @@ public int acr_find_int(Acr_Group group_list, Acr_Element_Id elid,
 @CREATED    : December 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public double acr_find_double(Acr_Group group_list, Acr_Element_Id elid, 
+double acr_find_double(Acr_Group group_list, Acr_Element_Id elid, 
                               double default_value)
 {
    Acr_Element element;
@@ -833,7 +837,7 @@ public double acr_find_double(Acr_Group group_list, Acr_Element_Id elid,
 @CREATED    : December 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public char *acr_find_string(Acr_Group group_list, Acr_Element_Id elid, 
+char *acr_find_string(Acr_Group group_list, Acr_Element_Id elid, 
                              char *default_value)
 {
    Acr_Element element;

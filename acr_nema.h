@@ -5,11 +5,16 @@
 @GLOBALS    : 
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : $Log: acr_nema.h,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.4  94/01/06  13:31:27  neelin
- * Changed acr_need_invert to a public function.
+ * Changed acr_need_invert to a function.
  * 
  * Revision 1.3  93/12/08  09:07:02  neelin
  * 
@@ -32,13 +37,6 @@
 ---------------------------------------------------------------------------- */
 
 /* Define constants */
-#ifndef public
-#  define public
-#endif
-#ifndef private
-#  define private static
-#endif
-
 #ifndef TRUE
 #  define TRUE 1
 #endif
@@ -46,6 +44,10 @@
 #  define FALSE 0
 #endif
 
+
+/* defs */
+#define MALLOC(size) ((void *) malloc(size))
+#define FREE(ptr) free(ptr)
 
 #include <file_io.h>
 
@@ -60,19 +62,19 @@ typedef enum {
 } Acr_Status;
 
 /* Functions */
-public int acr_set_vax_byte_ordering(int has_vax_byte_ordering);
-public int acr_need_invert(void);
-public void acr_get_short(long nvals, void *input_value, 
+int acr_set_vax_byte_ordering(int has_vax_byte_ordering);
+int acr_need_invert(void);
+void acr_get_short(long nvals, void *input_value, 
                           unsigned short *mach_value);
-public void acr_get_long(long nvals, void *input_value, long *mach_value);
-public void acr_put_short(long nvals, unsigned short *mach_value, 
+void acr_get_long(long nvals, void *input_value, long *mach_value);
+void acr_put_short(long nvals, unsigned short *mach_value, 
                           void *output_value);
-public void acr_put_long(long nvals, long *mach_value, void *output_value);
-public Acr_Status acr_test_byte_ordering(Acr_File *afp);
-public Acr_Status acr_read_one_element(Acr_File *afp,
+void acr_put_long(long nvals, long *mach_value, void *output_value);
+Acr_Status acr_test_byte_ordering(Acr_File *afp);
+Acr_Status acr_read_one_element(Acr_File *afp,
                                        int *group_id, int *element_id,
                                        long *data_length, char **data_pointer);
-public Acr_Status acr_write_one_element(Acr_File *afp,
+Acr_Status acr_write_one_element(Acr_File *afp,
                                         int group_id, int element_id,
                                         long data_length, char *data_pointer);
 

@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : $Log: element.c,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.7  93/11/30  12:19:15  neelin
@@ -45,8 +50,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "minc_def.h"
 #include "acr_nema.h"
+
+
+
 
 /* ----------------------------- MNI Header -----------------------------------
 @NAME       : acr_create_element
@@ -63,7 +70,7 @@
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_create_element(int group_id, int element_id, 
+Acr_Element acr_create_element(int group_id, int element_id, 
                                       long data_length, char *data_pointer)
 {
    Acr_Element element;
@@ -93,7 +100,7 @@ public Acr_Element acr_create_element(int group_id, int element_id,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_delete_element(Acr_Element element)
+void acr_delete_element(Acr_Element element)
 {
    if (element->data_pointer != NULL)
       FREE(element->data_pointer);
@@ -115,7 +122,7 @@ public void acr_delete_element(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_delete_element_list(Acr_Element element_list)
+void acr_delete_element_list(Acr_Element element_list)
 {
    Acr_Element next, cur;
 
@@ -142,7 +149,7 @@ public void acr_delete_element_list(Acr_Element element_list)
 @CREATED    : November 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_copy_element(Acr_Element element)
+Acr_Element acr_copy_element(Acr_Element element)
 {
    Acr_Element copy;
    long length;
@@ -182,7 +189,7 @@ public Acr_Element acr_copy_element(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_set_element_id(Acr_Element element,
+void acr_set_element_id(Acr_Element element,
                                int group_id, int element_id)
 {
    element->group_id = group_id;
@@ -204,7 +211,7 @@ public void acr_set_element_id(Acr_Element element,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_set_element_data(Acr_Element element,
+void acr_set_element_data(Acr_Element element,
                                  long data_length, char *data_pointer)
 {
 
@@ -231,7 +238,7 @@ public void acr_set_element_data(Acr_Element element,
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_set_element_next(Acr_Element element, Acr_Element next)
+void acr_set_element_next(Acr_Element element, Acr_Element next)
 {
    element->next = next;
    return;
@@ -249,7 +256,7 @@ public void acr_set_element_next(Acr_Element element, Acr_Element next)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_element_group(Acr_Element element)
+int acr_get_element_group(Acr_Element element)
 {
    return element->group_id;
 }
@@ -266,7 +273,7 @@ public int acr_get_element_group(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_element_element(Acr_Element element)
+int acr_get_element_element(Acr_Element element)
 {
    return element->element_id;
 }
@@ -283,7 +290,7 @@ public int acr_get_element_element(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_get_element_length(Acr_Element element)
+long acr_get_element_length(Acr_Element element)
 {
    return element->data_length;
 }
@@ -300,7 +307,7 @@ public long acr_get_element_length(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public char *acr_get_element_data(Acr_Element element)
+char *acr_get_element_data(Acr_Element element)
 {
    return element->data_pointer;
 }
@@ -317,7 +324,7 @@ public char *acr_get_element_data(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_get_element_total_length(Acr_Element element)
+long acr_get_element_total_length(Acr_Element element)
 {
    return element->data_length + 8;
 }
@@ -334,7 +341,7 @@ public long acr_get_element_total_length(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_get_element_next(Acr_Element element)
+Acr_Element acr_get_element_next(Acr_Element element)
 {
    return element->next;
 }
@@ -351,7 +358,7 @@ public Acr_Element acr_get_element_next(Acr_Element element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_input_element(Acr_File *afp, Acr_Element *element)
+Acr_Status acr_input_element(Acr_File *afp, Acr_Element *element)
 {
    int group_id, element_id;
    long data_length;
@@ -382,7 +389,7 @@ public Acr_Status acr_input_element(Acr_File *afp, Acr_Element *element)
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Status acr_output_element(Acr_File *afp, Acr_Element element)
+Acr_Status acr_output_element(Acr_File *afp, Acr_Element element)
 {
    return acr_write_one_element(afp, 
                                 element->group_id,
@@ -405,7 +412,7 @@ public Acr_Status acr_output_element(Acr_File *afp, Acr_Element element)
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_create_element_short(Acr_Element_Id elid,
+Acr_Element acr_create_element_short(Acr_Element_Id elid,
                                             unsigned short value)
 {
    long data_length;
@@ -432,7 +439,7 @@ public Acr_Element acr_create_element_short(Acr_Element_Id elid,
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_create_element_long(Acr_Element_Id elid,
+Acr_Element acr_create_element_long(Acr_Element_Id elid,
                                            long value)
 {
    long data_length;
@@ -460,7 +467,7 @@ public Acr_Element acr_create_element_long(Acr_Element_Id elid,
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_create_element_numeric(Acr_Element_Id elid,
+Acr_Element acr_create_element_numeric(Acr_Element_Id elid,
                                               double value)
 {
    char string[256];
@@ -484,7 +491,7 @@ public Acr_Element acr_create_element_numeric(Acr_Element_Id elid,
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_Element acr_create_element_string(Acr_Element_Id elid,
+Acr_Element acr_create_element_string(Acr_Element_Id elid,
                                              char *value)
 {
    long data_length;
@@ -529,7 +536,7 @@ public Acr_Element acr_create_element_string(Acr_Element_Id elid,
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public unsigned short acr_get_element_short(Acr_Element element)
+unsigned short acr_get_element_short(Acr_Element element)
 {
    unsigned short value;
 
@@ -553,7 +560,7 @@ public unsigned short acr_get_element_short(Acr_Element element)
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public long acr_get_element_long(Acr_Element element)
+long acr_get_element_long(Acr_Element element)
 {
    long value;
 
@@ -577,7 +584,7 @@ public long acr_get_element_long(Acr_Element element)
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public double acr_get_element_numeric(Acr_Element element)
+double acr_get_element_numeric(Acr_Element element)
 {
    double value;
 
@@ -598,7 +605,7 @@ public double acr_get_element_numeric(Acr_Element element)
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public char *acr_get_element_string(Acr_Element element)
+char *acr_get_element_string(Acr_Element element)
 {
 
    return (char *) acr_get_element_data(element);
@@ -617,7 +624,7 @@ public char *acr_get_element_string(Acr_Element element)
 @CREATED    : November 17, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_get_element_numeric_array(Acr_Element element,
+int acr_get_element_numeric_array(Acr_Element element,
                                          int max_values, double values[])
 {
    char *start, *end, *cur, *prev;

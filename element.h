@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 10, 1993 (Peter Neelin)
 @MODIFIED   : $Log: element.h,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.5  93/11/26  18:47:48  neelin
@@ -68,35 +73,35 @@ typedef struct Acr_Element_Id {
 
 
 /* Functions */
-public Acr_Element acr_create_element(int group_id, int element_id, 
+Acr_Element acr_create_element(int group_id, int element_id, 
                                       long data_length, char *data_pointer);
-public void acr_delete_element(Acr_Element element);
-public void acr_delete_element_list(Acr_Element element_list);
-public Acr_Element acr_copy_element(Acr_Element element);
-public void acr_set_element_id(Acr_Element element,
+void acr_delete_element(Acr_Element element);
+void acr_delete_element_list(Acr_Element element_list);
+Acr_Element acr_copy_element(Acr_Element element);
+void acr_set_element_id(Acr_Element element,
                                int group_id, int element_id);
-public void acr_set_element_data(Acr_Element element,
+void acr_set_element_data(Acr_Element element,
                                  long data_length, char *data_pointer);
-public void acr_set_element_next(Acr_Element element, Acr_Element next);
-public int acr_get_element_group(Acr_Element element);
-public int acr_get_element_element(Acr_Element element);
-public long acr_get_element_length(Acr_Element element);
-public char *acr_get_element_data(Acr_Element element);
-public long acr_get_element_total_length(Acr_Element element);
-public Acr_Element acr_get_element_next(Acr_Element element);
-public Acr_Status acr_input_element(Acr_File *afp, Acr_Element *element);
-public Acr_Status acr_output_element(Acr_File *afp, Acr_Element element);
-public Acr_Element acr_create_element_short(Acr_Element_Id elid,
+void acr_set_element_next(Acr_Element element, Acr_Element next);
+int acr_get_element_group(Acr_Element element);
+int acr_get_element_element(Acr_Element element);
+long acr_get_element_length(Acr_Element element);
+char *acr_get_element_data(Acr_Element element);
+long acr_get_element_total_length(Acr_Element element);
+Acr_Element acr_get_element_next(Acr_Element element);
+Acr_Status acr_input_element(Acr_File *afp, Acr_Element *element);
+Acr_Status acr_output_element(Acr_File *afp, Acr_Element element);
+Acr_Element acr_create_element_short(Acr_Element_Id elid,
                                             unsigned short value);
-public Acr_Element acr_create_element_long(Acr_Element_Id elid,
+Acr_Element acr_create_element_long(Acr_Element_Id elid,
                                            long value);
-public Acr_Element acr_create_element_numeric(Acr_Element_Id elid,
+Acr_Element acr_create_element_numeric(Acr_Element_Id elid,
                                               double value);
-public Acr_Element acr_create_element_string(Acr_Element_Id elid,
+Acr_Element acr_create_element_string(Acr_Element_Id elid,
                                              char *value);
-public unsigned short acr_get_element_short(Acr_Element element);
-public long acr_get_element_long(Acr_Element element);
-public double acr_get_element_numeric(Acr_Element element);
-public char *acr_get_element_string(Acr_Element element);
-public int acr_get_element_numeric_array(Acr_Element element,
+unsigned short acr_get_element_short(Acr_Element element);
+long acr_get_element_long(Acr_Element element);
+double acr_get_element_numeric(Acr_Element element);
+char *acr_get_element_string(Acr_Element element);
+int acr_get_element_numeric_array(Acr_Element element,
                                          int max_values, double values[]);

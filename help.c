@@ -150,9 +150,7 @@ int online_Help()
   fprintf(stderr,"     H ->   this help text\n"); 
   fprintf(stderr,"     i ->   toggle between bilinear and nearest neighbour interpolation\n"); 
   fprintf(stderr,"     l ->   load all images from file\n");
-#ifdef EZ_WIDGETS
   fprintf(stderr,"     L ->   enter Lower value of color map\n");
-#endif
   fprintf(stderr,"     m ->   calculate maximum intensity projection image\n");
   fprintf(stderr,"     M ->   save image to a file in matlab format\n");
   fprintf(stderr,"     n ->   reload image as a new file\n");
@@ -166,9 +164,7 @@ int online_Help()
   fprintf(stderr,"     t ->   toggle (invert) greyscale\n");
   fprintf(stderr,"     T ->   create a TIFF file\n");
   fprintf(stderr,"     u ->   unzoom image (restore original size)\n");
-#ifdef EZ_WIDGETS
   fprintf(stderr,"     U ->   enter Upper value of color map\n");
-#endif
   fprintf(stderr,"     v ->   print version number\n");
   fprintf(stderr,"     w ->   toggle window/level display\n");
   fprintf(stderr,"     + ->   increment image number by 1\n");

@@ -25,11 +25,7 @@ void Handle_KeyPress(XEvent *event)
   /* do it */
   XLookupString(key_event,buf,128,&ks,&status);
   if (buf[0]=='q' || buf[0]=='Q') Quit(); 
-#ifdef EZ_WIDGETS
   else if (buf[0]=='h' || buf[0]=='H' || buf[0]=='?') Open_Help_Widget();
-#else
-  else if (buf[0]=='h' || buf[0]=='H' || buf[0]=='?') online_Help();
-#endif
   else if (buf[0]=='b') Toggle_ColorBar();
   else if (buf[0]=='i') Toggle_Interpolation();
   else if (buf[0]=='C') Switch_Colormap();
@@ -85,10 +81,8 @@ void Handle_KeyPress(XEvent *event)
   else if (buf[0]=='M') matlab_file();
   else if (buf[0]=='t') toggle();
   else if (buf[0]=='o') Reorient_Volume();
-#ifdef EZ_WIDGETS
   else if (buf[0]=='U') Open_Input_Widget("Upper:");
   else if (buf[0]=='L') Open_Input_Widget("Lower:");
-#endif
   else if (buf[0]=='d'){ /* cycle current volume dimension */
     current_dim = (current_dim+1)%(ndimensions-2);
     if (Verbose)
@@ -181,19 +175,15 @@ void Handle_KeyPress(XEvent *event)
 		  w+(color_bar?color_bar_width:0),
 		  h+info_height);
   }
-#ifdef EZ_WIDGETS
   else if (buf[0]=='') {  /* load new file in current xdisp window */
     Open_File_Selector_Widget((caddr_t)&zero);
   }
   else if (buf[0]=='') {  /* load new file and spawn new xdisp */
     Open_File_Selector_Widget((caddr_t)&one);
   }
-#ifdef MINC
   else if (buf[0]=='	') {  /* ^I open mincheader info window */
     Open_Info_Widget();
   }
-#endif
-#endif
   else if (buf[0]=='') { /* flip image about x */
     Flip_Image((caddr_t)&zero);
   }

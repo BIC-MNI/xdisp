@@ -39,9 +39,7 @@ char 	**argv;
   }
   fname = display = geom = NULL;
   Initialize();
-#ifdef EZ_WIDGETS
   EZ_Initialize(argc,argv,0);
-#endif
 
   /* malloc space for spawn command */
   spawn_cmd_root = (char *) malloc(2048);
@@ -381,14 +379,7 @@ char 	**argv;
   }
 
   /* Open up the display. */
-#ifdef EZ_WIDGETS
   theDisp=EZ_GetDisplay();
-#else
-  if ( (theDisp=XOpenDisplay(display)) == NULL) {
-    fprintf(stderr,"xdisp: Can't open display\n");
-    exit(1);
-  }
-#endif
 
   /* Get some basic info */
   theScreen = DefaultScreen(theDisp);
@@ -698,9 +689,7 @@ char 	**argv;
   SetMIcon(NormalState);
 
   /* Create the EZ widgets if enabled */
-#ifdef EZ_WIDGETS    
   Create_EZ_Widgets();
-#endif
 
   /* Load specific image if requested */
   if (image_increment!=0) {
@@ -719,7 +708,6 @@ char 	**argv;
   Rescale();
 
   /* Main loop */
-#ifdef EZ_WIDGETS
   while(1){
     while(XPending(theDisp)) {
       XNextEvent(theDisp,&theEvent);
@@ -730,10 +718,4 @@ char 	**argv;
     EZ_CheckTimerEvents();
     if(EZ_CheckAppInputs(1000)!= 0) EZ_SitForALittleBit(1000);
   }
-#else
-  while (1) {
-    XNextEvent(theDisp, &theEvent);
-    HandleEvent(&theEvent);
-  }
-#endif
 }

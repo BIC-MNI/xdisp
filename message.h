@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 16, 1993 (Peter Neelin)
 @MODIFIED   : $Log: message.h,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:16  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.3  93/11/24  11:27:10  neelin
@@ -40,12 +45,12 @@ typedef struct Acr_Message {
 } *Acr_Message;
 
 /* Functions */
-public Acr_Message acr_create_message(void);
-public void acr_delete_message(Acr_Message message);
-public void acr_message_add_group(Acr_Message message, Acr_Group group);
-public Acr_Group acr_get_message_group_list(Acr_Message message);
-public long acr_get_message_total_length(Acr_Message message);
-public int acr_get_message_ngroups(Acr_Message message);
-public Acr_Status acr_input_message(Acr_File *afp, Acr_Message *message);
-public Acr_Status acr_output_message(Acr_File *afp, Acr_Message message);
-public void acr_dump_message(FILE *file_pointer, Acr_Message message);
+Acr_Message acr_create_message(void);
+void acr_delete_message(Acr_Message message);
+void acr_message_add_group(Acr_Message message, Acr_Group group);
+Acr_Group acr_get_message_group_list(Acr_Message message);
+long acr_get_message_total_length(Acr_Message message);
+int acr_get_message_ngroups(Acr_Message message);
+Acr_Status acr_input_message(Acr_File *afp, Acr_Message *message);
+Acr_Status acr_output_message(Acr_File *afp, Acr_Message message);
+void acr_dump_message(FILE *file_pointer, Acr_Message message);

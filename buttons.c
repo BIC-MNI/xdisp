@@ -206,7 +206,6 @@ int Define_Cmd_Buttons()
 			      1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
 			      "Rescale", Rescale, NULL, True);
                                    
-#ifdef EZ_WIDGETS
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Gamma",5)+ec_w;
   LowerButton = MakeXButton(next_button_x, next_button_y,
@@ -227,7 +226,6 @@ int Define_Cmd_Buttons()
 			    skip_x, button_height,
 			    1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
 			    "Upper", Open_Input_Widget, "Upper:", True);
-#endif
 
   /* new line of buttons */
   next_button_x = 2;
@@ -260,7 +258,6 @@ int Define_Cmd_Buttons()
   next_button_y += skip_y*2;
 
   next_button_x = 2;
-#ifdef EZ_WIDGETS
   skip_x = XTextWidth(ol_text_finfo,"New File",9)+ec_w;        
   NewFileButton = MakeXButton(next_button_x, next_button_y,
 			      skip_x, button_height,
@@ -276,9 +273,6 @@ int Define_Cmd_Buttons()
 			      "New xdisp", Open_File_Selector_Widget, 
 			      (caddr_t)&one, True);
   next_button_x += skip_x + 6;
-#else
-  skip_x = 0;
-#endif
 
   skip_x = XTextWidth(ol_text_finfo,"Load All",8)+ec_w;        
   LoadAllButton = MakeXButton(next_button_x, next_button_y,
@@ -469,8 +463,6 @@ int Define_Cmd_Buttons()
 			  "Vert. Profile", V_Profile_Swicth, NULL, True);
 
 
-#ifdef EZ_WIDGETS
-#ifdef MINC
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Minc Header",11)+ec_w;    
   FileInfoButton = MakeXButton(next_button_x, next_button_y,
@@ -484,8 +476,6 @@ int Define_Cmd_Buttons()
 			   skip_x, button_height,
 			   1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
 			   "Plot", Open_Plot_Widget, NULL, True);
-#endif
-#endif
 
   if (file_format == MINC_FORMAT){
 
@@ -595,21 +585,11 @@ int Define_Cmd_Buttons()
 			   "Quit", Quit, NULL, True);
 
   next_button_x += skip_x + 6;
-#ifdef EZ_WIDGETS
   skip_x = XTextWidth(ol_text_finfo,"Help",4)+ec_w;        
   HelpButton = MakeXButton(next_button_x, next_button_y,
 			   skip_x, button_height,
 			   1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
 			   "Help", Open_Help_Widget, NULL, True); 
-
-#else
-  skip_x = XTextWidth(ol_text_finfo,"Help",4)+ec_w;        
-  HelpButton = MakeXButton(next_button_x, next_button_y,
-			   skip_x, button_height,
-			   1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-			   "Help", online_Help, NULL, True);
-
-#endif
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Hide",4)+ec_w;        

@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : $Log: file_io.h,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.2  93/11/25  10:37:43  neelin
@@ -25,12 +30,6 @@
               software for any purpose.  It is provided "as is" without
               express or implied warranty.
 ---------------------------------------------------------------------------- */
-
-/* Define constants */
-
-#ifndef public
-#  define public
-#endif
 
 /* Define io routine prototype */
 
@@ -62,19 +61,19 @@ typedef struct {
 
 /* Function definitions */
 
-public void acr_enable_input_trace(void);
-public void acr_disable_input_trace(void);
-public void acr_enable_output_trace(void);
-public void acr_disable_output_trace(void);
-public Acr_File *acr_file_initialize(void *user_data,
+void acr_enable_input_trace(void);
+void acr_disable_input_trace(void);
+void acr_enable_output_trace(void);
+void acr_disable_output_trace(void);
+Acr_File *acr_file_initialize(void *user_data,
                                      int maxlength,
                                      Acr_Io_Routine io_routine);
-public void acr_file_free(Acr_File *afp);
-public int acr_file_read_more(Acr_File *afp);
-public int acr_file_write_more(Acr_File *afp, int character);
-public int acr_file_flush(Acr_File *afp);
-public int acr_ungetc(int c, Acr_File *afp);
-public int acr_stdio_read(void *user_data, void *buffer, int nbytes);
-public int acr_stdio_write(void *user_data, void *buffer, int nbytes);
+void acr_file_free(Acr_File *afp);
+int acr_file_read_more(Acr_File *afp);
+int acr_file_write_more(Acr_File *afp, int character);
+int acr_file_flush(Acr_File *afp);
+int acr_ungetc(int c, Acr_File *afp);
+int acr_stdio_read(void *user_data, void *buffer, int nbytes);
+int acr_stdio_write(void *user_data, void *buffer, int nbytes);
 
                        

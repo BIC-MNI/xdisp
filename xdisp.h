@@ -72,9 +72,7 @@
 #include "xwins.h"
 
 /* EZ Widget compile flag */
-#ifdef EZ_WIDGETS
 #include <EZ.h>
-#endif
 
 /* location stuff */
 #ifndef MAIN
@@ -119,7 +117,6 @@ WHERE ulong	    ol_pixvals[5];
 WHERE XColor	    ol_fg, ol_bg1, ol_bg2, ol_bg3, ol_white;
 
 /* EZ Widget stuff */
-#ifdef EZ_WIDGETS
 EZ_Widget           *File_Selector_Widget, *File_Save_Widget, 
                     *Info_Widget, *Mincheader_Widget, *Info_Close_Button,
                     *Help_Widget, *Help_Text_Widget, *Help_Close_Button,
@@ -128,7 +125,6 @@ EZ_Widget           *File_Selector_Widget, *File_Save_Widget,
                     *Plot_Widget, *Plot_Canvas_Widget, *Plot_Close_Button,
                     *T_Plot_Button, *Raw_Plot_Button, *Normalized_Plot_Button,
                     *Percent_Plot_Button, *Plot_Button[4], *ROI_Size_Button[3];
-#endif
 
 /* global vars */
 WHERE int     NumColors, ColorMapSize, ColorMapOffset, NumGCColors,
@@ -241,7 +237,6 @@ WHERE void   Handle_KeyPress(), Handle_Motion();
 WHERE char   *Decompress_File();
 WHERE void   exit_xdisp(int);
 
-#ifdef EZ_WIDGETS
 WHERE void    Create_EZ_Widgets(), Save_File_Select_Done_Callback(),
               Save_File_Select_Cancel_Callback(), Get_New_Filename(), 
               Load_New_Image(), Spawn_New_xdisp(), Input_Widget_CallBack(),
@@ -256,36 +251,26 @@ WHERE char    *Get_Save_Filename();
 WHERE int     Open_File_Selector_Widget(), Open_Info_Widget(), 
               Open_Help_Widget(), EZW_Online_Help(), Open_Input_Widget(),
               Open_Plot_Widget(), Draw_Plot_Axis(), EZW_Error();
-#endif
 
 /* ------------------------- MINC additions ------------------------------*/
-#ifndef MINC
-#  define MAX_VAR_DIMS 3
-#  define MAX_NC_NAME 64
-#endif
+#define MAX_VAR_DIMS 3
+#define MAX_NC_NAME 64
 
 #include <stdlib.h>
 #include <string.h>
-#ifdef MINC
-#  include <minc.h>
-#endif
+#include <minc.h>
 
 /* Include the standard minc definitions for cross-platform compilation
    if we are compiling the package, otherwise, just define MALLOC,
    FREE, EXIT_SUCCESS and EXIT_FAILURE */
-#ifdef COMPILING_MINC_PACKAGE
-#  include <minc_def.h>
-#else
-#  define MALLOC(size) ((void *) malloc(size))
-#  define FREE(ptr) free(ptr)
-#  ifndef EXIT_SUCCESS
-#    define EXIT_SUCCESS 0
-#    define EXIT_FAILURE 1
-#  endif
+#define MALLOC(size) ((void *) malloc(size))
+#define FREE(ptr) free(ptr)
+#ifndef EXIT_SUCCESS
+#  define EXIT_SUCCESS 0
+#  define EXIT_FAILURE 1
 #endif
 
 /* Constants */
-#define public
 #ifndef TRUE
 #  define TRUE 1
 #  define FALSE 0
@@ -315,26 +300,26 @@ typedef struct {
 } Volume_Info;
 
 /* Function prototypes */
-public int  get_volume_info(char *infile, Volume_Info *volume_info);
-public void setup_input_icv(int icvid);
-public void get_dimension_info(char *infile, int icvid, 
+int  get_volume_info(char *infile, Volume_Info *volume_info);
+void setup_input_icv(int icvid);
+void get_dimension_info(char *infile, int icvid, 
                                Volume_Info *volume_info);
-public void close_volume(int icvid);
-public void get_volume_slice(int icvid, Volume_Info *volume_info, 
+void close_volume(int icvid);
+void get_volume_slice(int icvid, Volume_Info *volume_info, 
                              int slice_num[], short *image);
-public int  save_volume_info(int input_icvid, char *outfile, char *arg_string, 
+int  save_volume_info(int input_icvid, char *outfile, char *arg_string, 
 			     Volume_Info *volume_info);
-public void setup_output_icv(int icvid);
-public void setup_variables(int inmincid, int mincid, 
+void setup_output_icv(int icvid);
+void setup_variables(int inmincid, int mincid, 
                             Volume_Info *volume_info, 
                             char *arg_string);
-public void setup_image_variables(int inmincid, int mincid, 
+void setup_image_variables(int inmincid, int mincid, 
                                   int ndims, int dim[]);
-public void update_history(int mincid, char *arg_string);
-public void save_volume_slice(int icvid, Volume_Info *volume_info, 
+void update_history(int mincid, char *arg_string);
+void save_volume_slice(int icvid, Volume_Info *volume_info, 
                               int slice_num[], unsigned char *image,
                               double slice_min, double slice_max);
-public void read_volume_data(int icvid, Volume_Info *volume_info, short *volume);
+void read_volume_data(int icvid, Volume_Info *volume_info, short *volume);
 
 /* global stuff */
 Volume_Info   minc_volume_info;

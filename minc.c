@@ -18,7 +18,7 @@
 @CREATED    : August 22, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int get_volume_info(char *infile, Volume_Info *volume_info)
+int get_volume_info(char *infile, Volume_Info *volume_info)
 {
    int icvid, mincid;
 
@@ -55,7 +55,7 @@ public int get_volume_info(char *infile, Volume_Info *volume_info)
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void setup_input_icv(int icvid)
+void setup_input_icv(int icvid)
 {
    /* Set desired type */
    (void) miicv_setint(icvid, MI_ICV_TYPE, NC_SHORT);
@@ -97,7 +97,7 @@ public void setup_input_icv(int icvid)
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void get_dimension_info(char *infile, int icvid, 
+void get_dimension_info(char *infile, int icvid, 
                                Volume_Info *volume_info)
 {
    int mincid, imgid, varid;
@@ -180,7 +180,7 @@ public void get_dimension_info(char *infile, int icvid,
 @CREATED    : March 16, 1994 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void close_volume(int icvid)
+void close_volume(int icvid)
 {
    int mincid;
 
@@ -210,7 +210,7 @@ public void close_volume(int icvid)
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void get_volume_slice(int icvid, Volume_Info *volume_info, 
+void get_volume_slice(int icvid, Volume_Info *volume_info, 
                              int slice_num[], short *image)
 {
    long start[MAX_VAR_DIMS], count[MAX_VAR_DIMS];
@@ -258,7 +258,7 @@ public void get_volume_slice(int icvid, Volume_Info *volume_info,
 @CREATED    : August 22, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int save_volume_info(int input_icvid, char *outfile, char *arg_string, 
+int save_volume_info(int input_icvid, char *outfile, char *arg_string, 
                             Volume_Info *volume_info)
 {
    int mincid, icvid, inmincid;
@@ -297,7 +297,7 @@ public int save_volume_info(int input_icvid, char *outfile, char *arg_string,
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void setup_output_icv(int icvid)
+void setup_output_icv(int icvid)
 {
    /* Set desired type */
    (void) miicv_setint(icvid, MI_ICV_TYPE, NC_BYTE);
@@ -327,7 +327,7 @@ public void setup_output_icv(int icvid)
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void setup_variables(int inmincid, int mincid, 
+void setup_variables(int inmincid, int mincid, 
                             Volume_Info *volume_info, 
                             char *arg_string)
 {
@@ -414,7 +414,7 @@ public void setup_variables(int inmincid, int mincid,
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void setup_image_variables(int inmincid, int mincid, 
+void setup_image_variables(int inmincid, int mincid, 
                                   int ndims, int dim[])
 {
    int imgid, maxid, minid;
@@ -460,7 +460,7 @@ public void setup_image_variables(int inmincid, int mincid,
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void update_history(int mincid, char *arg_string)
+void update_history(int mincid, char *arg_string)
 {
    nc_type datatype;
    int att_length;
@@ -506,7 +506,7 @@ public void update_history(int mincid, char *arg_string)
 @CREATED    : August 26, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void save_volume_slice(int icvid, Volume_Info *volume_info, 
+void save_volume_slice(int icvid, Volume_Info *volume_info, 
                               int slice_num[], unsigned char *image,
                               double slice_min, double slice_max)
 {
@@ -551,7 +551,7 @@ public void save_volume_slice(int icvid, Volume_Info *volume_info,
 @CREATED    : August 26, 1993 (Peter Neelin (mods B Pike Mar 30, 1994))
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void read_volume_data(int icvid, Volume_Info *volume_info, short *volume)
+void read_volume_data(int icvid, Volume_Info *volume_info, short *volume)
 {
    long start[MAX_VAR_DIMS], count[MAX_VAR_DIMS];
    int  idim, ndims;

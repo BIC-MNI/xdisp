@@ -5,7 +5,12 @@
 @GLOBALS    : 
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : $Log: file_io.c,v $
-@MODIFIED   : Revision 1.1  2005-02-26 14:08:32  rotor
+@MODIFIED   : Revision 1.2  2005-03-02 13:14:15  rotor
+@MODIFIED   :  * Changes for autobuild process
+@MODIFIED   :  * removed public/private syntactic sugar
+@MODIFIED   :  * removed minc_def ugliness - replaced with equally ugly FREE and MALLOC
+@MODIFIED   :
+@MODIFIED   : Revision 1.1  2005/02/26 14:08:32  rotor
 @MODIFIED   :  * Initial checkin to CVS for autoconf build
 @MODIFIED   :
  * Revision 1.4  93/11/25  10:36:14  neelin
@@ -34,8 +39,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "minc_def.h"
 #include "file_io.h"
+
+/* defs */
+#define MALLOC(size) ((void *) malloc(size))
+#define FREE(ptr) free(ptr)
 
 /* Define some constants */
 #define ACR_MAX_BUFFER_LENGTH (8*1024)
@@ -59,25 +67,25 @@ static int Do_output_trace = FALSE;
 static FILE *Input_trace = NULL;
 static FILE *Output_trace = NULL;
 
-public void acr_enable_input_trace(void)
+void acr_enable_input_trace(void)
 {
    Do_input_trace = TRUE;
    return;
 }
 
-public void acr_disable_input_trace(void)
+void acr_disable_input_trace(void)
 {
    Do_input_trace = FALSE;
    return;
 }
 
-public void acr_enable_output_trace(void)
+void acr_enable_output_trace(void)
 {
    Do_output_trace = TRUE;
    return;
 }
 
-public void acr_disable_output_trace(void)
+void acr_disable_output_trace(void)
 {
    Do_output_trace = FALSE;
    return;
@@ -100,7 +108,7 @@ public void acr_disable_output_trace(void)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public Acr_File *acr_file_initialize(void *user_data,
+Acr_File *acr_file_initialize(void *user_data,
                                      int maxlength,
                                      Acr_Io_Routine io_routine)
 {
@@ -146,7 +154,7 @@ public Acr_File *acr_file_initialize(void *user_data,
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public void acr_file_free(Acr_File *afp)
+void acr_file_free(Acr_File *afp)
 {
    if (afp != NULL) {
       if (afp->stream_type == ACR_WRITE_STREAM) {
@@ -172,7 +180,7 @@ public void acr_file_free(Acr_File *afp)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_file_read_more(Acr_File *afp)
+int acr_file_read_more(Acr_File *afp)
 {
    int nread;
 
@@ -242,7 +250,7 @@ public int acr_file_read_more(Acr_File *afp)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_file_write_more(Acr_File *afp, int character)
+int acr_file_write_more(Acr_File *afp, int character)
 {
 
    /* Check the pointer */
@@ -272,7 +280,7 @@ public int acr_file_write_more(Acr_File *afp, int character)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_file_flush(Acr_File *afp)
+int acr_file_flush(Acr_File *afp)
 {
    int length;
 
@@ -343,7 +351,7 @@ public int acr_file_flush(Acr_File *afp)
 @CREATED    : November 25, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_ungetc(int c, Acr_File *afp)
+int acr_ungetc(int c, Acr_File *afp)
 {
 
    /* Check the pointer */
@@ -377,7 +385,7 @@ public int acr_ungetc(int c, Acr_File *afp)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_stdio_read(void *user_data, void *buffer, int nbytes)
+int acr_stdio_read(void *user_data, void *buffer, int nbytes)
 {
    FILE *fp;
    int nread;
@@ -407,7 +415,7 @@ public int acr_stdio_read(void *user_data, void *buffer, int nbytes)
 @CREATED    : November 9, 1993 (Peter Neelin)
 @MODIFIED   : 
 ---------------------------------------------------------------------------- */
-public int acr_stdio_write(void *user_data, void *buffer, int nbytes)
+int acr_stdio_write(void *user_data, void *buffer, int nbytes)
 {
    FILE *fp;
    int nwritten;

@@ -16,6 +16,7 @@ smr_WITH_BUILD_PATH
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_RANLIB
 AC_PROG_INSTALL
 
 AC_PATH_XTRA
@@ -26,6 +27,9 @@ AC_SUBST(X_LIBRARY_PATH)
 mni_REQUIRE_MINC
 mni_REQUIRE_VOLUMEIO
 
+# configure EZWGL
+# AC_CONFIG_SUBDIRS(EZWGL-1.50)
+
 # Finish up by writing output files.
-AC_CONFIG_FILES([Makefile])
-AC_OUTPUT(epm-header)
+# AC_CONFIG_FILES([Makefile])
+AC_OUTPUT(epm-header Makefile olgx/Makefile EZWGL-1.50/Makefile)

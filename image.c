@@ -108,7 +108,6 @@ int Load_Image(char *fn)
       }
     }
 
-#ifdef MINC
     /* check for MINC file format */
     if (file_format==UNKNOWN_FORMAT) {
       fseek(fp, 0L, 0); 
@@ -223,7 +222,6 @@ int Load_Image(char *fn)
 	}
       }
     }
-#endif
 	
     /* check for ACR-NEMA format */
     if (file_format==UNKNOWN_FORMAT) {
@@ -362,7 +360,6 @@ int Load_Image(char *fn)
     fclose(fp);
   }
 
-#ifdef MINC    
   /* MINC format */
   else if (file_format==MINC_FORMAT) {
     if (load_all_images) {
@@ -376,7 +373,6 @@ int Load_Image(char *fn)
     }
     fclose(fp);
   }
-#endif    
 
   /* other formats */
   else { 
@@ -428,7 +424,6 @@ int Load_Image(char *fn)
   sq_sum = sum = 0.0;
   sptr = short_Image;
   count = Height*Width*(load_all_images?num_images:1);
-#ifdef MINC    
   if (file_format!=MINC_FORMAT) {
     for (i=0; i<Height*Width*(load_all_images?num_images:1); i++,sptr++) {
       if (*sptr > I_Max) I_Max=*sptr;
@@ -443,17 +438,7 @@ int Load_Image(char *fn)
     I_Min = (short)minc_volume_info.valid_minimum;
     I_Max = (short)minc_volume_info.valid_maximum;        
   }
-#else
-
-  for (i=0; i<Height*Width*(load_all_images?num_images:1); i++,sptr++) {
-    if (*sptr > I_Max) I_Max=*sptr;
-    if (*sptr < I_Min) I_Min=*sptr;
-    sum += (float)*sptr;
-    sq_sum += (float)(*sptr)*(*sptr);
-  }
-  I_Mean = sum/count;
-  I_Std = sqrt((sq_sum - 2*I_Mean*sum + I_Mean*I_Mean*count)/(count-1));
-#endif
+  
   if (Verbose) fprintf(stderr,"Image Min=%d, Max=%d, Mean=%f, Std=%f\n",
 		       I_Min, I_Max, I_Mean, I_Std);
   Delta = I_Max-I_Min;
@@ -575,7 +560,6 @@ int New_Image()
     short_Image = realloc(short_Image,oWidth*oHeight*2);
     byte_Image = realloc(byte_Image,oWidth*oHeight*(bitmap_pad/8));
     Width=oWidth; Height=oHeight;
-#ifdef MINC
     if (file_format==MINC_FORMAT) {
       fp = fopen(fullfname,"rb");
       if (!fp) FatalError("Error opening file"); 
@@ -583,7 +567,6 @@ int New_Image()
 		       slider_image, short_Image);
       fclose(fp);
     }
-#endif        
     if (file_format==RAW_FORMAT) {
       switch(Input_Data_Type) {
       case BYTE_DATA: 
@@ -616,7 +599,6 @@ int New_Image()
     /* find Image Min, Max, mean, and std */
     sq_sum = sum = 0.0;
     count = Height*Width*(load_all_images?num_images:1);
-#ifdef MINC        
     if (file_format!=MINC_FORMAT) {
       for (i=0; i<oHeight*oWidth*(load_all_images?num_images:1); i++) {
 	if (short_Image[i] > I_Max) I_Max=short_Image[i];
@@ -631,16 +613,6 @@ int New_Image()
       I_Min = (short)minc_volume_info.valid_minimum;
       I_Max = (short)minc_volume_info.valid_maximum;
     }
-#else
-    for (i=0; i<oHeight*oWidth*(load_all_images?num_images:1); i++) {
-      if (short_Image[i] > I_Max) I_Max=short_Image[i];
-      if (short_Image[i] < I_Min) I_Min=short_Image[i];
-      sum += (float)short_Image[i];
-      sq_sum += (float)(short_Image[i])*(short_Image[i]);
-    }
-    I_Mean = sum/count;
-    I_Std = sqrt((sq_sum - 2*I_Mean*sum + I_Mean*I_Mean*count)/(count-1));
-#endif        
     if (Verbose) fprintf(stderr,"Image Min=%d, Max=%d, Mean=%f, Std=%f\n",
 			 I_Min, I_Max, I_Mean, I_Std);
     Delta = I_Max-I_Min;
