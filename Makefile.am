@@ -10,7 +10,8 @@ EXTRA_DIST = $(m4_files) \
    xdcmask.bit \
    epm-header.in
 
-SUBDIRS = olgx EZWGL-1.50
+# SUBDIRS = olgx EZWGL-1.50
+SUBDIRS = olgx
 
 m4_files = m4/mni_REQUIRE_LIB.m4 \
     m4/mni_REQUIRE_MNILIBS.m4 \
