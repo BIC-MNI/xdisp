@@ -1,0 +1,29 @@
+xdisp  	Copyright (c) Bruce Pike, 1993-2000
+-------------------------------------------
+
+xdisp is an image display tool for X window systems.  It was written
+using basic Xlib calls (to make it easy to port to any X system) and
+has since had some (optional) EZwgl (Xlib based widgets) stuff added. 
+
+Try xdisp or xdisp -help for basic help information.
+
+
+Building xdisp
+--------------
+
+Normally all you have to do is type
+
+ 	make PLATFORM=xxx
+
+where xxx is LINUX, SUNOS, IRIX or MACOSX.
+
+Alternatively the PLATFORM variable in the Makefile can be directly 
+set to LINUX, IRIX, SUNOS or MACOSX.
+
+The INSTALL_BIN_DIR and INSTALL_MAN_DIR installation destinations 
+in the Makefile may also need changing depending upon your system.
+
+Further details on building xdisp can be found in the Makefile header.
+
+-B Pike.
+ bruce@bic.mni.mcgill.ca
