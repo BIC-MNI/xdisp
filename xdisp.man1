@@ -1,0 +1,567 @@
+.TH xdisp 1 "May 20, 2003" "Rev: 4.3.55"
+.SH NAME
+\fBxdisp\fP an image display utility for the X Window System.
+
+.SH SYNOPSIS
+\fBXdisp\fP \fI filename|-- [-geometry WxH+x+y|-geom WxH+x+y] [-fn font| 
+-font font] [-foreground color|-fg color] [-background color|-bg color] 
+[-grc graphics_color] [-PseudoColor|-DirectColor|-TrueColor] [-name
+window_name] [-noiconify] [-private] [-cmi] [-gery|-hot|-spectral]
+[-swap] [-color_bar] [-bilinear|-nn|-nearest_neighbour] [-all] [-image
+image_number] [-gamma] [-byte|-ubyte|-short|-ushort|-int|-uint|-long|-ulong|
+-float|-double] [-nc num_colors] [-wl] [-roi roi_filename] [-rescale] 
+[-verbose|-v] [-height height|-h height] [-width width|-w width] [-offset
+byte_offset|-o byte_offset] [-skip byte_skip] [-upper upper|-u upper]
+[-lower lower|-l lower] [-zoom zoom_factor|-z zoom_factor] [-help]
+
+.SH DESCRIPTION
+\fBxdisp\fP is an X11 program that displays intensity images.  The
+program was developed within a medical imaging context and therefore
+accepts raw (i.e. without a header) data files as well as a few
+specific file formats.  The primary features of \fBxdisp\fP are
+contrast/brightness adjustment, resizing, cropping, rotation,
+flipping, and graphics file production (GIF, TIFF, PICT, Sun raster,
+SGI, Matlab, short integer, byte, Postscript(PS), and EPS).  In
+addition, \fBxdisp\fP only uses Xlib calls.
+
+\fBxdisp\fP has four important features designed to make your life
+easier.  First, it automatically detects GE Signa 4.X and Signa 5.X
+files.  Second, it automatically detects  ACR-NEMA (Philips and Siemens
+tested) and MNI MINC files.  Third, it assumes that headerless files
+are square.  Finally, xdisp accepts compressed files (.Z and .gz). This
+means that you will almost always invoke \fBxdisp\fP as follows:
+
+\fBxdisp filename\fP
+
+.SH COMMAND LINE OPTIONS
+.I \fBxdisp\fP
+accepts the following command line options in any order.
+
+.TP 4
+\fB\-all\fP
+Load  all images from file upon startup.  By default xdisp only reads
+data from a file as needed.
+
+.TP 4
+\fB\-background|-bg\fP\fI color\fP
+Background color specified in standard X format.
+
+.TP 4
+\fB\-bilinear|-nearest_neighbour|-nn\fP
+Interpolation technique used for all resize operations (default is bilinear).
+
+.TP 4
+\fB\-byte|-ubyte|-short|-ushort|-long|-ulong|-float|-double\fP
+Image file data format (note that u stands for unsigned). The default 
+data format is signed short integer. 
+
+.TP 4
+\fB\-cmi\fP
+Image is in CMI format.
+
+.TP 4
+\fB\-color_bar\fP
+Display a color bar with intensity values on the right hand side of the
+display.
+
+.TP 4
+\fB\-foreground|-fg\fP\fI color\fP
+Foreground color specified in standard X format.
+
+.TP 4
+\fB\-font|-fn\fP\fI font_name\fP
+Name of X font to be used.
+
+.TP 4
+\fB\-gamma\fP\fI gamma\fP
+Gamma correction factor (float, default=1.0).  This will override any
+gamma value set with the environment variable GAMMA.
+
+.TP 4
+\fB\-geometry|-geom\fP\fI WxH+x+y\fP
+Initial size and position of the main (image) window specified as WidthxHeight+x+y.
+
+.TP 4
+\fB\-grc\fP\fI color\fP
+Graphics overlay color specified in standard X format.
+
+.TP 4
+\fB\-grey|-hot|-spectral\fP
+Color table to use (default is grey scale).
+
+.TP 4
+\fB\-height|-h\fP\fI height\fP
+This is the height of the image in pixels. If this
+parameter is omitted xdisp attempts to determine the height of the image
+using the file size and the specified width.  If the width option is
+also omitted a square image is assumed.
+
+.TP 4
+\fB-help\fP
+Display a help message.
+
+.TP 4
+\fB\-image image_number\fP
+Display image_number upon startup.
+
+.TP 4
+\fB\-nc \fP\fInum_colors\fP
+Number of colors to allocate for this image (only valid if read/write
+color map is used (i.e. PseudoColor or DirectColor visuals)).
+
+.TP 4
+\fB\-noiconify\fP
+Start xdisp with the command window in the open state.  The default
+startup state of the command window is iconic.
+
+.TP 4
+\fB\-offset\fP\fI byte_offset\fP
+This is the offset, in bytes, from the start of the file at which the 
+image data is to be read.  This parameter will also affect the assumed
+size of the image if the \fIwidth\fP and \fIheight\fP options have not
+been specified.
+
+.TP 4
+\fB\-private\fP
+Install a private color map (valid for PseudoColor and DirectColor
+visuals only).
+
+.TP 4
+\fB\-PseudoColor|-DirectColor|-TrueColor\fP
+This specifies the preferred visual class to use.  Normally xdisp
+attempts to get a PseudoColor visual and if unsuccessful it proceeds
+to TrueColor and DirectColor visuals.  This order of preference can be
+changed using this command line switch.  However, if xdisp cannot get
+the preferred visual it will attempt to use one of the remaining
+visuals. Note that xdisp will only use PseudoColor visuals with a
+depth of 8 and DirectColor and TrueColor visuals with depths of 24. 
+
+.TP 4
+\fB\-rescale\fP
+Always rescale image (default is False and only applicable to
+PseudoColor and DirectColor visuals).  Normally xdisp reads the image
+data and finds the minimum and maximum values and uses these to scale
+the data to a range corresponding to the specified (or default)
+color map size.  In cases where the image data has a huge dynamic
+range, this results in a rather coarse binning of data.  This can be a
+problem when only a portion of the dynamic range contains data of
+interest since this entire range may be mapped to only a few (or
+perhaps only one) intensity values.  Since adjusting the window/level
+normally only changes the color map, the image intensity range of
+interest can never be seen. To obviate this the \fIr\fP keyboard
+option (see INTERACTIVE USE below) was added to rescale the image data
+to the current window/level range.  With the \fI\-rescale\fP option
+selected, a rescale is performed after every window/level adjustment.
+The penalty for using this option is a slight delay while the image is
+rescaled.  If a TrueColor visual is being used window/level adjustment
+is always achieved by recalculating the X image and thus this
+parameter is irrelevant.
+
+.TP 4
+\fB\-roi roi_filename\fP
+Display ROI's contained in an external ROI file (see below for file
+format details).
+
+.TP 4
+\fB\-skip\fP\fI byte_skip\fP
+The offset, in bytes, between elements in a file.  This option can be
+useful to view a single image in a file which contains pixel
+interleaved images.  For example, if a file contained a complex image
+stored as short integer real, imaginary, real, imaginary,... a -skip
+2 would only the real or imaginary image to be read.
+
+.TP 4
+\fB\-swap\fP
+Perform byte swap on data.
+
+.TP 4
+\fB\-verbose|-v\fP
+Run xdisp in verbose mode (i.e. display extra information for debugging).
+
+.TP 4
+\fB\-width|-w\fP\fI width\fP 
+This is the width of the image in pixels. If this
+parameter is omitted Xdisp attempts to determine the width of the image
+using the file size and the specified height.  If the height option is
+also omitted a square image is assumed.
+
+.TP 4
+\fB\-wl\fP
+Force the current window/level values to be displayed in the footer
+portion of the main (image) window.
+
+.TP 4
+\fB\-zoom|-z\fP\fI zoom_factor\fP
+The startup zoom factor (float, default=1.0) applied in the width and height
+directions.  
+
+.TP 4
+\fB\--\fP
+Read from standard in.
+
+.SH INTERACTIVE USE
+xdisp uses two primary X windows: an \fIimage\fP (or main) window and a
+\fIcommand\fP window.  Under most all conditions, only the image window
+needs to be open.  The command window is only necessary if you want to
+know information about the current image size and scale factors or if
+you want to change the brightness and contrast using an \fIupper\fP and
+\fIlower\fP convention rather than the more common \fIwindow\fP and
+\fIlevel\fP convention (window=upper-lower, level=(upper+lower)/2).
+It may also be of interest to those who like to use only a mouse or
+those who can not remember the various keyboard commands.
+.PP
+Within the image window, moving the mouse with no buttons depressed
+causes the pixel location and value at the center of the cross-hair to be
+displayed in the image window footer.  If the size of the image has been
+modified the pixel coordinates and value shown correspond to those of
+the interpolated image.
+.PP
+Moving the mouse with the right button depressed draws a rubber band
+region-of-interest (ROI) to be drawn.  When the right button is released
+the ROI coordinates, pixel count, minimum, maximum, mean, and standard
+deviation are displayed in the shell window from which Xdisp was
+started.  This ROI can also be used as a cropping box using the \fIc\fP
+keyboard command described below.
+.PP
+Depressing the middle mouse button causes Xdisp to enter window/level
+mode.  Moving the mouse vertically (with the middle button depressed)
+changes the level while moving horizontally changes the window.  While 
+in this mode the current window and level values are
+displayed at the left side of the footer.
+.PP
+The left mouse button toggles the state (open/closed) of the command 
+window.
+.PP
+The image window can be resized using the standard method of your
+favorite window manager and will result in a resized (interpolated via
+the command line selected or default interpolation technique)
+image.
+.PP
+When a \fBMINC\fP file is loaded a few additional features of xdisp
+are worth noting.  First, at the bottom of the top panel of the
+command window the \fIreal world\fP x, y, z, and t (if applicable)
+coordinates of the cursor are displayed along with the real world
+pixel values.  In the bottom left corner of the main (image) window
+the n-D \fIvoxel\fP coordinates are displayed along with the \fIreal
+world\fP pixel coordinates.  In the bottom right corner of the main
+window an orientation label is displayed.  The orientation is
+abbreviated with the letters \fBR, L, A, P, I,\fP and \fBS\fP
+representing \fBLeft, Right, Anterior, Posterior, Inferior\fP and
+\fBSuperior\fP respectively. Thus an orientation label of L-P would
+indicate that the lower right corner of the image is Left-Posterior.
+If no orientation label is displayed when a MINC volume is loaded this
+indicates that insufficient information was available to determine the
+image orientation.  Note that cropping, rotating, and reorienting the
+volume will prevent real world coordiantes from being displayed.
+.PP
+xdisp also supports n-D volumes via MINC files.  When a n-D MINC file
+is loaded a slider is displayed, in the command window, for each image
+dimension greater that 2 (the in-plane dimensions). 
+.PP
+xdisp also uses three secondary X windows: \fIFile Select\fP, \fIFile
+Save\fP, and \fIMINC Info\fP.  The File Select window is opened when a
+new image is to be loaded in the current xdisp (\fB^F\fP) or when a
+new xdisp is to be spawned (\fB^S\fP).  File Save is opened when an
+output function is invoked.  The File Save window has the default save
+filename preset so you will often simply select OK and perform the
+save.  The MINC Info window is opened only when specifically requested
+(\fB^I\fP, or command window button press).
+.PP
+In addition to the above mouse functions, the following keyboard
+commands are available while in the image window:
+
+.TP 4
+\fBa\fP
+Auto-scale the image.  This can be useful when displaying images with a
+large dynamic range such as Fourier space data.
+
+.TP 4
+\fBb\fP
+Toggle the presence of the color scale.
+
+.TP 4
+\fBB\fP
+Save image to a file as unsigned byte data without a header.  If the
+image data is outside the 0-255 range the data will be scaled
+appropriately. 
+
+.TP 4
+\fBc\fP
+Crop the image to current ROI size.    
+
+.TP 4
+\fBC\fP
+Toggle between grey scale, heated metal, and spectral color tables.
+
+.TP 4
+\fBf\fP
+Output image to an encapsulated postscript (EPSF) file.  The file created
+will have the same name as the image file being displayed with an added
+extension of \fI.ps\fP.  Any graphics overlay which is currently active 
+(ROI, profile) will also be printed.  
+
+.TP 4
+\fBG\fP
+Produce a GIF graphics file of the current image.   The file created
+will have the same name as the image file being displayed with an added
+extension of \fI.GIF\fP.  
+
+.TP 4
+\fBh\fP
+Displays a brief help message.
+
+.TP 4
+\fBh\fP
+Toggle between bilinear and nearest neighbour interpolation.
+
+.TP 4
+\fBm\fP
+Calculate a maximum intensity projection image.
+
+.TP 4
+\fBM\fP
+Save the image to a matlab file with a matlab variable name 'image'.
+
+.TP 4
+\fBn\fP
+Reload image as a new file.  This will in effect cause an Xdisp reset
+and will undo all scaling, rotating, etc.
+
+.TP 4
+\fBo\fP
+Reorient (rotate) the entire data volume.
+
+.TP 4
+\fBp\fP
+Print the image.  This command assumes a postscript printer.
+
+.TP 4
+\fBP\fP
+Suspend plotting.  This command stops plotting in the plot window and
+draws a small crosshair (if ROI size is 1x1) or box (if ROI size is
+3x3 or 5x5) on the image coresponding to the last cursor location.
+
+.TP 4
+\fBq\fP
+Quit xdisp.
+
+.TP 4
+\fBr\fP
+Rescale image to current window/level range.
+
+.TP 4
+\fBR\fP
+Refresh image (erase any ROIs, profiles, etc.).
+
+.TP 4
+\fBs\fP
+Display statistics on the entire image.
+
+.TP 4
+\fBS\fP
+Save the image to a file as short integer data without a header.
+
+.TP 4
+\fBt\fP
+Toggle (invert) greyscale.
+
+.TP 4
+\fBT\fP
+Create a TIFF graphics file of the current image.    The file created
+will have the same name as the image file being displayed with an added
+extension of \fI.TIFF\fP.  
+
+.TP 4
+\fBu\fP
+Unzoom image (i.e. restore image to its original size).
+
+.TP 4
+\fBv\fP
+Display the version number of Xdisp.
+
+.TP 4
+\fBw\fP
+Toggle window/level display in image footer.
+
+.TP 4
+\fB+\fP
+Increment image number by one.
+
+.TP 4
+\fB-\fP
+Decrement image number by one.
+
+.TP 4
+\fB*\fP
+Increment image number by ten.
+
+.TP 4
+\fB/\fP
+Decrement image number by ten.
+
+.TP 4
+\fBx\fP
+Shrink image in x (width) dimension by a factor of 2.
+
+.TP 4
+\fBX\fP
+Enlarge image in x (width) dimension by a factor of 2.
+
+.TP 4
+\fBy\fP
+Shrink image in y (height) dimension by a factor of 2.
+
+.TP 4
+\fBY\fP
+Enlarge image in y (height) dimension by a factor of 2.
+
+.TP 4
+\fBz\fP
+Shrink image in x and y dimensions by a factor of 2.
+
+.TP 4
+\fBZ\fP
+Enlarge image in x and y dimensions by a factor of 2.
+
+.TP 4
+\fB+\fP
+Increment image number.
+
+.TP 4
+\fB-\fP
+Decrement image number.
+
+.TP 4
+\fB*\fP
+Increment image number by 10.
+
+.TP 4
+\fB/\fP
+Decrement image number by 10.
+
+.TP 4
+\fB^h\fP
+Turn on/off (toggle state) of horizontal profile overlay.
+
+.TP 4
+\fB^v\fP
+Turn on/off (toggle state) of vertical profile overlay.
+
+.TP 4
+\fB^X\fP
+Flip image in x direction (i.e. mirror image about vertical axis).
+
+.TP 4
+\fB^Y\fP
+Flip image in y direction (i.e. mirror image about horizontal axis).
+
+.TP 4
+\fB^R\fP
+Rotate image clockwise.
+
+.TP 4
+\fB^F\fP
+Open the file selector widget to load a new image in current window.
+
+.TP 4
+\fB^I\fP
+Open the MINC header information window.
+
+.TP 4
+\fB^P\fP
+Plot a time (image number) intensity curve using the current ROI.
+Note that this command requires the program grace (or the older
+version of this program called xmgr or xvgr).  Also, for n-D MINC
+volumes the intensity curve is calculated over the most recently
+modified dimension.  Thus, for example, if you have a 4-D MINC volume
+consisting of x, y, z, and t and you draw an ROI in the x-y plane and
+wish to see how the changes with time, you would click on the time
+slider, draw your ROI and then select the TIC command botton or press
+P.  If you wanted to see how the ROI value changed as a function of z
+you would first select the z slider and then the TIC button or P. 
+
+.TP 4
+\fB^S\fP
+Open the file selector widget to spawn a new xdisp window.
+
+.TP 4
+\fB^T\fP
+Toggle ROI visibility state.
+.SH EXAMPLE
+
+.TP 4
+xdisp my_image.byte -width 512 -height 512 -offset 2048 -byte -noiconify
+.PP
+This command line would be used to display a 512x512 signed byte image
+in which a 2048 byte header is to be skipped.  The command window would be open
+upon startup.
+
+.SH ENVIRONMENT
+xdisp uses the environment variables \fBXDISP_GAMMA\fP,
+\fBXDISP_PS_GAMMA\fP, \fBXDISP_FG\fP, and \fBXDISP_BG\fP if they
+exists.  \fBXDISP_GAMMA\fP is applied to the color map used in the X
+display and is also applied to \fBTIFF\fP, \fBGIF\fP, etc., graphics
+output files.  \fBXDISP_PS_GAMMA\fP is applied only to postscript
+output files and printed images.  \fBXDISP_FG\fP and \fBXDISP_BG\fP
+are used to specify foreground and background
+colors. \fBXDISP_COLOR_TABLE\fP is used to specify the default color
+table (0=grey scale, 1=heated metal, 2=spectral).
+
+.SH PORTABILITY
+xdisp has been compiled and extensively used on SGI, SUN and Linux
+(x86) systems.  Graphics output to TIFF, GIF, PICT, RAST, and SGI
+format is achieved by piping data to rawtopgm, pnmtotiff, and pmmtogif
+(components Jef Poskanzer's pbmplus package).  The creation of time
+(image number) intensity plots from multi-image data sets uses xmgr
+(Paul J Turner).  
+
+.SH Matlab Support
+Support for the use of xdisp within Matlab (The Mathworks Inc.) is
+provided via \fBxdisp.m\fP.  Place xdisp.m somewhere in your matlab
+path and simply type xdisp(my_variable) to display `my_variable' as
+an image.
+
+.SH ROI Files
+In this incarnation of xdisp external ROI files can be displayed as a
+graphics overlay on the images.  The main reason for doing this is to
+visualize ROI's generated from another source.  Since the motivation
+was to display ROI's generated from a program called MSP (MNI, McGill
+University) the ROI file format used is (yes you guessed it) the MSP-ROI 
+format.  These files are ASCII and contain data in the following format:
+
+   %d             slice#1 number of rois               
+   %d             roi_id for roi 1                     
+   %d,%d,%d,%d    maxx,minx,maxy,miny for roi 1        
+   %d             number of points (n) for roi 1       
+   %d,%d          list of points (x1,y1) of roi 1      
+   %d,%d          (x2,y2)                              
+   ...                                                 
+   %d,%d          last point of roi 2 (xn,yn)          
+   %d             roi_id for roi 2                     
+   %d,%d,%d,%d    maxx,minx,maxy,miny for roi 2        
+   %d             number of points (n) for roi 2       
+   %d,%d          list of points (x1,y1) of roi 2      
+   %d,%d          (x2,y2)                              
+   ...                                                 
+   %d,%d          last point of roi 2 (xn,yn)          
+   %d             slice#2 ....                         
+         ....                                       
+
+Note that this implementation is rather simple minded.  If you decide to
+rotate an image volume then your ROI's will not be displayed in the
+correct slice!
+
+.SH SEE ALSO
+\fIrawtopgm, pnmtotiff, ppmtogif, pnmtopict, pnmtorast, pnmtosgi,
+xmgr, mincheader\fP
+
+.SH AUTHOR
+Bruce Pike - bruce@bic.mni.mcgill.ca
+
+.SH ACKNOWLEDGMENTS
+xdisp was originally developed while I was a postdoc at Stanford
+University.  It was a fun project which would not be possible without
+code fragments from, consultation with, debugging by, and humor of Tom
+Brosnan.  Recent improvements have resulted from the whining of many
+users. Code fragments from Peter Neelin have enabled MINC and ACR-NEMA
+support.

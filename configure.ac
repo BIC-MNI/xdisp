@@ -21,8 +21,6 @@ AC_PROG_INSTALL
 
 AC_PATH_XTRA
 
-AC_SUBST(X_LIBRARY_PATH)
-
 # Checks for libraries.  See m4/README.
 mni_REQUIRE_MINC
 mni_REQUIRE_VOLUMEIO
@@ -32,4 +30,4 @@ mni_REQUIRE_VOLUMEIO
 
 # Finish up by writing output files.
 # AC_CONFIG_FILES([Makefile])
-AC_OUTPUT(epm-header Makefile olgx/Makefile EZWGL-1.50/Makefile)
+AC_OUTPUT(epm-header Makefile olgx/Makefile)

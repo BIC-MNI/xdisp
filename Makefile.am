@@ -2,9 +2,14 @@ AUTOMAKE_OPTIONS = check-news
 ACLOCAL_AMFLAGS = -I m4
 
 bin_PROGRAMS = xdisp
+dist_man1_MANS = xdisp.man1
 
 EXTRA_DIST = $(m4_files) \
-    epm-header.in
+   cross_hr.bit \
+   xdcicon.bit \
+   xdcmask.bit \
+   epm-header.in \
+	$(man_MANS)
 
 SUBDIRS = olgx EZWGL-1.50
 
@@ -31,5 +36,6 @@ motion.c ms_roi.h nneighbour.c olinit.c profile.c read.c reshape.c roi.c \
 roitomin.h roitominc.h scale.c selzoom.c setcicon.c setmicon.c spectral.h \
 tic.c update.c winlev.c xbutton.c xwins.h xwinutil.c 
 
-xdisp_LDADD = olgx/libolgx.a EZWGL-1.50/lib/libEZ.a
+xdisp_CFLAGS = -Iolgx -IEZWGL-1.50/include $(X_CFLAGS)
+xdisp_LDADD = olgx/libolgx.a EZWGL-1.50/lib/libEZ.a -lpng -ltiff -ljpeg $(X_LIBS) -lX11 -lXext
 
