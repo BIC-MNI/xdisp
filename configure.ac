@@ -2,7 +2,7 @@
 AC_PREREQ([2.57])
 
 # The arguments are package name, and package version.
-AC_INIT([xdisp],[4.5],[Bruce Pike <bruce@bic.mni.mcgill.ca>])
+AC_INIT([xdisp],[4.5.1],[Bruce Pike <bruce@bic.mni.mcgill.ca>])
 AC_CONFIG_SRCDIR([xdisp.c])
 
 AM_INIT_AUTOMAKE
