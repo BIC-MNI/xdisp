@@ -8,8 +8,7 @@ EXTRA_DIST = $(m4_files) \
    cross_hr.bit \
    xdcicon.bit \
    xdcmask.bit \
-   epm-header.in \
-	$(man_MANS)
+   epm-header.in
 
 SUBDIRS = olgx EZWGL-1.50
 
@@ -37,5 +36,8 @@ roitomin.h roitominc.h scale.c selzoom.c setcicon.c setmicon.c spectral.h \
 tic.c update.c winlev.c xbutton.c xwins.h xwinutil.c 
 
 xdisp_CFLAGS = -Iolgx -IEZWGL-1.50/include $(X_CFLAGS)
-xdisp_LDADD = olgx/libolgx.a EZWGL-1.50/lib/libEZ.a -lpng -ltiff -ljpeg $(X_LIBS) -lX11 -lXext
+xdisp_LDADD = olgx/libolgx.a \
+	EZWGL-1.50/lib/libEZ.a \
+	-lpng -ltiff -ljpeg \
+	$(X_PRE_LIBS) $(X_LIBS) -lX11 -lXext $(X_EXTRA_LIBS)
 
