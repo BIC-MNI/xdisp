@@ -1,4 +1,4 @@
-xdisp  	Copyright (c) Bruce Pike, 1993-2000
+xdisp  Copyright (c) Bruce Pike, 1993-2000
 -------------------------------------------
 
 xdisp is an image display tool for X window systems.  It was written
@@ -7,8 +7,18 @@ has since had some (optional) EZwgl (Xlib based widgets) stuff added.
 
 Try xdisp or xdisp -help for basic help information.
 
+Note that this program uses some old style X11 fonts,  which might be missing
+on your modern Ubuntu installation,  to fix the problem try installing 
+xfonts-75dpi xfonts-100dpi  and restart X11
 
-Building xdisp
+
+CMake building instructions:
+--------------
+run cmake,  specify location of libminc 
+done
+
+
+Old building instructions :
 --------------
 
 Normally all you have to do is type
