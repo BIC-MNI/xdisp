@@ -123,6 +123,7 @@
 #cmakedefine HAVE_TERMIOS_H
 
 #define RETSIGTYPE void
+#define SETPGRP_VOID 1
 
 
 #define PACKAGE "@PACKAGE_NAME@"

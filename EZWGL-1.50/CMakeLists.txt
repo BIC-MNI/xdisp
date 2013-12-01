@@ -1,7 +1,7 @@
 
 
 set(EZWGL_SRC
-  lib/alloca.c             lib/EZ_DnD.h             lib/EZ_MemDebug.h        lib/EZ_WidgetArrowBtn.c    lib/EZ_WidgetMBar.c
+             lib/EZ_DnD.h             lib/EZ_MemDebug.h        lib/EZ_WidgetArrowBtn.c    lib/EZ_WidgetMBar.c
   lib/ansi_stdlib.h        lib/EZ_DnDHandler1.c     lib/EZ_Message.c         lib/EZ_WidgetAttr.h        lib/EZ_WidgetMenuItems.c
   lib/EZ_Args.h            lib/EZ_DnDMsg.c          lib/EZ_Misc.c            lib/EZ_WidgetBorder.c      lib/EZ_WidgetMisc.c
   lib/EZ_Arrow.c           lib/EZ_DpyList.c         lib/EZ_WidgetButtonC.c     lib/EZ_WidgetNB.c
@@ -44,6 +44,10 @@ set(EZWGL_SRC
   lib/EZ_DnDData.c         lib/EZ_MemDebug.c        lib/EZ_WidgetArrange.c   lib/EZ_WidgetLocator.c
 )
 
+IF(NOT HAVE_ALLOCA_H)
+SET(EZWGL_SRC  lib/alloca.c )
+ENDIF(NOT HAVE_ALLOCA_H)
+  
 IF(HAVE_TIFF)
   SET(EZWGL_SRC ${EZWGL_SRC} lib/EZ_Tiff.c )
 ENDIF(HAVE_TIFF)

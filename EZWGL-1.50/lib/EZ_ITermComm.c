@@ -75,6 +75,7 @@
 #if defined (SVR4) && !defined (__svr4__)
 #define __svr4__
 #endif
+
 #if defined (sun) && !defined (__sun__)
 #define __sun__
 #endif
@@ -122,9 +123,13 @@
 #if defined(linux)
 # include <linux/tty.h>
 #endif
+
 /***************************************************************************/
 /* ways to deal with getting/setting termios structure */
 #ifdef HAVE_TERMIOS_H
+#include <termios.h>
+#warning "using termios.h"
+
 typedef struct termios ttymode_t;
 #ifdef TCSANOW			/* POSIX */
 #define GET_TERMIOS(fd,tios)	tcgetattr (fd, tios)
@@ -168,6 +173,7 @@ typedef struct
     ioctl (fd, TIOCSETD, &(tt->line));\
     ioctl (fd, TIOCLSET, &(tt->local));\
 } while(0)
+
 #endif /* HAVE_TERMIOS_H */
 /****************************************************************************
  *
