@@ -111,11 +111,11 @@ int Load_Image(char *fn)
     /* check for MINC file format */
     if (file_format==UNKNOWN_FORMAT) {
       fseek(fp, 0L, 0); 
-      fread(id_field, 1, 3, fp);
+      fread(id_field, 1, 4, fp);
       fseek(fp, 0L, 0); 
 
       /* MINC file found */
-      if (strncmp(id_field,"CDF",3)==0) {
+      if (strncmp(id_field,"CDF",3)==0 || strncmp(id_field+1,"HDF",3)==0) {
 	file_format = MINC_FORMAT;
 
 	/* get some minc volume information */

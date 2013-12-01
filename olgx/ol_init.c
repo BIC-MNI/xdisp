@@ -6,10 +6,17 @@
 /*
  * OPEN LOOK object drawing package Sun Microsystems, Inc.,
  */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif 
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>
+#endif
+
 #include <X11/Xlib.h>
 #include "olgx_impl.h"
 #include "busy.h"

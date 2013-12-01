@@ -64,8 +64,8 @@
 #cmakedefine HAVE_LIBPNG
 
 /* X shm extention */
-#cmakedefine HAVE_XSHM
-#cmakedefine HAVE_X_SHAPE_EXT
+#define HAVE_XSHM 1
+#define HAVE_X_SHAPE_EXT 1
 
 
 /* Define if you have the getcwd function.  */
@@ -104,15 +104,6 @@
 /* Define if you have the <stdarg.h> header file.  */
 #cmakedefine HAVE_STDARG_H
 
-/* Define if you have the <stdlib.h> header file.  */
-#cmakedefine HAVE_STDLIB_H
-
-/* Define if you have the <string.h> header file.  */
-#cmakedefine HAVE_STRING_H
-
-/* Define if you have the <strings.h> header file.  */
-#cmakedefine HAVE_STRINGS_H
-
 /* Define if you have the <sys/dir.h> header file.  */
 #cmakedefine HAVE_SYS_DIR_H
 
@@ -130,6 +121,8 @@
 
 /* Define if you have the <termios.h> header file.  */
 #cmakedefine HAVE_TERMIOS_H
+
+#define RETSIGTYPE void
 
 
 #define PACKAGE "@PACKAGE_NAME@"
