@@ -37,6 +37,11 @@
  ***                                                               ***
  *********************************************************************/
 #define _EZ_WIDGET_IMAGE_C_
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif /*HAVE_CONFIG_H*/
+
 #include "EZ_Widget.h"
 
 /*********************************************************************
@@ -68,7 +73,7 @@ static int  EZ_ReadPPMToRGB  MY_ANSIARGS((char *file, int *w, int *h, unsigned c
 
 /********************************************************************/
 
-#define EZ_UNKNOWN_IMAGE_FORMAT   -1
+/*#define EZ_UNKNOWN_IMAGE_FORMAT   -1
 #define EZ_PPM_FORMAT             0
 #define EZ_GIF_FORMAT             1
 #define EZ_XPM_FORMAT             2
@@ -76,6 +81,22 @@ static int  EZ_ReadPPMToRGB  MY_ANSIARGS((char *file, int *w, int *h, unsigned c
 #define EZ_JPG_FORMAT             4
 #define EZ_PNG_FORMAT             5
 #define EZ_TIF_FORMAT             6
+*/
+
+/*
+enum { EZ_PPM_FORMAT=0, EZ_GIF_FORMAT, EZ_XPM_FORMAT, EZ_BMP_FORMAT,
+#ifdef HAVE_JPEG
+  EZ_PPM_JPG_FORMAT,
+#endif
+#ifdef HAVE_PNG
+  EZ_PNG_FORMAT,
+#endif
+#ifdef HAVE_TIFF
+  EZ_TIF_FORMAT,
+#endif
+  EZ_UNKNOWN_IMAGE_FORMAT=-1
+};*/
+
 
 /********************************************************************/
 typedef int  (*PixmapReader) MY_ANSIARGS((char *file, int *w, int *h, Pixmap *pix));
@@ -87,9 +108,15 @@ static  PixmapReader PixmapReaders[] =
   EZ_ReadGIFToPixmap,       /* GIF Format         */
   EZ_ReadXPMToPixmap,       /* XPM Format         */
   EZ_ReadBMPToPixmap,       /* BMP Format         */
+#ifdef HAVE_JPEG  
   EZ_ReadJpegToPixmap,      /* JPEG Format        */
+#endif
+#ifdef HAVE_PNG  
   EZ_ReadPngToPixmap,       /* PNG Format         */
+#endif
+#ifdef HAVE_TIFF  
   EZ_ReadTiffToPixmap,      /* TIFF Format        */
+#endif  
   NULL,
 };
 static  ImageReader ImageReaders[] =
@@ -98,9 +125,15 @@ static  ImageReader ImageReaders[] =
   EZ_ReadGIFToRGB,       /* GIF Format         */
   EZ_ReadXPMToRGB,       /* XPM Format         */
   EZ_ReadBMPToRGB,       /* BMP Format         */
+#ifdef HAVE_JPEG  
   EZ_ReadJpegToRGB,      /* JPEG Format        */
+#endif
+#ifdef HAVE_PNG  
   EZ_ReadPngToRGB,       /* PNG  Format        */
+#endif
+#ifdef HAVE_TIFF  
   EZ_ReadTiffToRGB,      /* TIFF Format        */
+#endif  
   NULL,
 };
 
@@ -133,13 +166,19 @@ int EZ_GetImageFileType(fname)
   else if(buf[0] == 'B' && buf[1] == 'M')   ret = EZ_BMP_FORMAT;
   else if(buf[0] == 'P' &&
 	  (buf[1] >= '1' || buf[1] <= '6')) ret = EZ_PPM_FORMAT;
+#ifdef HAVE_JPEG  
   else if((int)buf[0]== 255  &&  (int)buf[1]== 216 &&
 	  (int)buf[2]== 255)                ret = EZ_JPG_FORMAT;
+#endif  
+#ifdef HAVE_PNG  
   else if((int)buf[0]== 137  && buf[1] == 'P' &&
           buf[2] == 'N' && buf[3] == 'G')   ret = EZ_PNG_FORMAT;
+#endif  
+#ifdef HAVE_TIFF  
   else if(((buf[0] == 'M') && (buf[1] == 'M') && (buf[2] == 0x00) && (buf[3] == 0x2a)) ||
           ((buf[0] == 'I') && (buf[1] == 'I') && (buf[2] == 0x2a) && (buf[3] == 0x00)))
     ret = EZ_TIF_FORMAT;
+#endif
   return(ret);
 }
 

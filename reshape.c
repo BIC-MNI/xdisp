@@ -45,18 +45,20 @@ int Resize(int w, int h)
   }
   else {
     /* perform the interpolation on the byte_image */
-    if (Verbose) fprintf(stderr,"Interpolating image from %dx%d to %dx%d\n",
+    if (Verbose) fprintf(stderr,"Interpolating image from %d x %d to %d x %d\n",
 			 zWidth,zHeight,w,h);
-    tmp_byte =  (byte *) malloc((bitmap_pad/8)*zWidth*zHeight*
-				(load_all_images?num_images:1));
-    memcpy(tmp_byte,byte_Image,
-	   (bitmap_pad/8)*zWidth*zHeight*(load_all_images?num_images:1));
+    
+    tmp_byte =  (byte *) malloc((bitmap_pad/8)*zWidth*zHeight*(load_all_images?num_images:1));
+    
+    memcpy(tmp_byte,byte_Image,(bitmap_pad/8)*zWidth*zHeight*(load_all_images?num_images:1));
+    
     free(byte_Image);
+    
     byte_Image=(byte *) malloc((bitmap_pad/8)*w*h*(load_all_images?num_images:1));
 
     for (i=0; i<(load_all_images?num_images:1); i++) {
       if ((num_images>1)&&(load_all_images)) {
-	fprintf(stderr,"Resizing image %d \r",i+1);
+        fprintf(stderr,"Resizing image %d \r",i+1);
       }
       if (bitmap_pad==8) {
 	if (Interpolation_Type==BILINEAR) {

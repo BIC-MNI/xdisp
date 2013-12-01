@@ -253,12 +253,18 @@ WHERE int     Open_File_Selector_Widget(), Open_Info_Widget(),
               Open_Plot_Widget(), Draw_Plot_Axis(), EZW_Error();
 
 /* ------------------------- MINC additions ------------------------------*/
+#include <minc.h>
+
+#ifndef MAX_VAR_DIMS
 #define MAX_VAR_DIMS 3
+#endif
+
+#ifndef MAX_NC_NAME
 #define MAX_NC_NAME 64
+#endif
 
 #include <stdlib.h>
 #include <string.h>
-#include <minc.h>
 
 /* Include the standard minc definitions for cross-platform compilation
    if we are compiling the package, otherwise, just define MALLOC,

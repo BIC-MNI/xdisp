@@ -359,14 +359,18 @@ typedef struct menuEntry_ {
  *
  *  Supported Image types, returned by EZ_GetImageFileType(char *fname)
  */
-#define EZ_UNKNOWN_IMAGE_FORMAT   -1
-#define EZ_PPM_FORMAT             0
-#define EZ_GIF_FORMAT             1
-#define EZ_XPM_FORMAT             2
-#define EZ_BMP_FORMAT             3
-#define EZ_JPG_FORMAT             4
-#define EZ_PNG_FORMAT             5
-#define EZ_TIF_FORMAT             6
+enum { EZ_PPM_FORMAT=0, EZ_GIF_FORMAT, EZ_XPM_FORMAT, EZ_BMP_FORMAT,
+  #ifdef HAVE_JPEG
+  EZ_PPM_JPG_FORMAT,
+  #endif
+  #ifdef HAVE_PNG
+  EZ_PNG_FORMAT,
+  #endif
+  #ifdef HAVE_TIFF
+  EZ_TIF_FORMAT,
+  #endif
+  EZ_UNKNOWN_IMAGE_FORMAT=-1
+};
 
 
 /***********************************************************************
