@@ -155,7 +155,7 @@ int Crop(caddr_t data)
   /* check that an roi is defined */
   if (roi_present != 1) {
     fprintf(stderr,"An ROI must be drawn before cropping\n");
-    return;
+    return(1);
   }
 
   /* define new cursors */
@@ -460,7 +460,7 @@ int Reorient_Volume()
   /* check that we have a volume */
   if ((num_images==1)||(!load_all_images)) {
     fprintf(stderr,"Only one image found!\n");
-    return;
+    return(1);
   }
 
   /* define new cursors */
