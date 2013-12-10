@@ -23,14 +23,14 @@ int TIC()
   /* check that an roi is defined */
   if (roi_present != 1) {
     fprintf(stderr,"An ROI must be drawn before calculating its time course.\n");
-    return;
+    return(1);
   }
 
   /* open output file */
   tmpnam(tmp_name);
   if(!(out = fopen(tmp_name,"w"))){ 
     fprintf(stderr,"Unable to open temporary file\n");
-    return;
+    return(1);
   }
 
   /* define new cursors */
