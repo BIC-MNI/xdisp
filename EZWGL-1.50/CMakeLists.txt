@@ -1,7 +1,7 @@
 
 
 set(EZWGL_SRC
-             lib/EZ_DnD.h             lib/EZ_MemDebug.h        lib/EZ_WidgetArrowBtn.c    lib/EZ_WidgetMBar.c
+  lib/EZ_DnD.h             lib/EZ_MemDebug.h        lib/EZ_WidgetArrowBtn.c    lib/EZ_WidgetMBar.c
   lib/ansi_stdlib.h        lib/EZ_DnDHandler1.c     lib/EZ_Message.c         lib/EZ_WidgetAttr.h        lib/EZ_WidgetMenuItems.c
   lib/EZ_Args.h            lib/EZ_DnDMsg.c          lib/EZ_Misc.c            lib/EZ_WidgetBorder.c      lib/EZ_WidgetMisc.c
   lib/EZ_Arrow.c           lib/EZ_DpyList.c         lib/EZ_WidgetButtonC.c     lib/EZ_WidgetNB.c
@@ -29,12 +29,12 @@ set(EZWGL_SRC
   lib/EZ_ConvertPoly00.h   lib/EZ_Item.h            lib/EZ_Test.c            lib/EZ_WidgetHistogram.c   lib/EZ_WM.c
   lib/EZ_ConvertPoly24.h   lib/EZ_ItemHash.c        lib/EZ_Text.c            lib/EZ_WidgetIFListBox.c   lib/EZ_WorkAreaGeom.c
   lib/EZ_ConvertPoly.c     lib/EZ_ItemLabel.c       lib/EZ_Text.h            lib/EZ_WidgetIListBox.c    lib/EZ_World2Screen.c
-  lib/EZ_ConvertPoly.h     lib/EZ_ItemUDF.c         lib/EZ_WidgetImage.c       lib/EZ_X11Init.c
-  lib/EZ_ConvertPolyP00.h  lib/EZ_ItemWidget.c                 lib/EZ_WidgetInit.c        lib/EZ_X11Render.c
+  lib/EZ_ConvertPoly.h     lib/EZ_ItemUDF.c         lib/EZ_WidgetImage.c     lib/EZ_X11Init.c
+  lib/EZ_ConvertPolyP00.h  lib/EZ_ItemWidget.c      lib/EZ_WidgetInit.c      lib/EZ_X11Render.c
   lib/EZ_ConvertPolyP24.h  lib/EZ_ITermComm.c       lib/EZ_Timer.c           lib/EZ_WidgetInput.c       lib/EZ_XImageTypes.h
   lib/EZ_ConvertPolyP.c    lib/EZ_ITerm.h           lib/EZ_Timer.h           lib/EZ_WidgetITerm.c       lib/EZ_Xpm.c
   lib/EZ_ConvertPolyP.h    lib/EZ_ITermScrn.c       lib/EZ_TokenCode.h       lib/EZ_WidgetIText.c       lib/fnmatch.c
-  lib/EZ_CQuarks.h         lib/EZ_Token.h           lib/EZ_WidgetITopLevel.c   lib/fnmatch.h
+  lib/EZ_CQuarks.h         lib/EZ_Token.h           lib/EZ_WidgetITopLevel.c lib/fnmatch.h
   lib/EZ_CreateItem.c      lib/EZ_LightMaterial1.c  lib/EZ_Tree.c            lib/EZ_WidgetITree.c       lib/glob.c
   lib/EZ_CreateWidget.c    lib/EZ_LightMaterial.c   lib/EZ_TreeDir.c         lib/EZ_WidgetIWorkArea.c   lib/MemDebug.h
   lib/EZ_Cursor.c          lib/EZ_LightMaterial.h   lib/EZ_Tube.c            lib/EZ_WidgetLabel.c       lib/ndir.h
@@ -45,7 +45,7 @@ set(EZWGL_SRC
 )
 
 IF(NOT HAVE_ALLOCA_H)
-SET(EZWGL_SRC  lib/alloca.c )
+  SET(EZWGL_SRC ${EZWGL_SRC} lib/alloca.c )
 ENDIF(NOT HAVE_ALLOCA_H)
   
 IF(HAVE_TIFF)
