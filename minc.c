@@ -133,7 +133,7 @@ void get_dimension_info(char *infile, int icvid,
       volume_info->start[idim] = 0;
    }
 
-   ncopts = 0;
+   set_ncopts(0);
 
    /* Loop through dimensions, checking them and getting their sizes */
    for (idim=0; idim<ndims; idim++){
@@ -165,7 +165,7 @@ void get_dimension_info(char *infile, int icvid,
    (void)miicv_inqdbl(icvid, MI_ICV_BDIM_START, &(volume_info->b_start));
    (void)miicv_inqdbl(icvid, MI_ICV_BDIM_STEP, &(volume_info->b_step));
 
-   ncopts = NC_OPTS_VAL;
+   set_ncopts(NC_OPTS_VAL);
 }
 
 /* ----------------------------- MNI Header -----------------------------------
@@ -185,11 +185,11 @@ void close_volume(int icvid)
    int mincid;
 
    /* Get the minc file id and close the file */
-   ncopts = 0;
+   set_ncopts(0);
    if (miicv_inqint(icvid, MI_ICV_CDFID, &mincid) != MI_ERROR) {
       (void) miclose(mincid);
    }
-   ncopts = NC_OPTS_VAL;
+   set_ncopts(NC_OPTS_VAL);
 
    /* Free the icv */
    (void) miicv_free(icvid);
@@ -365,14 +365,14 @@ void setup_variables(int inmincid, int mincid,
       dimensions are not standard, then no variable is created. */
 
    for (idim=0; idim < ndims; idim++) {
-      ncopts = 0;
+      set_ncopts(0);
       varid = ncvarid(mincid, volume_info->dimension_names[idim]);
       if (varid == MI_ERROR) {
          varid = micreate_std_variable(mincid, 
                                        volume_info->dimension_names[idim],
                                        NC_LONG, 0, NULL);
       }
-      ncopts = NC_OPTS_VAL;
+      set_ncopts(NC_OPTS_VAL);
       if (varid != MI_ERROR) {
          (void) miattputdbl(mincid, varid, MIstep, 
                             volume_info->step[idim]);
@@ -426,10 +426,10 @@ void setup_image_variables(int inmincid, int mincid,
    if (inmincid != MI_ERROR) {
       (void) micopy_all_atts(inmincid, ncvarid(inmincid, MIimage),
                              mincid, imgid);
-      ncopts = 0;
+      set_ncopts(0);
       (void) ncattdel(mincid, imgid, MIvalid_max);
       (void) ncattdel(mincid, imgid, MIvalid_min);
-      ncopts = NC_OPTS_VAL;
+      set_ncopts(NC_OPTS_VAL);
    }
    (void) miattputstr(mincid, imgid, MIsigntype, MI_UNSIGNED);
    (void) ncattput(mincid, imgid, MIvalid_range, NC_DOUBLE, 2, valid_range);
@@ -467,7 +467,7 @@ void update_history(int mincid, char *arg_string)
    char *string;
 
    /* Get the history attribute length */
-   ncopts=0;
+   set_ncopts(0);
    if ((ncattinq(mincid, NC_GLOBAL, MIhistory, &datatype,
                  &att_length) == MI_ERROR) ||
        (datatype != NC_CHAR))
@@ -479,7 +479,7 @@ void update_history(int mincid, char *arg_string)
    string[0] = '\0';
    (void) miattgetstr(mincid, NC_GLOBAL, MIhistory, att_length, 
                       string);
-   ncopts = NC_OPTS_VAL;
+   set_ncopts(NC_OPTS_VAL);
 
    /* Add the new command and put the new history. */
    (void) strcat(string, arg_string);
