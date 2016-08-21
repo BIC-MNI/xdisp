@@ -563,11 +563,35 @@ typedef struct graphics_info {
  */
 
 
-Graphics_info *   olgx_main_initialize();
+Graphics_info *olgx_main_initialize(
+                                    Display        *dpy,
+                                    int             screen,
+                                    unsigned int    depth,
+                                    int             d_flag,
+                                    XFontStruct    *glyphfont_struct,
+                                    XFontStruct    *textfont_struct,
+                                    unsigned long   pixvals[],
+                                    Pixmap          stipple_pixmaps[]);
 #ifdef OW_I18N
-Graphics_info *   olgx_i18n_initialize();
+Graphics_info *   olgx_i18n_initialize(
+                     Display        *dpy,
+                     int             screen,
+                     unsigned int    depth,
+                     int             d_flag,
+                     XFontStruct    *glyphfont_struct,
+                     XFontSet        textfont_set,
+                     unsigned long   pixvals[],
+                     Pixmap          stipple_pixmaps[]);
 #endif
-Graphics_info *   olgx_initialize();
+Graphics_info  *
+olgx_initialize(
+                Display        *dpy,
+                int             screen,
+                int             d_flag,
+                XFontStruct    *glyphfont_struct,
+                XFontStruct    *textfont_struct,
+                unsigned long   pixvals[],
+                Pixmap          stipple_pixmaps[]);
 void              olgx_calculate_3Dcolors();
 unsigned long     olgx_get_single_color();
 void          olgx_closedown();

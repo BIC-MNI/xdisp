@@ -24,7 +24,7 @@
 #include <sys/stat.h>
 
 /*--------------------------- Window_Level -------------------------*/
-int Window_Level(int lower, int upper)
+void Window_Level(int lower, int upper)
 {
   float 	fdp, fdc, fwin, fmin, fnc, org_pix;
   register int 	grey, i, index;
@@ -155,7 +155,7 @@ int Window_Level(int lower, int upper)
 }
 
 /*-------------------------- toggle --------------------------------*/
-int toggle(caddr_t data)
+void toggle(void *data)
 {
   tmp=Lower; Lower=Upper; Upper=tmp;
   Window_Level(Lower,Upper);
@@ -166,7 +166,7 @@ int toggle(caddr_t data)
 
 
 /*-------------------------- inc_upper ----------------------------*/
-int inc_upper(caddr_t data)
+void inc_upper(void * data)
 {
   if ( (theEvent.xbutton.time-t_last_click <= t_fast) &&
        (acc_flag==1) )
@@ -181,7 +181,7 @@ int inc_upper(caddr_t data)
 }
 
 /*-------------------------- dec_upper ----------------------------*/
-int dec_upper(caddr_t data)
+void dec_upper(void * data)
 {
   if ( (theEvent.xbutton.time-t_last_click <= t_fast) &&
        (acc_flag==2) )
@@ -196,7 +196,7 @@ int dec_upper(caddr_t data)
 }
 
 /*-------------------------- inc_lower ----------------------------*/
-int inc_lower(caddr_t data)
+void inc_lower(void * data)
 {
   if ( (theEvent.xbutton.time-t_last_click <= t_fast) &&
        (acc_flag==3) ) 
@@ -211,7 +211,7 @@ int inc_lower(caddr_t data)
 }
 
 /*-------------------------- dec_lower ----------------------------*/
-int dec_lower(caddr_t data)
+void dec_lower(void * data)
 {
   if ( (theEvent.xbutton.time-t_last_click <= t_fast) &&
        (acc_flag==4) )
@@ -226,19 +226,19 @@ int dec_lower(caddr_t data)
 }
 
 /*-------------------------- inc_steps ----------------------------*/
-int inc_steps(caddr_t data)
+void inc_steps(void * data)
 {
   steps = (steps+1<max_steps) ? steps+1: max_steps;
 }
 
 /*-------------------------- dec_steps ----------------------------*/
-int dec_steps(caddr_t data)
+void dec_steps(void * data)
 {
   steps = (steps-1<1) ? 1: steps-1;
 }
 
 /*-------------------------- Adjust_Upper_Slider ------------------*/
-int Adjust_Upper_Slider(caddr_t data)
+void Adjust_Upper_Slider(void *data)
 {
   int		x, cw;
   D_SLIDER 	*p_data=(D_SLIDER *) Upper_Slider->data;
@@ -264,11 +264,11 @@ int Adjust_Upper_Slider(caddr_t data)
 	    (double)(rw_offset + ((double)(Upper-I_Min)*rw_scale)) );
   }
   else if (Input_Data_Type==ULONG_DATA || Input_Data_Type==USHORT_DATA) {
-    sprintf(msg,"Upper= %-8u ",
+    sprintf(msg,"Upper= %-8lu ",
 	    (ulong)floor((rw_offset + ((double)(Upper-I_Min)*rw_scale))+0.5) );
   }
   else if (Input_Data_Type==LONG_DATA) {
-    sprintf(msg,"Upper= %-8d ",
+    sprintf(msg,"Upper= %-8ld ",
 	    (long)floor((rw_offset + ((double)(Upper-I_Min)*rw_scale))+0.5) );
   }
   else {
@@ -280,7 +280,7 @@ int Adjust_Upper_Slider(caddr_t data)
 }
 
 /*-------------------------- Adjust_Lower_Slider ------------------*/
-int Adjust_Lower_Slider(caddr_t data)
+void Adjust_Lower_Slider(void *data)
 {
   int		x, cw;
   D_SLIDER 	*p_data=(D_SLIDER *) Lower_Slider->data;
@@ -306,11 +306,11 @@ int Adjust_Lower_Slider(caddr_t data)
 	    (double)(rw_offset + ((double)(Lower-I_Min)*rw_scale)) );
   }
   else if (Input_Data_Type==ULONG_DATA || Input_Data_Type==USHORT_DATA) {
-    sprintf(msg,"Lower= %-8u ",
+    sprintf(msg,"Lower= %-8lu ",
 	    (ulong)floor((rw_offset + ((double)(Lower-I_Min)*rw_scale))+0.5) );
   }
   else if (Input_Data_Type==LONG_DATA) {
-    sprintf(msg,"Lower= %-8d ",
+    sprintf(msg,"Lower= %-8ld ",
 	    (long)floor((rw_offset + ((double)(Lower-I_Min)*rw_scale))+0.5) );
   }
   else {
@@ -322,7 +322,7 @@ int Adjust_Lower_Slider(caddr_t data)
 }
 
 /*------------------ Reset_Window_Level -----------------*/
-int Reset_Window_Level(caddr_t data)
+void Reset_Window_Level(void *data)
 {
   Lower = S_Min = I_Min;
   Upper = S_Max = I_Max;
@@ -331,7 +331,7 @@ int Reset_Window_Level(caddr_t data)
 
 
 /*------------------ Show_Window_Level -----------------*/
-int Show_Window_Level(caddr_t data)
+void Show_Window_Level(void)
 {
   if (wl_display) {
     wl_display = 0;

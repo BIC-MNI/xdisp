@@ -31,19 +31,15 @@
  */
 
 void
-olgx_draw_scrollbar(ginfo, win, x, y, length, elev_pos, old_elev_pos,
-		    prop_pos, prop_length, state)
-    Graphics_info  *ginfo;
-    Window          win;
-    int             x, y;	/* Origin of the scrollbar  */
-    int             length;	/* Length of the Scrolbar   */
-    int             elev_pos, old_elev_pos;	/* Elevator Position New and
-						 * Old */
-    int             prop_pos, prop_length;	/* Proportional Indicator
-						 * Posistion and lenght */
-    int             state;
-
-
+olgx_draw_scrollbar(Graphics_info  *ginfo,
+                    Window win,
+                    int x, int y,	/* Origin of the scrollbar  */
+                    int length,	/* Length of the Scrolbar   */
+                    int elev_pos, /* Elevator Position New and... */
+                    int old_elev_pos, /* ...Old */
+                    int prop_pos, 	/* Proportional Indicator Position... */
+                    int prop_length,    /* ...and Length */
+                    int state)
 {
     int             cable_offset;	/* Cable Offset distance from the
 					 * Scrollbar origin x,y */
@@ -217,10 +213,9 @@ olgx_draw_scrollbar(ginfo, win, x, y, length, elev_pos, old_elev_pos,
 
 
 void
-olgx_draw_elevator(info, win, x, y, state)
-    Graphics_info  *info;
-    Window          win;
-    int             state;
+olgx_draw_elevator(Graphics_info  *info,
+                   Window          win,
+                   int x, int y, int state)
 {
     char            string[2];
     int             initial;
@@ -413,11 +408,11 @@ olgx_draw_elevator(info, win, x, y, state)
 
 
 void
-olgx_scroll_stipple_rects(info, win, rects, numrects)
-    Graphics_info  *info;
-    Window          win;
-    XRectangle     *rects;
-    int             numrects;
+olgx_scroll_stipple_rects(
+                          Graphics_info  *info,
+                          Window          win,
+                          XRectangle     *rects,
+                          int             numrects)
 {
 
 
@@ -446,10 +441,8 @@ olgx_scroll_stipple_rects(info, win, rects, numrects)
  */
 
 XRectangle     *
-olgx_compute_intersection(rect1, rect2)
-    XRectangle     *rect1;
-    XRectangle     *rect2;
-
+olgx_compute_intersection(XRectangle *rect1,
+                          XRectangle *rect2)
 {
 
     Region          region1;

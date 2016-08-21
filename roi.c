@@ -15,13 +15,13 @@
 #include <sys/stat.h>
 
 /*---------------------------- image_stats -----------------------------*/
-int image_stats()
+void image_stats(void *data)
 {
   roi_stats(0,0,Width-1,Height-1,0);
 }
 
 /*---------------------------- roi_stats -------------------------------*/
-int roi_stats(int x1, int y1, int x2, int y2, int Quiet )
+void roi_stats(int x1, int y1, int x2, int y2, int Quiet )
 {
   double roi_sum, roi_mean, roi_variance,
          rw_roi_min, rw_roi_max, 
@@ -129,14 +129,14 @@ int roi_stats(int x1, int y1, int x2, int y2, int Quiet )
       fprintf(stderr,"roi variance = %f\n\n", rw_roi_variance);
     }
     else if (Input_Data_Type==USHORT_DATA || Input_Data_Type==ULONG_DATA) {
-      fprintf(stderr,"roi min      = %u\n", (ulong) floor(rw_roi_min+0.5));
-      fprintf(stderr,"roi max      = %u\n", (ulong) floor(rw_roi_max+0.5));
+      fprintf(stderr,"roi min      = %lu\n", (ulong) floor(rw_roi_min+0.5));
+      fprintf(stderr,"roi max      = %lu\n", (ulong) floor(rw_roi_max+0.5));
       fprintf(stderr,"roi mean     = %f\n", rw_roi_mean);
       fprintf(stderr,"roi variance = %f\n\n", rw_roi_variance);
     }
     else if (Input_Data_Type==LONG_DATA) {
-      fprintf(stderr,"roi min      = %d\n", (long) floor(rw_roi_min+0.5));
-      fprintf(stderr,"roi max      = %d\n", (long) floor(rw_roi_max+0.5));
+      fprintf(stderr,"roi min      = %ld\n", (long) floor(rw_roi_min+0.5));
+      fprintf(stderr,"roi max      = %ld\n", (long) floor(rw_roi_max+0.5));
       fprintf(stderr,"roi mean     = %f\n", rw_roi_mean);
       fprintf(stderr,"roi variance = %f\n\n", rw_roi_variance);
     }
@@ -150,7 +150,7 @@ int roi_stats(int x1, int y1, int x2, int y2, int Quiet )
 }
 
 /*----------------------- draw_roi -----------------------------*/
-int draw_roi(int x1, int y1, int x2, int y2)
+void draw_roi(int x1, int y1, int x2, int y2)
 {
   int		i;
 

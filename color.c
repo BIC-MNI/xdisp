@@ -16,7 +16,7 @@
 
 
 /*------------------ Switch_Colormap -----------------*/
-int Switch_Colormap(caddr_t data)
+void Switch_Colormap(void *data)
 {
   int			i, j;
   register byte	        *bptr, tmp_byte;
@@ -103,7 +103,7 @@ int Switch_Colormap(caddr_t data)
 
 
 /*------------------------- ColorBar_Scale -------------------------------*/
-int ColorBar_Scale(int min, int max)
+void ColorBar_Scale(int min, int max)
 {
   int 		i, j, skip;
   float 	fval, finc;
@@ -204,11 +204,10 @@ int ColorBar_Scale(int min, int max)
 
   /* clear workspace */
   free(tmp_byte);
-  return(1);
 }
 
 /*--------------------------- Resize_ColorBar -------------------------*/
-int Resize_ColorBar(int w, int h)
+void Resize_ColorBar(int w, int h)
 {
   byte 	*tmp_byte;
 
@@ -234,13 +233,14 @@ int Resize_ColorBar(int w, int h)
 			      &byte_ColorBar[0], w, h );
     }
     else{
-      nneighbour_rgbp_to_rgbp ( &tmp_byte[0], color_bar_width, color_bar_height,
-				&byte_ColorBar[0], w, h );
+      nneighbour_rgbp_to_rgbp ( (uint32_t *) &tmp_byte[0],
+                                color_bar_width, color_bar_height,
+				(uint32_t *) &byte_ColorBar[0], w, h );
     }
   }
   color_bar_width = w;
   color_bar_height = h;                            
-  theColorBar->data=&byte_ColorBar[0];
+  theColorBar->data = (char *) &byte_ColorBar[0];
   theColorBar->height=h;
   theColorBar->width=w;
   theColorBar->bytes_per_line=(bitmap_pad/8)*w;

@@ -26,15 +26,14 @@ void            olgx_draw_ximage_label();
 
 static void     olgx_draw_accel_label_internal();
 static void     olgx_draw_diamond_mark();
-static void     olgx_draw_label();
 
 void
-olgx_draw_button(info, win, x, y, width, height, label, state)
-    Graphics_info  *info;
-    Window          win;
-    int             x, y, width, height;
-    void           *label;
-    int             state;
+olgx_draw_button(
+                 Graphics_info  *info,
+                 Window          win,
+                 int             x, int y, int width, int height,
+                 void           *label,
+                 int             state)
 {
     XTextItem       item;
     char            string[STRING_SIZE];
@@ -234,8 +233,8 @@ olgx_draw_button(info, win, x, y, width, height, label, state)
 
 	    int             centerx, centery;
 
-	    centerx = (width - ((Pixlabel *) label)->width >> 1);
-	    centery = (height - ((Pixlabel *) label)->height >> 1);
+	    centerx = ((width - ((Pixlabel *) label)->width) >> 1);
+	    centery = ((height - ((Pixlabel *) label)->height) >> 1);
 	    olgx_draw_pixmap_label(info, win,
 				   ((Pixlabel *) label)->pixmap,
 				   x + ((centerx > 0) ? centerx : 0),
@@ -251,8 +250,8 @@ olgx_draw_button(info, win, x, y, width, height, label, state)
 
 	    int             centerx, centery;
 
-	    centerx = (width - ((Pixlabel *) label)->width >> 1);
-	    centery = (height - ((Pixlabel *) label)->height >> 1);
+	    centerx = ((width - ((Pixlabel *) label)->width) >> 1);
+	    centery = ((height - ((Pixlabel *) label)->height) >> 1);
 	    olgx_draw_ximage_label(info, win,
 				   ((Ximlabel *) label)->ximage,
 				   x + ((centerx > 0) ? centerx : 0),
@@ -325,11 +324,11 @@ olgx_draw_button(info, win, x, y, width, height, label, state)
  */
 
 void
-olgx_draw_varheight_button(info, win, x, y, width, height, state)
-    Graphics_info  *info;
-    Window          win;
-    int             x, y, width, height;
-    int             state;
+olgx_draw_varheight_button(
+                           Graphics_info  *info,
+                           Window          win,
+                           int             x, int y, int width, int height,
+                           int             state)
 
 {
 
@@ -489,10 +488,11 @@ olgx_draw_varheight_button(info, win, x, y, width, height, state)
 
 
 void
-olgx_draw_menu_mark(info, win, x, y, state, fill_in)
-    Graphics_info  *info;
-    Window          win;
-    int             state, fill_in;
+olgx_draw_menu_mark(Graphics_info  *info, 
+                    Window win,
+                    int x, int y,
+                    int state,
+                    int fill_in)
 {
     char            string[3];
     GC              gc;
@@ -684,12 +684,12 @@ olgx_draw_text(info, win, string, x, y, max_width, state)
     char	   *mbs;
     wchar_t	   *wcs;
 #else
-    unsigned int   len ;
+    int   len ;
 #endif /* OW_I18N */
     int		    current_width = 0;
     int		    width;
     GC		    gc;
-    register int    i;
+    int             i;
     short           more_flag = 0;
 
 
@@ -895,10 +895,6 @@ olgx_draw_ximage_label(info, win, xim, x, y, width, height, state)
 
     unsigned long   savebg1;
     unsigned long   savebg2;
-    Window              root;
-    int                 x_dummy,y_dummy;
-    unsigned int        w_dummy,h_dummy,bw_dummy;
-    unsigned int        depth;
 
     if (!info->gc_rec[OLGX_TEXTGC])
 	olgx_initialise_gcrec(info, OLGX_TEXTGC);
@@ -1001,10 +997,10 @@ olgx_draw_textscroll_button(info, win, x, y, state)
 
 	if (state & OLGX_SCROLL_FORWARD)
 	    olgx_draw_menu_mark(info, win, x + arr_x, y + arr_y,
-				OLGX_HORIZ_MENU_MARK | OLGX_INVOKED & ~OLGX_INACTIVE, 1);
+				(OLGX_HORIZ_MENU_MARK | OLGX_INVOKED) & ~OLGX_INACTIVE, 1);
 	else
 	    olgx_draw_menu_mark(info, win, x + arr_x - 1, y + arr_y,
-				OLGX_HORIZ_BACK_MENU_MARK | OLGX_INVOKED & ~OLGX_INACTIVE, 1);
+				(OLGX_HORIZ_BACK_MENU_MARK | OLGX_INVOKED) & ~OLGX_INACTIVE, 1);
 
     }				/* End 3-D */
 
@@ -1071,9 +1067,9 @@ olgx_draw_numscroll_button(info, win, x, y, state)
 		      (state & OLGX_SCROLL_FORWARD) ?
 		      OLGX_INVOKED : OLGX_NORMAL, 0);
 	olgx_draw_menu_mark(info, win, x + arr_x, y + arr_y,
-			    OLGX_VERT_BACK_MENU_MARK | OLGX_INVOKED & ~OLGX_INACTIVE, 1);
+			    (OLGX_VERT_BACK_MENU_MARK | OLGX_INVOKED) & ~OLGX_INACTIVE, 1);
 	olgx_draw_menu_mark(info, win, x + arr_x + width, y + arr_y,
-			    OLGX_VERT_MENU_MARK | OLGX_INVOKED & ~OLGX_INACTIVE, 1);
+			    (OLGX_VERT_MENU_MARK | OLGX_INVOKED) & ~OLGX_INACTIVE, 1);
 
     }
 
@@ -1100,11 +1096,9 @@ olgx_draw_diamond_mark(info, win, x, y, state)
      int             state;  /* unused */
 {
     XPoint          point[6];
-    int             d_height,d_half_height,d_width,d_half_width;
+    int             d_half_height,d_width,d_half_width;
     GC              gc;
     XGCValues       values;
-    char            old_dashes;
-    int             old_dash_offset;
 
     /* diamond height needs to be divisible by 2, but width should be odd. */
     d_half_width = info->mm_height/2;
@@ -1269,7 +1263,9 @@ olgx_draw_accel_label_internal(info, win, texty, x, y, width, height,
 	    XCharStruct overall;
 	    void *string_label;
 	    Underlinelabel *ulabel, *hlabel;
+#ifdef OW_I18N
 	    char *highlight_char;
+#endif
 	    int has_highlight=0,has_underline=0;
 	    int highlightx_pos, highlight_length, highlighty_pos, 
 	        highlight_height;
@@ -1699,28 +1695,21 @@ olgx_draw_accel_button(info, win, x, y, width, height,
 }
 
 void
-olgx_draw_accel_choice_item(info, win, x, y, width, height, 
-		       main_label, m_pos,
-		       qualifier_label, q_pos,
-		       mark_type, mark_pos,
-		       key_label, key_pos,
-		       background_pixmap,
-		       state)
-    Graphics_info  *info;
-    Window          win;
-    int             x, y, width, height;  /* position and size of item */
-    void	   *main_label;       /* item main label */
-    int             m_pos;            /* position of main label */
-    void	   *qualifier_label;  /* qualifier or modifier label */    
-    int		    q_pos;	      /* x position of qualifier in pixels */
-    int		    mark_type;        /* OLGX_DIAMOND_MARK, MENU_MARK, etc. */
-    int		    mark_pos;         /* x position of mark sym. in pixels */
-    void	   *key_label;        /* usually a single character */
-    int		    key_pos;          /* x position of key char in pixels */
-    void           *background_pixmap;/* unsupported right now! */
-    int             state;            /* state of the actual object */
+olgx_draw_accel_choice_item(
+                            Graphics_info  *info,
+                            Window          win,
+                            int             x, int y, int width, int height,  /* position and size of item */
+                            void	   *main_label,       /* item main label */
+                            int             m_pos,            /* position of main label */
+                            void	   *qualifier_label,  /* qualifier or modifier label */    
+                            int		    q_pos,	      /* x position of qualifier in pixels */
+                            int		    mark_type,        /* OLGX_DIAMOND_MARK, MENU_MARK, etc. */
+                            int		    mark_pos,         /* x position of mark sym. in pixels */
+                            void	   *key_label,        /* usually a single character */
+                            int		    key_pos,          /* x position of key char in pixels */
+                            void           *background_pixmap,/* unsupported right now! */
+                            int             state)            /* state of the actual object */
 {
-    int             flag = 0;
     /* don't want to duplicate code, so draw a choice with a null label,
        no menu mark, and not inactive (will be done later) */
     olgx_draw_choice_item(info,win,x,y,width,height,NULL,
@@ -1734,7 +1723,6 @@ olgx_draw_accel_choice_item(info, win, x, y, width, height,
     
     if (state & OLGX_INVOKED) {
 	state ^= OLGX_INVOKED;
-	flag = 1;
     }
     olgx_draw_accel_label_internal(info,win,
 				   y + 

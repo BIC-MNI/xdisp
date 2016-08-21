@@ -13,8 +13,7 @@
 
 #include "xdisp.h"
 
-SetMIcon(state)
-int		state;
+void SetMIcon(int state)
 {
   XWMHints 	xwmh;
 
@@ -24,7 +23,8 @@ int		state;
 			      0, newC[fcol].pixel, newC[bcol].pixel);
   if (!(icon_byte_image = (byte *) malloc(ICON_WIDTH*ICON_HEIGHT*(bitmap_pad/8))))
     FatalError("not enough memory to create image icon");
-  iconImage = XCreateImage(theDisp, theVisual, theDepth, ZPixmap, 0, icon_byte_image,
+  iconImage = XCreateImage(theDisp, theVisual, theDepth, ZPixmap, 0, 
+                           (char *)icon_byte_image,
 			   ICON_WIDTH, ICON_HEIGHT, bitmap_pad, 0);
 
   /* define the WM attributes */

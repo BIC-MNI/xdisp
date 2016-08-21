@@ -26,9 +26,7 @@
  * Copyright (c), Bruce Pike 1997
  */
 
-#include <math.h>
-
-typedef unsigned char byte;
+#include "xdisp.h"
 
 /*------------------- nneighbour_byte_to_byte ----------------*/
 void nneighbour_byte_to_byte (byte *oim, int ox, int oy, 
@@ -211,8 +209,8 @@ void nneighbour_int_to_int (int *oim, int ox, int oy,
 
  
 /*------------------- nneighbour_long_to_long ----------------*/
-void nneighbour_long_to_long (long *oim, int ox, int oy, 
-			      long *nim, int nx, int ny)
+void nneighbour_long_to_long (int32_t *oim, int ox, int oy,
+			      int32_t *nim, int nx, int ny)
 {
   int 	i, j, ind;
   int 	*row, *col;
@@ -220,7 +218,7 @@ void nneighbour_long_to_long (long *oim, int ox, int oy,
 
   /* very special case... just copy data */
   if (ox==nx && oy==ny) {
-    memcpy(nim,oim,ox*oy*sizeof(long));
+    memcpy(nim,oim,ox*oy*sizeof(int32_t));
     return;
   }
 
@@ -390,8 +388,8 @@ void nneighbour_double_to_double (double *oim, int ox, int oy,
 }
 
 /*------------------- nneighbour_rgbp_to_rgbp ----------------*/
-void nneighbour_rgbp_to_rgbp (unsigned long *oim, int ox, int oy, 
-			      unsigned long *nim, int nx, int ny)
+void nneighbour_rgbp_to_rgbp (uint32_t *oim, int ox, int oy,
+			      uint32_t *nim, int nx, int ny)
 {
   int 	i, j, ind;
   int 	*row, *col;
@@ -399,7 +397,7 @@ void nneighbour_rgbp_to_rgbp (unsigned long *oim, int ox, int oy,
 
   /* very special case... just copy data */
   if (ox==nx && oy==ny) {
-    memcpy(nim,oim,ox*oy*sizeof(unsigned long));
+    memcpy(nim,oim,ox*oy*sizeof(uint32_t));
     return;
   }
 

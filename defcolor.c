@@ -16,10 +16,9 @@
 #include "xdisp.h"
 
 /*--------------------------- Define_ColorMap ------------------------*/
-int Define_ColorMap()
+void Define_ColorMap(void)
 {
-  ulong         i, j;
-  register byte	*bptr;
+  long         i;
 	
   /* Get default ColorMap */
   for (i=0; i<ColorMapSize; i++) {
@@ -160,10 +159,10 @@ int Define_ColorMap()
 }
 
 /*--------------------------- Define_ColorBar ------------------------*/
-int Define_ColorBar()
+void Define_ColorBar(void)
 {
-  int			i, j, tw;
-  register byte	*bptr, tmp_byte;
+  int i, j;
+  byte	*bptr, tmp_byte;
 
   /* Create color bar byte image */
   if (file_format==MINC_FORMAT || 
@@ -263,7 +262,7 @@ int Define_ColorBar()
 }
 
 /*--------------------------- Toggle_ColorBar ------------------------*/
-int Toggle_ColorBar()
+void Toggle_ColorBar(void *data)
 {
   if (color_bar) 
     color_bar = 0;
@@ -276,7 +275,7 @@ int Toggle_ColorBar()
 }
 
 /*--------------------------- TrueColor_Initialize ------------------------*/
-int TrueColor_Initialize()
+void TrueColor_Initialize(void)
 {
 
   /* create a new colormap */
@@ -359,7 +358,7 @@ int TrueColor_Initialize()
 }
 
 /*--------------------------- Toggle_Interpolation ------------------------*/
-int Toggle_Interpolation()
+void Toggle_Interpolation(void *data)
 {
   if (Interpolation_Type==BILINEAR) 
     Interpolation_Type= NEAREST_NEIGHBOUR;

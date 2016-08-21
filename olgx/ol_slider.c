@@ -95,8 +95,8 @@ olgx_draw_horizontal_slider(info, win, x, y, width, value, state)
     int             inside_width;
     char            string[STRING_SIZE];
     short           add_ins[STRING_SIZE];
-    register        y_slider_offset;
-    register int    i;
+    int             y_slider_offset;
+    int             i;
     int             num_add;
 
     /* inside_width is the width excluding the endcaps */
@@ -828,9 +828,9 @@ olgx_draw_horiz_gauge(info, win, x, y, width, value)
     int             inside_width;
     char            string[STRING_SIZE];
     short           add_ins[STRING_SIZE];
-    register int    i;
+    int             i;
     int             num_add;
-    register        left_offset;
+    int             left_offset;
 
 
     inside_width = width - (info->gauge_width << 1);
@@ -952,7 +952,7 @@ olgx_update_horiz_gauge(info, win, x, y, oldval, newval)
     int             x, y, oldval, newval;
 
 {
-    register        left_offset;
+    int             left_offset;
 
     /* Very Trivial */
 
@@ -1000,7 +1000,7 @@ olgx_draw_vertical_gauge(info, win, x, y, width, value)
     int             inside_width;
     char            string[1];
     char            string1[1];
-    register        left_offset;
+    int             left_offset;
     XTextItem       item[2];
 
 
@@ -1129,7 +1129,7 @@ olgx_update_vertical_gauge(info, win, x, y, width, oldval, newval)
     int             x, y, width, oldval, newval;
 
 {
-    register        left_offset;
+    int             left_offset;
 
 
 

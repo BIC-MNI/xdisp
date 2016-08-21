@@ -37,12 +37,11 @@ DEFINE_ELEMENT(static, ACR_pixel_min,      0x0028, 0x0104);
 DEFINE_ELEMENT(static, ACR_pixel_max,      0x0028, 0x0105);
 
 /*---------------------------- Load_Image ---------------------------*/
-int Load_Image(char *fn)
+void Load_Image(char *fn)
 {
-  int            varid;
-  char           fname[128], *cptr;
-  long           element_length, filesize;
-  int            i, j, count, 
+  char           fname[128];
+  long           filesize;
+  int            i, count, 
                  bits_per_pixel, need_byte_swap, 
                  acr_pixel_min, acr_pixel_max,
   	         initial_slice[MAX_VAR_DIMS];
@@ -51,7 +50,6 @@ int Load_Image(char *fn)
   register byte  *bptr;
   register short *sptr;
   FILE 	         *fp;
-  unsigned short *image;
   byte	         temp_byte, *packed, pixel[2][2];
   void	         *data=NULL;
   Acr_File 	 *afp;
@@ -75,7 +73,7 @@ int Load_Image(char *fn)
   if (!read_from_stdin) {
     fseek(fp, 0L, 2); 
     filesize = ftell(fp);
-    if (Verbose) fprintf(stderr,"File size: %d \n",filesize);
+    if (Verbose) fprintf(stderr,"File size: %ld \n",filesize);
 
     /* if we know it's a CMI file */
     if (file_format==CMI_FORMAT) {
@@ -327,10 +325,10 @@ int Load_Image(char *fn)
     element_id->group_id = acr_find_short(group_list, ACR_image_location,
 					  ACR_IMAGE_GID);
     element = acr_find_group_element(group_list, element_id);
-    if (element != NULL) 
+    if (element != NULL) {
       if (bits_per_pixel==16) {	/* unpacked data */
 	acr_get_short(Width*Height, (void *) acr_get_element_data(element),
-		      short_Image);
+		      (unsigned short *) short_Image);
       }
       else {			/* packed data */
 	if (Verbose) fprintf(stderr,"Unpacking ACR-NEMA image data...\n");
@@ -356,6 +354,7 @@ int Load_Image(char *fn)
 	  packed += PACK_BYTES;
 	}
       }
+    }
     free(element_id);
     fclose(fp);
   }
@@ -483,7 +482,7 @@ int Load_Image(char *fn)
 }
 
 /*---------------------------- Increment_Image ---------------------------*/
-int Increment_Image(caddr_t data)
+void Increment_Image(void *data)
 {
   image_increment = 1;
   current_dim = *(int *)data;
@@ -491,7 +490,7 @@ int Increment_Image(caddr_t data)
 }
 
 /*---------------------------- Decrement_Image ---------------------------*/
-int Decrement_Image(caddr_t data)
+void Decrement_Image(void *data)
 {
   image_increment = -1;
   current_dim = *(int *)data;
@@ -499,27 +498,27 @@ int Decrement_Image(caddr_t data)
 }
 
 /*---------------------------- New_Image ---------------------------*/
-int New_Image()
+void New_Image(void)
 {
   int            i, count, w, h;
   float	         sum, sq_sum;
-  register short *sptr;
   FILE	         *fp;
   int            offset;
 
   /* be a little verbose if requested */
-  if (Verbose) 
+  if (Verbose) {
     if (image_increment<0)
       fprintf(stderr,"Display previous image...\n");
     else 
       fprintf(stderr,"Display next image...\n");
+  }
 
   /* check for position in the file */
   if ((image_increment+slider_image[current_dim]<0) ||
       (image_increment+slider_image[current_dim] > 
        slider_length[current_dim]-1)) {
     fprintf(stderr, "Image number requested is out of range.\n");
-    return(0);
+    return;
   }
     
   /* set image number */
@@ -539,9 +538,9 @@ int New_Image()
       for(i=1; i<ndimensions-2; i++){
 	offset = offset*slider_length[i] + slider_image[i];
       }
-      theImage->data=&byte_Image[zWidth*zHeight*offset*(bitmap_pad/8)];
+      theImage->data = (char *) &byte_Image[zWidth*zHeight*offset*(bitmap_pad/8)];
     } else {
-      theImage->data=&byte_Image[zWidth*zHeight*image_number*(bitmap_pad/8)];
+      theImage->data = (char *) &byte_Image[zWidth*zHeight*image_number*(bitmap_pad/8)];
     }
   }
 
@@ -661,7 +660,7 @@ int New_Image()
 
 
 /*----------------------------- cmi_init -----------------------------*/
-int cmi_init(FILE *fp)
+void cmi_init(FILE *fp)
 {
   /* position to start of file */
   fseek(fp, 0L, 0);
@@ -707,10 +706,8 @@ int cmi_init(FILE *fp)
 
 
 /*-------------------------- Load_All --------------------------------*/
-int Load_All(caddr_t data)
+void Load_All(void *data)
 {
-  int w, h;
-    
   /* define new cursor */
   XDefineCursor(theDisp,mainW,waitCursor);
   XDefineCursor(theDisp,cmdW,waitCursor);
@@ -738,7 +735,7 @@ int Load_All(caddr_t data)
   theImage->width=Width;
   theImage->height=Height;
   theImage->bytes_per_line=Width;
-  theImage->data=byte_Image;
+  theImage->data = (char *) byte_Image;
 
   /* Define corrected size if a command line zoom was used */
   zWidth = file_format!=CMI_FORMAT ? Width*zoom_factor_x : 
@@ -767,7 +764,7 @@ int Load_All(caddr_t data)
 
 
 /*---------------------------- Byte_Swap -------------------------------*/
-int Byte_Swap(byte *byte_data, int length)
+void Byte_Swap(byte *byte_data, int length)
 {
   int 	i;
   byte	tmp_byte;
@@ -781,9 +778,9 @@ int Byte_Swap(byte *byte_data, int length)
 }
 
 /*-------------------------- Reload --------------------------------*/
-int Reload(caddr_t data)
+void Reload(void *data)
 {
-  int w, h, i;
+  int i;
     
   /* define new cursor */
   XDefineCursor(theDisp,mainW,waitCursor);
@@ -812,7 +809,7 @@ int Reload(caddr_t data)
   theImage->width=Width;
   theImage->height=Height;
   theImage->bytes_per_line=Width;
-  theImage->data=byte_Image;
+  theImage->data = (char *) byte_Image;
 
   /* Define corrected size if a command line zoom was used */
   zWidth = file_format!=CMI_FORMAT ? Width*zoom_factor_x : 

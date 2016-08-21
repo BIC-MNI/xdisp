@@ -167,28 +167,28 @@ void Initialize_Plot_Widget()
 
 
 /*---------------------- Open_Plot_Widget() ------------------------*/
-int Open_Plot_Widget()
+void Open_Plot_Widget(void *data)
 {
   /* First check a few basic requirements */
   /* make sure we have a MINC file with some valid dimensions */
   if (file_format!=MINC_FORMAT) {
     EZW_Error("Error: This function only works with a MINC file!");
-    Close_Plot_Widget();
-    return(-1);
+    Close_Plot_Widget(NULL, NULL);
+    return;
   }
 
   /* make sure we have a MINC file with some valid dimensions */
   if ((ndimensions<2) || (ndimensions>4)) {
-    EZW_Error("Error: This function does not support MINC files of dimensionn=%d",ndimensions);
-    Close_Plot_Widget();
-    return(-1);
+    EZW_Error("Error: This function only supports MINC files of 3 or 4 dimensions");
+    Close_Plot_Widget(NULL, NULL);
+    return;
   }
 
   /* make sure we have not rotated or reoriented the MINC file */
   if (!RW_valid) {
     EZW_Error("Error: This function only works with a non rotated/reoriented MINC file!");
-    Close_Plot_Widget();
-    return(-1);
+    Close_Plot_Widget(NULL, NULL);
+    return;
   }
 
   /* activate and display the plot widget */
@@ -218,12 +218,12 @@ int Open_Plot_Widget()
  
   /* force the title we want */
   XStoreName(theDisp,EZ_GetWidgetWindow(Plot_Widget),window_name);
-  Refresh();
+  Refresh(NULL);
   Plot_Profile(Plot_Canvas_Widget);
 }
 
 /*-------------------- Close_Plot_Widget() --------------------------*/
-void Close_Plot_Widget()
+void Close_Plot_Widget(void *object, void *data)
 {
   /* deactivate the plot_active switch */
   plot_active = -1;
@@ -233,23 +233,23 @@ void Close_Plot_Widget()
 }
 
 /*--------------------- Plot_Profile() ---------------------------*/
-int Plot_Profile(EZ_Widget *Plot_Surface)
+void Plot_Profile(EZ_Widget *Plot_Surface)
 {
   int		i, j, n[5][5], k[MAX_VAR_DIMS], ind[MAX_VAR_DIMS],
                 ni, nj, size[MAX_VAR_DIMS],  pa_d;
   long          count[MAX_VAR_DIMS], start[MAX_VAR_DIMS];
   short         roi_data[5][5];
-  float	        fx, fy, xscale, yscale, sum, mean, min, max, tx, ty, tz;
+  float	        fx, fy, sum, mean, min, max, tx, ty, tz;
   float		xp[4096], yp[4096], yl_min, yl_max;
-  float         rw_cur[MAX_VAR_DIMS], rw_start[MAX_VAR_DIMS], 
-                rw_end[MAX_VAR_DIMS], rw_step[MAX_VAR_DIMS];
+  float         rw_start[MAX_VAR_DIMS], 
+                rw_end[MAX_VAR_DIMS];
   char          xlabel[32], ylabel[32], title[128];
 
   /* make sure we have not rotated or reoriented the MINC file */
   if (!RW_valid) {
     EZW_Error("Error: This function only works with a non rotated/reoriented MINC file!");
-    Close_Plot_Widget();
-    return(-1);
+    Close_Plot_Widget(NULL, NULL);
+    return;
   }
 
   /* must reverse the counting order for plot active since 
@@ -309,9 +309,9 @@ int Plot_Profile(EZ_Widget *Plot_Surface)
       }
       
       else {
-	EZW_Error("Sorry: %d dimensional minc files are not supported by the plot function.",ndimensions);
-	Close_Plot_Widget();
-	return(-1);
+	EZW_Error("Sorry: these minc files are not supported by the plot function.");
+	Close_Plot_Widget(NULL, NULL);
+	return;
       }
       yp[i] = 0.0;
       for (ni=0; ni<(2*plot_roi_size)+1; ni++) 
@@ -512,7 +512,7 @@ int Plot_Profile(EZ_Widget *Plot_Surface)
       minc_volume_info.step[plot_active]==0) {
     rw_start[plot_active] = 1.0;
     rw_end[plot_active] = (float)minc_volume_info.length[plot_active];
-    sprintf(xlabel,"%s (index)", 
+    sprintf(xlabel,"%s %s (index)", 
 	    minc_volume_info.dimension_names[plot_active],
 	    minc_volume_info.dimension_units[plot_active]);
   }
@@ -547,7 +547,7 @@ int Plot_Profile(EZ_Widget *Plot_Surface)
 }
 
 /*--------------------- Plot_Type_Switch() ---------------------------*/
-void Plot_Type_Switch(EZ_Widget *p_button)
+void Plot_Type_Switch(EZ_Widget *p_button, void *data)
 {
   /* get the plot type (i.e. x, y, z, or t) */
   plot_active = EZ_GetRadioButtonGroupVariableValue(p_button);
@@ -556,11 +556,11 @@ void Plot_Type_Switch(EZ_Widget *p_button)
   }
 
   /* clear any graphics overlays left behind*/
-  Refresh();
+  Refresh(NULL);
 }
  
 /*--------------------- Plot_Style_Switch() ---------------------------*/
-void Plot_Style_Switch(EZ_Widget *p_button)
+void Plot_Style_Switch(EZ_Widget *p_button, void *data)
 {
   /* get the plot style */
   plot_style = EZ_GetRadioButtonGroupVariableValue(p_button);
@@ -571,20 +571,20 @@ void Plot_Style_Switch(EZ_Widget *p_button)
 }
 
 /*--------------------- Plot_Type_Switch() ---------------------------*/
-void ROI_Size_Switch(EZ_Widget *p_button)
+void ROI_Size_Switch(EZ_Widget *p_button, void *data)
 {
   /* get the plot type (i.e. x, y, z, or t) */
   plot_roi_size = EZ_GetRadioButtonGroupVariableValue(p_button);
   if (Verbose) {
-    fprintf(stderr,"Plot ROI Size = %dx%d\n",plot_roi_size);
+    fprintf(stderr,"Plot ROI Size = %dx%d\n",plot_roi_size, plot_roi_size);
   }
 }
  
 /*--------------------- Draw_Plot_Axis() ---------------------------*/
-int Draw_Plot_Axis(p_canvas, xl_min, xl_max, yl_min, yl_max, xlabel, ylabel, title)
-  EZ_Widget  *p_canvas;
-  float      xl_min, xl_max, yl_min, yl_max;
-  char       *xlabel, *ylabel, *title;
+void Draw_Plot_Axis(
+                    EZ_Widget  *p_canvas,
+  float      xl_min, float xl_max, float yl_min, float yl_max,
+  char       *xlabel, char *ylabel, char *title)
 {
   int        i;
   float      x_min, x_max, y_min, y_max, l;

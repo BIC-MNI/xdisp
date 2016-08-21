@@ -9,7 +9,6 @@
  *	Load_New_Image()
  *	Spawn_New_xdisp()
  *      Get_Save_Filename()
- *      Save_File_Selection_Done()
  *
  * 	Copyright Bruce Pike, 1997-2000
  */
@@ -18,7 +17,7 @@
 
 
 /*-------------- Initialize_File_Widgets() --------------------*/
-void Initialize_File_Widgets()
+void Initialize_File_Widgets(void)
 {
   /* create the file selector widget */    
   File_Selector_Widget = EZ_CreateFileSelector(NULL, NULL);
@@ -54,7 +53,7 @@ void Get_New_Filename( EZ_Widget *widget, void *data)
   /*  EZ_DeActivateWidget(File_Selector_Widget); */
 
   /* check to make sure file is valid and readbale */
-  if (fp=fopen(new_fname,"rb")) {
+  if ((fp = fopen(new_fname,"rb")) != NULL) {
     fclose(fp);    	
     /* Strip off leading directory names to form basfname */
     cptr = rindex(new_fname,'/');
@@ -98,7 +97,7 @@ void Get_New_Filename( EZ_Widget *widget, void *data)
 }
 
 /*-------------------- Open_File_Selector_Widget() ------------------------*/
-int Open_File_Selector_Widget(caddr_t data)
+void Open_File_Selector_Widget(void *data)
 {
   int  spawn;
   char *cptr, init_glob[128];
@@ -121,10 +120,10 @@ int Open_File_Selector_Widget(caddr_t data)
   strcpy(init_glob,original_fname);
   cptr = rindex(init_glob,'/');
   if (cptr) {
-    sprintf(cptr,"/*\0");
+    strcpy(cptr,"/*");
   }
   else {
-    sprintf(init_glob, "*\0");
+    strcpy(init_glob, "*");
   }
   EZ_SetFileSelectorInitialPattern(File_Selector_Widget, init_glob); 
 
@@ -178,7 +177,7 @@ void Load_New_Image(char *fn)
   theImage->width=Width;
   theImage->height=Height;
   theImage->bytes_per_line=Width;
-  theImage->data=byte_Image;
+  theImage->data = (char *) byte_Image;
 
   /* Define corrected size if a command line zoom was used */
   zHeight = Height;
@@ -293,7 +292,7 @@ void Spawn_New_xdisp( EZ_Widget *widget, void *data )
   EZ_DeActivateWidget(File_Selector_Widget);
 
   /* check to make sure file is valid and readable */
-  if (fp=fopen(new_fname,"rb")) { 
+  if ((fp = fopen(new_fname,"rb")) != NULL) { 
     fclose(fp);    	 
   } 
   else { 

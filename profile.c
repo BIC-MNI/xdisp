@@ -6,7 +6,7 @@
  *	H_Profile()
  *	V_Profile()
  *	H_Profile_Switch()
- *	V_Profile_Swicth()
+ *	V_Profile_Switch()
  *
  * 	Copyright (c) Bruce Pike 1993-1997
  *
@@ -16,7 +16,7 @@
 #include <sys/stat.h>
 
 /*----------------------- H_Profile -----------------------------*/
-int H_Profile()
+void H_Profile(void)
 {
   int		i;
   float	xscale, yscale;
@@ -53,7 +53,7 @@ int H_Profile()
 }
     
 /*----------------------- V_Profile -----------------------------*/
-int V_Profile()
+void V_Profile(void)
 {
   int		i;
   float	xscale, yscale;
@@ -88,14 +88,14 @@ int V_Profile()
   if (i>0) XPutBackEvent(theDisp,&theEvent);
 }    
 
-/*--------------------- H_Profile_Swicth ------------------------*/
-int H_Profile_Swicth()
+/*--------------------- H_Profile_Switch ------------------------*/
+void H_Profile_Switch(void *data)
 {
   h_profile_active = h_profile_active==0 ? 1 : 0;
 }
 
-/*--------------------- V_Profile_Swicth ------------------------*/
-int V_Profile_Swicth()
+/*--------------------- V_Profile_Switch ------------------------*/
+void V_Profile_Switch(void *data)
 {
   v_profile_active = v_profile_active==0 ? 1 : 0;
 }

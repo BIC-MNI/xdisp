@@ -22,7 +22,7 @@ void Handle_Motion(XEvent *event)
 
   /* draw profiles if active */
   if (v_profile_active || h_profile_active) {
-    Refresh();
+    Refresh(NULL);
     if (v_profile_active && theEvent.xmotion.x < zWidth) {
       profile_x = theEvent.xmotion.x;
       V_Profile();
@@ -37,7 +37,7 @@ void Handle_Motion(XEvent *event)
   if (plot_active!=-1) {
 
     /* draw the roi box on the image */ 
-    Refresh();
+    Refresh(NULL);
     dw = (int)floor(((float)((plot_roi_size*2 + 1)*zWidth) / (float)(Width*2))+0.5);
     dh = (int)floor(((float)((plot_roi_size*2 + 1)*zWidth) / (float)(Width*2))+0.5);
     XDrawLine(theDisp,mainW,grGC, 
@@ -275,10 +275,10 @@ void Handle_Motion(XEvent *event)
       if (num_images==1) {
 	if (Input_Data_Type==ULONG_DATA ||
 	    Input_Data_Type==USHORT_DATA ) 
-	  sprintf(pix_msg,"       pixel %d, %d = %u      ",
+	  sprintf(pix_msg,"       pixel %d, %d = %lu      ",
 		  xp, yp, (unsigned long) floor(rw_pix+0.5));
 	else if (Input_Data_Type==LONG_DATA) 
-	  sprintf(pix_msg,"       pixel %d, %d = %d     ",
+	  sprintf(pix_msg,"       pixel %d, %d = %ld     ",
 		  xp, yp, (long)floor(rw_pix+0.5));
 	else
 	  sprintf(pix_msg,"       pixel %d, %d = %g      ",
@@ -287,10 +287,10 @@ void Handle_Motion(XEvent *event)
       else {
 	if (Input_Data_Type==ULONG_DATA ||
 	    Input_Data_Type==USHORT_DATA ) 
-	  sprintf(pix_msg,"       image %d, pixel %d, %d = %u      ",
+	  sprintf(pix_msg,"       image %d, pixel %d, %d = %lu      ",
 		  image_number, xp, yp, (unsigned long) floor(rw_pix+0.5));
 	else if (Input_Data_Type==LONG_DATA)
-	  sprintf(pix_msg,"       image %d, pixel %d, %d = %d      ",
+	  sprintf(pix_msg,"       image %d, pixel %d, %d = %ld      ",
 		  image_number, xp, yp, (long) (floor)(rw_pix+0.5));
 	else {
 	  sprintf(pix_msg,"       image %d, pixel %d, %d = %g      ", 
@@ -307,7 +307,7 @@ void Handle_Motion(XEvent *event)
     }
     else {
       sprintf(pix_msg,"       image %d, pixel %d, %d = %d      ",
-	      xp, yp, pix);
+	      image_number, xp, yp, pix);
     }
   }
 
@@ -334,11 +334,11 @@ void Handle_Motion(XEvent *event)
       if (num_images>1) {
 	if (Input_Data_Type==ULONG_DATA ||
 	    Input_Data_Type==USHORT_DATA ) 
-	  sprintf(loc_msg,"(%d,%d,%d) = %u",
+	  sprintf(loc_msg,"(%d,%d,%d) = %lu",
 		  xp,yp,image_number+1,
 		  (unsigned long)floor(rw_pix+0.5));
 	else if (Input_Data_Type==LONG_DATA)
-	  sprintf(loc_msg,"(%d,%d,%d) = %d",
+	  sprintf(loc_msg,"(%d,%d,%d) = %ld",
 		  xp,yp,image_number+1,
 		  (long)floor(rw_pix+0.5));
 	else
@@ -348,10 +348,10 @@ void Handle_Motion(XEvent *event)
       else {
 	if (Input_Data_Type==ULONG_DATA ||
 	    Input_Data_Type==USHORT_DATA ) 
-	  sprintf(loc_msg,"(%d,%d) = %u",
+	  sprintf(loc_msg,"(%d,%d) = %lu",
 		  xp,yp,(unsigned long) floor(rw_pix+0.5));
 	else if (Input_Data_Type==LONG_DATA)
-	  sprintf(loc_msg,"(%d,%d) = %d",
+	  sprintf(loc_msg,"(%d,%d) = %ld",
 		  xp,yp,(long) floor(rw_pix+0.5));
 	else
 	  sprintf(loc_msg,"(%d,%d) = %g",

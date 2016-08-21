@@ -19,7 +19,7 @@
 extern void add_ext_roi(byte *tmp_image1);
 
 /*---------------------------- ps_file ---------------------------*/
-int ps_file(caddr_t data)
+void ps_file(void *data)
 {
   char    line[8192+1], 
           grey_hex_table[256][3],
@@ -29,7 +29,7 @@ int ps_file(caddr_t data)
           *cptr, *getenv(), *lp_cmd;
   byte    *tmp_image1, *tmp_image2;
   float   c1, c2, xscale, yscale;
-  int     i, j, value, tmp, i_offset, index,
+  int     i, j, tmp, i_offset, index,
           x1, y1, x2, y2,
           page_width=612,
           page_height=792,
@@ -49,12 +49,12 @@ int ps_file(caddr_t data)
       if (num_images>1)
 	sprintf(ps_fname,"%s_image%d.ps",basfname,image_number+1);
       else
-	sprintf(ps_fname,"%s.ps",basfname,image_number+1);
+	sprintf(ps_fname,"%s.ps",basfname);
     else
       if (num_images>1)
 	sprintf(ps_fname,"%s_image%d.eps",basfname,image_number+1);
       else
-	sprintf(ps_fname,"%s.eps",basfname,image_number+1);
+	sprintf(ps_fname,"%s.eps",basfname);
     cr_time = time(NULL);
     if (Verbose) fprintf(stderr,"Preparing postscript file %s\n",ps_fname);
     strncpy(ps_fname,Get_Save_Filename(ps_fname),128); 
@@ -63,7 +63,7 @@ int ps_file(caddr_t data)
 	fprintf(stderr,"Invalid file name: %s \n", ps_fname);
 	fprintf(stderr,"File write aborted!\n");
       }
-      return(-1);
+      return;
     }
   }
   else {
@@ -88,7 +88,7 @@ int ps_file(caddr_t data)
       fprintf(stderr,"Error opening printer pipe!\n");
     else 
       fprintf(stderr,"Error opening file!\n");
-    return(-1); 
+    return;
   }
 
   /* define new cursor */
@@ -311,17 +311,10 @@ int ps_file(caddr_t data)
 }
 
 /*-------------------------- graphics_file ---------------------------*/
-int graphics_file(caddr_t data)
+void graphics_file(void *data)
 {
-  char    	tmp_fname[128], dvx_cmd[256],
-                gr_fname[128],
-                current_drive,
-                *cptr, *getenv(), *tmp2_fname;
-  byte    	*tmp_image1, *tmp_image2;
-  float		value, c1;
-  int     	i, j, len, type, i_offset;
-  FILE    	*fp;
-  struct stat	statbuf;
+  char    	gr_fname[128];
+  int     	type, i_offset;
 
   /* set the file type flag */
   type = *((int *) data);
@@ -368,27 +361,24 @@ int graphics_file(caddr_t data)
 	fprintf(stderr,"Invalid file name: %s \n", gr_fname);
 	fprintf(stderr,"File write aborted!\n");
       }
-      return(-1);
+      return;
     }
   short_to_grfx(&short_Image[i_offset], gr_fname, Width, Height, 
 		zWidth, zHeight, Lower, Upper, type);
 }
 
 /*---------------------------- flat_file ---------------------------*/
-int flat_file(caddr_t data)
+void flat_file(void *data)
 {
-  char    	byte_fname[128], short_fname[128], *cptr;
+  char    	byte_fname[128], short_fname[128];
   byte    	*tmp_byte_image;
   short    	*tmp_short_image;
   float		c1, value;
-  int     	i, j, type, i_offset;
+  int     	i, type;
   FILE    	*fp;
 
   /* set the output format */
   type = *((int *) data);
-
-  /* data offset for this image */
-  i_offset = (load_all_images?image_number:0) * Width * Height;
 
   /* construct a file name */
   if ((type==0) || (type==2)) {
@@ -403,7 +393,7 @@ int flat_file(caddr_t data)
 	fprintf(stderr,"Invalid file name: %s \n", byte_fname);
 	fprintf(stderr,"File write aborted!\n");
       }
-      return(-1);
+      return;
     }
   }
   else {
@@ -418,7 +408,7 @@ int flat_file(caddr_t data)
 	fprintf(stderr,"Invalid file name: %s \n", short_fname);
 	fprintf(stderr,"File write aborted!\n");
       }
-      return(-1);
+      return;
     }
   }
 
@@ -429,7 +419,7 @@ int flat_file(caddr_t data)
     fp = fopen(short_fname,"wb");
   if (fp==NULL) {
     fprintf(stderr,"Error opening file!\n");
-    return(-1); 
+    return;
   }
 
   /* define new cursor */
@@ -514,17 +504,16 @@ int flat_file(caddr_t data)
 
 
 /*------------------------ short_to_grfx ----------------------*/
-int short_to_grfx(short *image, char *filename, 
-		  int cols, int rows, int zcols, int zrows, 
-		  int min, int max, int type)
+void short_to_grfx(short *image, char *filename, 
+                   int cols, int rows, int zcols, int zrows, 
+                   int min, int max, int type)
 {
   FILE 	*out;
   char 	command_line[256];
   byte 	gamma_table[256];  
   byte 	*line;
   byte 	*tmp_image1, *tmp_image2;
-  int 	i, j, length, value, tmp;
-  float	value_float;
+  int 	i, j, value, tmp;
 
 
   /* get memory */
@@ -534,7 +523,7 @@ int short_to_grfx(short *image, char *filename,
   out = fopen(filename,"wb");
   if (out==NULL) {
     fprintf(stderr,"Error opening file!\n");
-    return(-1); 
+    return;
   }
   fclose(out);
 
@@ -563,7 +552,7 @@ int short_to_grfx(short *image, char *filename,
   }
   if (!(out = popen (command_line,"w"))) {
     fprintf(stderr,"Error opening pipe!\n");
-    return(-1);
+    return;
   }
 
   /* define new cursor */
@@ -648,18 +637,16 @@ int short_to_grfx(short *image, char *filename,
 
 
 /*------------------------ short_to_pict ----------------------*/
-int short_to_pict(image, filename, cols, rows, zcols, zrows, min, max)
-short	*image;
-char 	*filename;
-int    	cols, rows, zcols, zrows, min, max;
+void short_to_pict(
+     short	*image, char 	*filename, 
+     int    	cols, int rows, int zcols, int zrows, int min, int max)
 {
   FILE 	*out;
   char 	command_line[256];
   byte 	gamma_table[256];  
   byte 	*line;
   byte 	*tmp_image1, *tmp_image2;
-  int 	i, j, length, value, tmp;
-  float 	value_float;
+  int 	i, j, value, tmp;
 
 
   /* get memory */
@@ -669,7 +656,7 @@ int    	cols, rows, zcols, zrows, min, max;
   out = fopen(filename,"wb");
   if (out==NULL) {
     fprintf(stderr,"Error opening file!\n");
-    return(-1); 
+    return;
   }
   fclose(out);
 
@@ -678,7 +665,7 @@ int    	cols, rows, zcols, zrows, min, max;
 	  zcols, zrows, filename);
   if (!(out = popen (command_line,"w"))) {
     fprintf(stderr,"Error opening pipe!\n");
-    return(-1);
+    return;
   }
 
   /* define new cursor */
@@ -762,12 +749,12 @@ int    	cols, rows, zcols, zrows, min, max;
 }
 
 /*---------------------------- matlab_file ---------------------------*/
-int matlab_file(caddr_t data)
+void matlab_file(void *data)
 {
   char    		mat_fname[128], mat_vname[20], *cptr;
   short		        *tmp_short_image;
   double 		value;
-  int     		i, j, i_offset;
+  int     		i, j;
   FILE    		*fp;
   struct mat_header {
     long    type; 
@@ -782,7 +769,7 @@ int matlab_file(caddr_t data)
   cptr = rindex(mat_fname,'.');
   if (cptr) *cptr = '\0';
   if ((num_images>1)&&(cptr))
-    sprintf(cptr,"_image%d.mat\0",image_number+1);
+    sprintf(cptr,"_image%d.mat",image_number+1);
   else
     strcat(mat_fname,".mat");
   if (Verbose) fprintf(stderr,"Preparing matlab file %s\n",mat_fname);
@@ -792,23 +779,20 @@ int matlab_file(caddr_t data)
       fprintf(stderr,"Invalid file name: %s \n", mat_fname);
       fprintf(stderr,"File write aborted!\n");
     }
-    return(-1);
+    return;
   }
 
   /* open file */
   fp = fopen(mat_fname,"wb");
   if (fp==NULL) {
     fprintf(stderr,"Error opening file!\n");
-    return(-1); 
+    return; 
   }
 
   /* define new cursor */
   XDefineCursor(theDisp,mainW,waitCursor);
   XDefineCursor(theDisp,cmdW,waitCursor);
   XFlush(theDisp);
-
-  /* set the data offset for the current image */
-  i_offset = (load_all_images?image_number:0) * Width * Height;
 
   /* display message */
   fprintf(stderr,"Writing file %s...",mat_fname);

@@ -55,6 +55,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "acr_nema.h"
 
 /* ----------------------------- MNI Header -----------------------------------
@@ -239,7 +240,7 @@ void acr_group_add_element(Acr_Group group, Acr_Element element)
                      acr_get_element_element(element),
                      acr_get_element_group(element),
                      group->group_id);
-      exit_xdisp(EXIT_FAILURE);
+      return;
    }
 
    /* Update the group structure */
@@ -609,7 +610,7 @@ Acr_Element acr_find_group_element(Acr_Group group_list,
                      acr_get_element_element(element),
                      acr_get_element_group(element),
                      group_id);
-      exit_xdisp(EXIT_FAILURE);
+      return NULL;
    }
 
    return element;

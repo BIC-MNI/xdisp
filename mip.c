@@ -13,10 +13,10 @@
 
 
 /*-------------------------- MIP ---------------------------------*/
-int MIP()
+void MIP(void)
 {
-  int 	i, j, im, index, mip_offset, im_offset;
-  short	*tmp_short, max;
+  int 	i, im, mip_offset, im_offset;
+  short	*tmp_short;
 
   /* define new cursors */
   XDefineCursor(theDisp,mainW,waitCursor);

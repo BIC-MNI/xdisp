@@ -13,9 +13,9 @@
 
 
 /*-------------------------- TIC ---------------------------------*/
-int TIC()
+void TIC(void *data)
 {
-  int 	i, j, im, org_image; 
+  int 	im, org_image; 
   char  tmp_name[40], tmp_cmd[80];
   float rw_loc;
   FILE	*out;    
@@ -23,14 +23,14 @@ int TIC()
   /* check that an roi is defined */
   if (roi_present != 1) {
     fprintf(stderr,"An ROI must be drawn before calculating its time course.\n");
-    return(1);
+    return;
   }
 
   /* open output file */
   tmpnam(tmp_name);
   if(!(out = fopen(tmp_name,"w"))){ 
     fprintf(stderr,"Unable to open temporary file\n");
-    return(1);
+    return;
   }
 
   /* define new cursors */

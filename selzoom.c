@@ -15,7 +15,7 @@
 
 
 /*-------------------------- Selective_Zoom ---------------------------------*/
-int Selective_Zoom(caddr_t data)
+void Selective_Zoom(void *data)
 {
   int 	w, h, done;
 
@@ -69,10 +69,9 @@ int Selective_Zoom(caddr_t data)
 }
 
 /*---------------------------- Trim ------------------------------*/
-int Trim()
+void Trim(void)
 {
-  int		i, j, index, im, im_index, w, h,
-    x1, x2, y1, y2;
+  int		i, j, index, im, im_index, x1, x2, y1, y2;
 
   /* info */
   if (Verbose) fprintf(stderr,"Trim image at (%d,%d) to (%d,%d)\n",

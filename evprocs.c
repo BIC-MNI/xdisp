@@ -5,7 +5,6 @@
  *
  *	Quit()
  *	DrawWindow()
- *      Reload()
  *	Adjust_Image_Slider()
  *      Refresh()
  *      Hide_cmdW()
@@ -18,7 +17,7 @@
 #include <sys/stat.h>
 
 /*-------------------------------- Quit ----------------------------*/
-int Quit(caddr_t data)
+void Quit(void *data)
 {
   if (Selected_Visual_Class==DirectColor) {
     XStoreColors(theDisp,NewCmap,rootC,ColorMapSize); 
@@ -28,7 +27,7 @@ int Quit(caddr_t data)
 }
 
 /*---------------------------- DrawWindow --------------------------*/
-int DrawWindow(int x, int y, int w, int h)
+void DrawWindow(int x, int y, int w, int h)
 {
   char	 msg1[16], msg2[16], msg3[16], msg4[16], msg5[16];
   double fp_min, fp_max, tmv[5], tmr;
@@ -99,11 +98,11 @@ int DrawWindow(int x, int y, int w, int h)
     else if (Input_Data_Type==ULONG_DATA || Input_Data_Type==USHORT_DATA) {
       fp_min = rw_offset + (double)(P_Min-I_Min)*rw_scale;
       fp_max = rw_offset + (double)(P_Max-I_Min)*rw_scale;
-      sprintf(msg1,"%8u",(ulong) floor(fp_max+0.5));
-      sprintf(msg2,"%8u",(ulong) floor((fp_min+(fp_max-fp_min)*0.75)+0.5));
-      sprintf(msg3,"%8u",(ulong) floor((fp_min+(fp_max-fp_min)*0.50)+0.5));
-      sprintf(msg4,"%8u",(ulong) floor((fp_min+(fp_max-fp_min)*0.25)+0.5));
-      sprintf(msg5,"%8u",(ulong) floor(fp_min+0.5));
+      sprintf(msg1,"%8lu",(ulong) floor(fp_max+0.5));
+      sprintf(msg2,"%8lu",(ulong) floor((fp_min+(fp_max-fp_min)*0.75)+0.5));
+      sprintf(msg3,"%8lu",(ulong) floor((fp_min+(fp_max-fp_min)*0.50)+0.5));
+      sprintf(msg4,"%8lu",(ulong) floor((fp_min+(fp_max-fp_min)*0.25)+0.5));
+      sprintf(msg5,"%8lu",(ulong) floor(fp_min+0.5));
       XDrawImageString(theDisp, mainW, theMGC,
 		       zWidth+2, Ascent_of_TextFont(ol_ginfo),
 		       msg1, 8);
@@ -123,11 +122,11 @@ int DrawWindow(int x, int y, int w, int h)
     else if (Input_Data_Type==LONG_DATA) {
       fp_min = rw_offset + (double)(P_Min-I_Min)*rw_scale;
       fp_max = rw_offset + (double)(P_Max-I_Min)*rw_scale;
-      sprintf(msg1,"%8d",(long) floor(fp_max+0.5));
-      sprintf(msg2,"%8d",(long) floor((fp_min+(fp_max-fp_min)*0.75)+0.5));
-      sprintf(msg3,"%8d",(long) floor((fp_min+(fp_max-fp_min)*0.50)+0.5));
-      sprintf(msg4,"%8d",(long) floor((fp_min+(fp_max-fp_min)*0.25)+0.5));
-      sprintf(msg5,"%8d",(long) floor(fp_min+0.5));
+      sprintf(msg1,"%8ld",(long) floor(fp_max+0.5));
+      sprintf(msg2,"%8ld",(long) floor((fp_min+(fp_max-fp_min)*0.75)+0.5));
+      sprintf(msg3,"%8ld",(long) floor((fp_min+(fp_max-fp_min)*0.50)+0.5));
+      sprintf(msg4,"%8ld",(long) floor((fp_min+(fp_max-fp_min)*0.25)+0.5));
+      sprintf(msg5,"%8ld",(long) floor(fp_min+0.5));
       XDrawImageString(theDisp, mainW, theMGC,
 		       zWidth+2, Ascent_of_TextFont(ol_ginfo),
 		       msg1, 8);
@@ -183,12 +182,11 @@ int DrawWindow(int x, int y, int w, int h)
 
 
 /*-------------------------- Adjust_Image_Slider ------------------*/
-int Adjust_Image_Slider(caddr_t data)
+void Adjust_Image_Slider(void * data)
 {
-  int		x, cw, in;
+  int		x, cw;
   int           idim = *(int *)data;
   D_SLIDER 	*p_data=(D_SLIDER *) Image_Slider[idim]->data;
-  char	        msg[32];
 
   /* find cursor position on slider */
   x = theEvent.xmotion.x - p_data->left_label_width;
@@ -220,13 +218,13 @@ int Adjust_Image_Slider(caddr_t data)
 
 
 /*-------------------------- Refresh ----------------------------*/
-int Refresh(caddr_t data)
+void Refresh(void *data)
 {
   DrawWindow(0,0,zWidth,zHeight);
 }
 
 /*------------------------ Hide_cmdW ----------------------------*/
-int Hide_cmdW(caddr_t data)
+void Hide_cmdW(void *data)
 {
   XUnmapWindow(theDisp,cmdW);
   cmdW_State = IconicState;

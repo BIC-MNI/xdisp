@@ -12,9 +12,9 @@
 #include "spectral.h"
 
 /*------------------------ Initialize --------------------------*/
-Initialize()
+void Initialize(void)
 {
-  int			i, j, tmp;
+  int			i, j;
 
   /* image dimensions, etc */
   oWidth = Width = oHeight = Height  = 0;

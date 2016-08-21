@@ -11,10 +11,8 @@
 #include "xdisp.h"
 
 /*---------------------------- HandleEvent --------------------------*/
-int HandleEvent(XEvent *event)
+void HandleEvent(XEvent *event)
 {
-  int	i;
-    
   if(theEvent.xany.window==mainW) {
 
     switch (event->type) {
@@ -132,7 +130,7 @@ int HandleEvent(XEvent *event)
 	XDefineCursor(theDisp,mainW,mainCursor);
 	XFlush(theDisp);               
 	if (Scale_Data && (oUpper != Upper || oLower != Lower)) {
-	  Rescale();
+	  Rescale(NULL);
 	  Window_Level(Lower,Upper); 
 	  oLower=Lower; oUpper=Upper; 
 	}
@@ -167,8 +165,8 @@ int HandleEvent(XEvent *event)
 				icon_byte_image, ICON_WIDTH, ICON_HEIGHT);
 	}
 	else {
-	  nneighbour_rgbp_to_rgbp(byte_Image, Width, Height,
-				  icon_byte_image, ICON_WIDTH, ICON_HEIGHT);
+	  nneighbour_rgbp_to_rgbp((uint32_t *) byte_Image, Width, Height,
+				  (uint32_t *) icon_byte_image, ICON_WIDTH, ICON_HEIGHT);
 	}
       }
       XPutImage(theDisp,iconW,theMGC,iconImage,0,0,0,0,
@@ -239,7 +237,7 @@ int HandleEvent(XEvent *event)
     if(*(which_xwin->event_handler)!=NULL)
       (*(which_xwin->event_handler))(which_xwin);
     if (Scale_Data && (oUpper != Upper || oLower != Lower)) {
-      Rescale();
+      Rescale(NULL);
       oLower=Lower; oUpper=Upper;
     }
   }

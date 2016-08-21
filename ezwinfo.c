@@ -14,7 +14,7 @@
 #include "xdisp.h"
 
 /*------------------ Initialize_Info_Widget() ----------------------*/
-void Initialize_Info_Widget()
+void Initialize_Info_Widget(void)
 {
   EZ_Widget    *tmp_w1, *tmp_w2;
 
@@ -55,14 +55,14 @@ void Initialize_Info_Widget()
 }
 
 /*---------------------- Open_Info_Widget() ------------------------*/
-int Open_Info_Widget()
+void Open_Info_Widget(void *data)
 {
   char        tmp_name[128], tmp_cmd[256];
     
   /* check to make sure we have a minc file loaded */
   if (file_format!=MINC_FORMAT) {
     EZW_Error("Error: This is not a minc file!");
-    return(-1);
+    return;
   }
 
   /* create a temp filename */
@@ -91,7 +91,7 @@ int Open_Info_Widget()
 }
 
 /*-------------------- Close_Info_Widget() --------------------------*/
-void Close_Info_Widget()
+void Close_Info_Widget(void *object, void *data)
 {
   EZ_TextClear(Mincheader_Widget);
   EZ_DeActivateWidget(Info_Widget);

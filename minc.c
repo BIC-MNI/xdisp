@@ -103,7 +103,6 @@ void get_dimension_info(char *infile, int icvid,
    int mincid, imgid, varid;
    int idim, ndims;
    int dim[MAX_VAR_DIMS];
-   long *dimlength;
    char *dimname;
 
    /* Get the minc file id and the image variable id */

@@ -16,12 +16,11 @@
 #include <sys/stat.h>
 
 /*---------------------------- Scale_Image -------------------------------*/
-int Scale_Image(int min, int max)
+void Scale_Image(int min, int max)
 {
-  int 		        i, j, im, bcount;
+  int 		        i, im;
   float 		fcmo, fnc, fwin, fmin, fmax, fd;
   register byte 	*bptr, pix_byte;
-  byte 	 	        bmat[4];
   register short 	*sptr;
 
   /* define a few things */
@@ -103,7 +102,7 @@ int Scale_Image(int min, int max)
 }
 
 /*---------------------------- Rescale ------------------------------*/
-int Rescale(caddr_t data)
+void Rescale(void *data)
 {
   int	w,h;
 
@@ -136,7 +135,7 @@ int Rescale(caddr_t data)
 }
 
 /*-------------------------- Auto_Scale ----------------------------*/
-int Auto_Scale(caddr_t data)
+void Auto_Scale(void *data)
 {
   float	   sum, sq_sum;
   int		   i, count;
@@ -161,11 +160,11 @@ int Auto_Scale(caddr_t data)
 }
 
 /*------------------------- Scale_Short_to_Byte -------------------------------*/
-int Scale_Short_to_Byte(short *s_im, int s_w, int s_h,
+void Scale_Short_to_Byte(short *s_im, int s_w, int s_h,
 			byte *b_im,  int b_w, int b_h,
 			int min, int max)
 {
-  int 		i, j;
+  int 		i;
   float 	fwin;
   byte          *tmp_byte;
 
@@ -234,6 +233,5 @@ int Scale_Short_to_Byte(short *s_im, int s_w, int s_h,
 
   /* clear workspace */
   free(tmp_byte);
-  return(1);
 }
 

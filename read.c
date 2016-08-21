@@ -19,7 +19,7 @@
 #include "acr_nema.h"
 
 /*---------------------------- Read_Byte -------------------------------*/
-int Read_Byte() 
+void Read_Byte(void)
 {
   int 	i;
   FILE 	*fp;
@@ -61,12 +61,11 @@ int Read_Byte()
   /* clean up and close the file */
   free(char_data);
   fclose(fp);
-  return(1);
 }
 
 
 /*---------------------------- Read_UByte -------------------------------*/
-int Read_UByte() 
+void Read_UByte(void)
 {
   int 		i;
   FILE 		*fp;
@@ -108,11 +107,10 @@ int Read_UByte()
   /* clean up and close the file */
   free(uchar_data);
   fclose(fp);
-  return(1);
 }
 
 /*---------------------------- Read_Short -------------------------------*/
-int Read_Short() 
+void Read_Short(void)
 {
   int 	i;
   FILE  *fp;
@@ -147,17 +145,16 @@ int Read_Short()
 
   /* swap bytes if needed */        
   if (Swap) {
-     Byte_Swap(&short_Image[(load_all_images?(Width*Height*image_number):0)],  
+      Byte_Swap((byte *) &short_Image[(load_all_images?(Width*Height*image_number):0)],  
 	       Width*Height*2);  
     }
   
   /* close the file */
   fclose(fp);
-  return(1);
 }
 
 /*---------------------------- Read_UShort -------------------------------*/
-int Read_UShort() 
+void Read_UShort(void)
 {
   int 		      i;
   FILE 		      *fp;
@@ -193,7 +190,7 @@ int Read_UShort()
   }
 
   /* swap bytes if needed */        
-  if (Swap) Byte_Swap(ushort_data,Width*Height*2);
+  if (Swap) Byte_Swap((byte *) ushort_data,Width*Height*2);
 
   /* find the min and max */
   min = USHRT_MAX;
@@ -221,11 +218,10 @@ int Read_UShort()
   /* clean up and close the file */
   free(ushort_data);
   fclose(fp);
-  return(1);
 }
 
 /*---------------------------- Read_Long -------------------------------*/
-int Read_Long() 
+void Read_Long(void)
 {
   int 		i;
   FILE 		*fp;
@@ -261,7 +257,7 @@ int Read_Long()
   }
 
   /* swap bytes if needed */        
-  if (Swap) Byte_Swap(long_data,Width*Height*4);
+  if (Swap) Byte_Swap((byte *) long_data,Width*Height*4);
 
   /* find the min and max */
   min = LONG_MAX;
@@ -273,7 +269,7 @@ int Read_Long()
       if (long_data[i]>max) max = long_data[i];
   }
   fscale = (float)(SHRT_MAX-SHRT_MIN)/(float)(max-min);
-  if (Verbose) fprintf(stderr,"Long int image min,max = %d,%d\n",min,max);
+  if (Verbose) fprintf(stderr,"Long int image min,max = %ld,%ld\n",min,max);
 
   /* scale the data and move to short_Image */
   for (i=0; i<Height*Width; i++) {
@@ -288,12 +284,11 @@ int Read_Long()
   /* clean up and close the file */
   free(long_data);
   fclose(fp);
-  return(1);
 }
 
 
 /*---------------------------- Read_ULong -------------------------------*/
-int Read_ULong() 
+void Read_ULong(void)
 {
   int 		      i;
   FILE 		      *fp;
@@ -329,7 +324,7 @@ int Read_ULong()
   }
 
   /* swap bytes if needed */        
-  if (Swap) Byte_Swap(ulong_data,Width*Height*4);
+  if (Swap) Byte_Swap((byte *) ulong_data,Width*Height*4);
 
   /* find the min and max */
   min = ULONG_MAX;
@@ -342,7 +337,7 @@ int Read_ULong()
   }
   fscale = (float)(SHRT_MAX-SHRT_MIN)/(float)(max-min);
   if (Verbose) 
-    fprintf(stderr,"Unsigned long int image min,max = %d,%d\n",min,max);
+    fprintf(stderr,"Unsigned long int image min,max = %lu,%lu\n",min,max);
 
   /* scale the data and move to short_Image */
   for (i=0; i<Height*Width; i++) {
@@ -357,12 +352,11 @@ int Read_ULong()
   /* clean up and close the file */
   free(ulong_data);
   fclose(fp);
-  return(1);
 }
 
 
 /*---------------------------- Read_Float -------------------------------*/
-int Read_Float() 
+void Read_Float(void)
 {
   int 		i;
   FILE 		*fp;
@@ -398,7 +392,7 @@ int Read_Float()
   }
 
   /* swap bytes if needed */        
-  if (Swap) Byte_Swap(float_data,Width*Height*4);
+  if (Swap) Byte_Swap((byte *) float_data,Width*Height*4);
 
   /* find the min and max */
   min = FLT_MAX;
@@ -425,11 +419,10 @@ int Read_Float()
   /* clean up and close the file */
   free(float_data);
   fclose(fp);
-  return(1);
 }
 
 /*---------------------------- Read_Double -------------------------------*/
-int Read_Double() 
+void Read_Double(void)
 {
   int 		i;
   FILE 		*fp;
@@ -466,7 +459,7 @@ int Read_Double()
   }
 
   /* swap bytes if needed */        
-  if (Swap) Byte_Swap(double_data,Width*Height*8);
+  if (Swap) Byte_Swap((byte *) double_data,Width*Height*8);
 
   /* find the min and max */
   min = DBL_MAX;
@@ -493,6 +486,5 @@ int Read_Double()
   /* clean up and close the file */
   free(double_data);
   fclose(fp);
-  return(1);
 }
 

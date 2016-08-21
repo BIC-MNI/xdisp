@@ -11,7 +11,7 @@
 #include "xdisp.h"
 
 /*------------------------ olgx_init --------------------------*/
-olgx_init()
+void olgx_init(void)
 {
   /* set up the Text fonts */
   if (font!=NULL) {

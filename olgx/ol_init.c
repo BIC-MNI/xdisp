@@ -31,27 +31,24 @@
 /* ARGSUSED */
 #ifdef OW_I18N
 static Graphics_info  *
-olgx_real_main_initialize(fs_or_not, dpy, screen, depth, d_flag,
-			  glyphfont_struct, utextfont, pixvals,
-			  stipple_pixmaps)
-    Bool            fs_or_not;
+olgx_real_main_initialize(
+     Bool            fs_or_not,
 #else
-Graphics_info  *
-olgx_main_initialize(dpy, screen, depth, d_flag, glyphfont_struct,
-		     textfont_struct, pixvals, stipple_pixmaps)
+Graphics_info *
+olgx_main_initialize(
 #endif
-    Display        *dpy;
-    int             screen;
-    unsigned int    depth;
-    int             d_flag;
-    XFontStruct    *glyphfont_struct;
+     Display        *dpy,
+     int             screen,
+     unsigned int    depth,
+     int             d_flag,
+     XFontStruct    *glyphfont_struct,
 #ifdef OW_I18N
-    Olgx_font_or_fs utextfont;
+     Olgx_font_or_fs utextfont,
 #else
-    XFontStruct    *textfont_struct;
+     XFontStruct    *textfont_struct,
 #endif
-    unsigned long   pixvals[];
-    Pixmap          stipple_pixmaps[];
+     unsigned long   pixvals[],
+     Pixmap          stipple_pixmaps[])
 
 {
     Graphics_info  *info;
@@ -318,15 +315,14 @@ olgx_main_initialize(dpy, screen, depth, d_flag, glyphfont_struct,
  */
 
 Graphics_info  *
-olgx_initialize(dpy, screen, d_flag, glyphfont_struct,
-		textfont_struct, pixvals, stipple_pixmaps)
-    Display        *dpy;
-    int             screen;
-    int             d_flag;
-    XFontStruct    *glyphfont_struct;
-    XFontStruct    *textfont_struct;
-    unsigned long   pixvals[];
-    Pixmap          stipple_pixmaps[];
+olgx_initialize(
+                Display        *dpy,
+                int             screen,
+                int             d_flag,
+                XFontStruct    *glyphfont_struct,
+                XFontStruct    *textfont_struct,
+                unsigned long   pixvals[],
+                Pixmap          stipple_pixmaps[])
 
 {
     return (olgx_main_initialize(dpy, screen, DefaultDepth(dpy, screen), d_flag,
@@ -338,16 +334,15 @@ olgx_initialize(dpy, screen, d_flag, glyphfont_struct,
 
 #ifdef OW_I18N
 Graphics_info *
-olgx_i18n_initialize(dpy, screen, depth, d_flag, glyphfont_struct,
-		     textfont_set, pixvals, stipple_pixmaps)
-    Display        *dpy;
-    int             screen;
-    unsigned int    depth;
-    int             d_flag;
-    XFontStruct    *glyphfont_struct;
-    XFontSet        textfont_set;
-    unsigned long   pixvals[];
-    Pixmap          stipple_pixmaps[];
+olgx_i18n_initialize(
+                     Display        *dpy,
+                     int             screen,
+                     unsigned int    depth,
+                     int             d_flag,
+                     XFontStruct    *glyphfont_struct,
+                     XFontSet        textfont_set,
+                     unsigned long   pixvals[],
+                     Pixmap          stipple_pixmaps[])
 {
     Olgx_font_or_fs utextfont;
 
@@ -357,18 +352,16 @@ olgx_i18n_initialize(dpy, screen, depth, d_flag, glyphfont_struct,
 				     stipple_pixmaps);
 }
 
-    
 Graphics_info *
-olgx_main_initialize(dpy, screen, depth, d_flag, glyphfont_struct,
-		     textfont_struct, pixvals, stipple_pixmaps)
-    Display        *dpy;
-    int             screen;
-    unsigned int    depth;
-    int             d_flag;
-    XFontStruct    *glyphfont_struct;
-    XFontStruct    *textfont_struct;
-    unsigned long   pixvals[];
-    Pixmap          stipple_pixmaps[];
+olgx_main_initialize(
+                     Display        *dpy,
+                     int             screen,
+                     unsigned int    depth,
+                     int             d_flag,
+                     XFontStruct    *glyphfont_struct,
+                     XFontStruct    *textfont_struct,
+                     unsigned long   pixvals[],
+                     Pixmap          stipple_pixmaps[])
 {
     Olgx_font_or_fs utextfont;
 
@@ -1213,14 +1206,14 @@ olgx_set_single_color(info, index, pixval, flag)
  */
 
 unsigned long
-olgx_get_single_color(info, index)
-    Graphics_info  *info;
-    int             index;
+olgx_get_single_color(
+                      Graphics_info  *info,
+                      int             index)
 {
 
     if (info->gc_rec[index] != NULL)
 	return (info->pixvals[index]);
-
+    return 0;
 }
 
 
@@ -1234,8 +1227,7 @@ olgx_get_single_color(info, index)
 
 
 void
-olgx_destroy(info)
-    Graphics_info  *info;
+olgx_destroy(Graphics_info  *info)
 {
 
     per_disp_res_ptr per_displ_res_ptr;
@@ -1473,8 +1465,7 @@ olgx_gcrec_available(perdispl_res_ptr, valuemask, values)
 
 
 Pixmap
-olgx_get_busy_stipple(perdispl_res_ptr)
-    per_disp_res_ptr perdispl_res_ptr;
+olgx_get_busy_stipple(per_disp_res_ptr perdispl_res_ptr)
 
 /* returns a standard busy  stipple pixmap .. Creates one if nothing exists  */
 
@@ -1568,8 +1559,8 @@ olgx_get_perdisplay_list(dpy, screen)
     cur->dpy = dpy;
     cur->screen = screen;
     cur->gc_list_ptr = NULL;
-    cur->busy_stipple = NULL;
-    cur->grey_stipple = NULL;
+    cur->busy_stipple = (Pixmap) NULL;
+    cur->grey_stipple = (Pixmap) NULL;
     cur->next = olgx_perdisp_res_list;
     olgx_perdisp_res_list = cur;
 

@@ -15,10 +15,7 @@
 #include "xdcicon.bit"
 #include "xdcmask.bit"
 
-SetCIcon(dsp, wnd, state)
-Display	*dsp;
-Window	wnd;
-int     state;
+void SetCIcon(Display *dsp, Window wnd, int state)
 {
 
   Pixmap 	 icon_bmp, icon_mask_bmp;

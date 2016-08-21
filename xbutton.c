@@ -17,22 +17,25 @@
 #include <time.h> 
 #include "xdisp.h"
 
+static void button_handler(XWIN *p_xwin);
+static void slider_handler(XWIN *p_xwin);
+static void draw_button(XWIN *p_xwin, int state);
+
 /*------------------------ MakeXButton -------------------------
  *
  * A labeled button you can press to perform an action
  *
  */
 
-XWIN    *MakeXButton(x, y, width, height, bdwidth, bdcolor, bgcolor,
-                     parent, label, button_action, action_data, state)
-int 	    x, y;
-unsigned    width, height, bdwidth;
-ulong       bdcolor, bgcolor;
-Window 	    parent;
-char 	    *label; 
-int	    (*button_action)();
-caddr_t     action_data;
-int 	    state;
+XWIN    *MakeXButton(
+                     int 	    x, int y,
+                     unsigned    width, unsigned height, unsigned bdwidth,
+                     ulong       bdcolor, ulong bgcolor,
+                     Window 	    parent,
+                     char 	    *label,
+                     void (*button_action)(void *),
+                     void *action_data,
+                     int 	    state)
 {
   XWIN			*new_button;
   D_BUTTON    		*p_data;
@@ -108,19 +111,16 @@ int 	    state;
  *
  */
 
-XWIN    *MakeXSlider(x, y, slider_width, slider_height, 
-                     left_label_width, right_label_width, value, 
-                     bdcolor, bgcolor, parent, left_label, right_label,
-                     slider_action, action_data)
-int 	        x, y;
-unsigned 	slider_width, slider_height, 
-                left_label_width, right_label_width,
-                value;
-ulong 	        bdcolor, bgcolor;
-Window          parent;
-char 	        *left_label, *right_label;
-int             (*slider_action)();
-caddr_t         action_data;
+XWIN    *MakeXSlider(
+                     int      x, int y,
+                     unsigned slider_width, unsigned slider_height,
+                     unsigned left_label_width, unsigned right_label_width,
+                     unsigned value,
+                     ulong    bdcolor, ulong bgcolor,
+                     Window   parent,
+                     char     *left_label, char *right_label,
+                     void     (*slider_action)(void *),
+                     void     *action_data)
 {
   XWIN	*new_slider;
   D_SLIDER    *p_data;
@@ -199,10 +199,9 @@ caddr_t         action_data;
 }
 
 /*------------------------ button_handler ---------------------*/
-int button_handler(XWIN *p_xwin)
+static void button_handler(XWIN *p_xwin)
 {
   D_BUTTON *p_data=(D_BUTTON *) p_xwin->data;
-  time_t t1;
 
   /* handle events in this window */
   if(theEvent.xany.window==p_xwin->xid)
@@ -240,7 +239,7 @@ int button_handler(XWIN *p_xwin)
 }
 
 /*------------------------ slider_handler ---------------------*/
-int slider_handler(XWIN *p_xwin)
+static void slider_handler(XWIN *p_xwin)
 {
   D_SLIDER *p_data=(D_SLIDER *) p_xwin->data;
 
@@ -272,7 +271,7 @@ int slider_handler(XWIN *p_xwin)
 }
 
 /*------------------------ draw_button ----------------------------------*/
-int draw_button(XWIN *p_xwin, int state)
+static void draw_button(XWIN *p_xwin, int state)
 {
   D_BUTTON 	*p_data=(D_BUTTON *) p_xwin->data;
 
@@ -282,7 +281,7 @@ int draw_button(XWIN *p_xwin, int state)
 }
 
 /*------------------------ draw_slider ----------------------------------*/
-int draw_slider(XWIN *p_xwin, int state)
+void draw_slider(XWIN *p_xwin, int state)
 {
   D_SLIDER 	*p_data=(D_SLIDER *) p_xwin->data;
   int		label_pos, label_w, max_label_w;

@@ -60,6 +60,7 @@
 #include <math.h>
 #include <ctype.h>
 #include <limits.h>
+#include <stdint.h>
 /* #include <values.h> */
 #include <float.h>
 #include <unistd.h>
@@ -190,10 +191,10 @@ WHERE XWIN    *QuitButton, *PrintButton, *Inc_upperButton,
               *InterpolationButton, *PlotButton;
 
 WHERE Time    t_last_click, t_fast;
+WHERE int cmd_width, cmd_height, info_height;
 WHERE unsigned
               button_height,
-              cmd_width, cmd_height,
-              info_height, title_height, 
+              title_height, 
               next_button_x, next_button_y;
 WHERE int     zero, one, two, three, four, gr_gif, gr_tiff, gr_sgi, gr_rast, gr_pict;
 WHERE char    *fname, *version, *cmd_line_fnames[MAX_NUM_FILES];
@@ -207,52 +208,148 @@ WHERE int     roiceps;
 WHERE boolean ext_roi_on, ext_roi_active;
 
 /* prototypes */
-WHERE int    CreateMainWindow(), CreateCmdWindow(), Define_Cmd_Buttons(),
-             update_msgs(), update_sliders(), Define_ColorMap(), Define_ColorBar(),
-             Toggle_ColorBar(), TrueColor_Initialize(), Quit(), DrawWindow(),
-             Resize(), Window_Level(), toggle(), zoom(), inc_upper(), dec_upper(),
-             inc_lower(), dec_lower(), inc_steps(), dec_steps(), Toggle_Interpolation(),
-             Adjust_Upper_Slider(), Adjust_Lower_Slider(), Adjust_Image_Slider(),
-             Reload(), image_stats(), roi_stats(), draw_roi(), Rescale(), Crop(),
-             Flip_Image(), Rotate_Image(), Reorient_Volume(), Auto_Scale(),
-             Refresh(), Reset_Window_Level(), Switch_Colormap(),
-             Show_Window_Level(), H_Profile(), V_Profile(), Load_Image(),
-             Scale_Image(), HandleEvent(), FatalError(), Syntax(), Help(),
-             ColorBar_Scale(), graphics_file(), ps_file(), draw_button(),
-             Byte_Swap(), SetCIcon(), SetMIcon(), online_Help(), cmi_init(),
-             Initialize(), Resize_ColorBar(), short_to_grfx(), ol_init(),
-             matlab_file(), flat_file(), bilinear_byte_to_byte(),
-             bilinear_short_to_short(), bilinear_int_to_int(),
-             bilinear_long_to_long(), bilinear_float_to_float(),
-             bilinear_double_to_double(), bilinear_rgbp_to_rgbp(),
-             nneighbout_byte_to_byte(), nneighbour_short_to_short(),
-             nneighbout_int_to_int(), nneighbout_long_to_long(),
-             nneighbour_float_to_float(), nneighbour_double_to_double(),
-             nneighbour_rgbp_to_rgbp(), Selective_Zoom(), Trim(), New_Image(),
-             Increment_Image(), Decrement_Image(), MIP(), TIC(), Load_All(),
-             Scale_Short_to_Byte(), File_Is_Compressed(), File_Compression_Type(),
-             H_Profile_Swicth(), V_Profile_Swicth(), Hide_cmdW(), Plot_Profile(),
-              _Reorient_Volume(short *, int, int, int);
-WHERE void   Handle_KeyPress(), Handle_Motion();
-WHERE char   *Decompress_File();
-WHERE void   exit_xdisp(int);
+/* bilinear.c */
+WHERE void bilinear_byte_to_byte (byte *oim, int ox, int oy, 
+                                  byte *nim, int nx, int ny);
+WHERE void bilinear_short_to_short (short *oim, int ox, int oy, 
+                                  short *nim, int nx, int ny);
+WHERE void bilinear_int_to_int (int *oim, int ox, int oy, 
+                                int *nim, int nx, int ny);
+WHERE void bilinear_long_to_long (int32_t *oim, int ox, int oy, 
+                                  int32_t *nim, int nx, int ny);
+WHERE void bilinear_float_to_float(float *oim, int ox, int oy, 
+                                   float *nim, int nx, int ny);
+WHERE void bilinear_double_to_double(double *oim, int ox, int oy, 
+                                     double *nim, int nx, int ny);
+WHERE void bilinear_rgbp_to_rgbp(byte *oim, int ox, int oy, 
+                                 byte *nim, int nx, int ny);
 
-WHERE void    Create_EZ_Widgets(), Save_File_Select_Done_Callback(),
-              Save_File_Select_Cancel_Callback(), Get_New_Filename(), 
-              Load_New_Image(), Spawn_New_xdisp(), Input_Widget_CallBack(),
-              ReInitialize(), Close_Info_Widget(), Close_Help_Widget(),
-              Close_Input_Widget(), Get_Input_Text(),
-              Initialize_File_Widgets(), Initialize_Info_Widget(),
-              Initialize_Help_Widget(), Initialize_Input_Widget(),
-              Initialize_Plot_Widget(), Close_Plot_Widget(),
-              Plot_Type_Switch(), Plot_Style_Switch(), Initialize_Error_Widget(),
-              ROI_Size_Switch(), Close_Error_Widget();
-WHERE char    *Get_Save_Filename();
-WHERE int     Open_File_Selector_Widget(), Open_Info_Widget(), 
-              Open_Help_Widget(), EZW_Online_Help(), Open_Input_Widget(),
-              Open_Plot_Widget(), Draw_Plot_Axis(), EZW_Error();
+/* button.c */
+WHERE void CreateMainWindow(char *name, char *geom, int argc, char **argv);
+WHERE void CreateCommandWindow(int x, int y,
+                               unsigned int width, 
+                               unsigned int height, 
+                               unsigned int bdwidth, 
+                               uint32_t bdcolor, 
+                               uint32_t bgcolor,
+                               int32_t h_flag,
+                               Window parent, char *label);
+WHERE void Define_Cmd_Buttons(void);
 
-/* ------------------------- MINC additions ------------------------------*/
+/* color.c */
+WHERE void Switch_Colormap(void *);
+WHERE void ColorBar_Scale(int min, int max);
+WHERE void Resize_ColorBar(int w, int h);
+
+/* compress.c */
+WHERE int File_Is_Compressed(char *);
+WHERE int File_Compression_Type(char *);
+WHERE char *Decompress_File(char *);
+
+/* defcolor.c */
+WHERE void Define_ColorMap(void);
+WHERE void Define_ColorBar(void);
+WHERE void Toggle_ColorBar(void *);
+WHERE void TrueColor_Initialize(void);
+WHERE void Toggle_Interpolation(void *);
+
+/* evprocs.c */
+WHERE void Quit(void *);
+WHERE void DrawWindow(int x, int y, int w, int h);
+WHERE void Adjust_Image_Slider(void *);
+WHERE void Refresh(void *);
+WHERE void Hide_cmdW(void *);
+
+/* exit.c */
+WHERE void exit_xdisp(int status);
+
+/* ext_roi.c */
+WHERE int draw_ext_roi(int ps_roi_draw, FILE *ps_fp, int ps_xoff, int ps_yoff); 
+
+/* ezwerror.c */
+WHERE void Initialize_Error_Widget(void);
+WHERE void Open_Error_Widget(void);
+WHERE void Close_Error_Widget(void *, void *);
+WHERE void EZW_Error(char *);
+
+/* ezwfs.c */
+WHERE void Initialize_File_Widgets(void);
+WHERE void Get_New_Filename(EZ_Widget *object, void *data);
+WHERE void Open_File_Selector_Widget(void *data);
+WHERE void Load_New_Image(char *fn);
+WHERE void Spawn_New_xdisp( EZ_Widget *widget, void *data );
+WHERE char * Get_Save_Filename(char *);
+WHERE void Save_File_Select_Done_Callback( EZ_Widget *widget, void *data );
+WHERE void Save_File_Select_Cancel_Callback( EZ_Widget *widget, void *data );
+
+/* ezwhelp.c */
+WHERE void Initialize_Help_Widget(void);
+WHERE void Open_Help_Widget(void *);
+WHERE void Close_Help_Widget(void *, void *);
+WHERE void EZW_Online_Help(void);
+
+/* ezwinfo.c */
+WHERE void Initialize_Info_Widget(void);
+WHERE void Open_Info_Widget(void *);
+WHERE void Close_Info_Widget(void *, void *);
+
+/* ezwinit.c */
+WHERE void Create_EZ_Widgets(void);
+WHERE void ReInitialize(void);
+
+/* ezwinput.c */
+WHERE void Initialize_Input_Widget(void);
+WHERE void Open_Input_Widget(void *);
+WHERE void Close_Input_Widget(void);
+WHERE void Input_Widget_CallBack(EZ_Widget *widget, void *label);
+
+/* ezwplot.c */
+WHERE void Initialize_Plot_Widget(void);
+WHERE void Open_Plot_Widget(void *);
+WHERE void Close_Plot_Widget(void *, void *);
+WHERE void Plot_Profile(EZ_Widget *Plot_Surface);
+WHERE void Plot_Type_Switch(EZ_Widget *p_button, void *data);
+WHERE void Plot_Style_Switch(EZ_Widget *p_button, void *data);
+WHERE void ROI_Size_Switch(EZ_Widget *p_button, void *data);
+WHERE void Draw_Plot_Axis(EZ_Widget  *p_canvas,
+                          float xl_min, float xl_max, float yl_min, float yl_max,
+                          char *xlabel, char *ylabel, char *title);
+
+/* files.c */
+WHERE void ps_file(void *);
+WHERE void graphics_file(void *);
+WHERE void flat_file(void *);
+WHERE void short_to_grfx(short *image, char *filename, 
+                         int cols, int rows, int zcols, int zrows, 
+                         int min, int max, int type);
+WHERE void matlab_file(void *);
+
+/* handler.c */
+WHERE void HandleEvent(XEvent *);
+
+/* help.c */
+WHERE void Syntax(char *);
+WHERE void Help(void);
+WHERE void online_Help(void);
+WHERE void FatalError(char *);
+
+/* image.c */
+WHERE void Load_Image(char *fname);
+WHERE void Increment_Image(void *);
+WHERE void Decrement_Image(void *);
+WHERE void New_Image(void);
+WHERE void cmi_init(FILE *fp);
+WHERE void Load_All(void *);
+WHERE void Byte_Swap(byte *byte_data, int length);
+WHERE void Reload(void *);
+
+/* initialize.c */
+WHERE void Initialize(void);
+
+/* keypress.c */
+WHERE void Handle_KeyPress(XEvent *);
+
+/* minc.c */
 #include <minc.h>
 
 #ifndef MAX_VAR_DIMS
@@ -305,7 +402,6 @@ typedef struct {
   char   dimension_units[MAX_VAR_DIMS][MAX_NC_NAME]; /* Dimension units */
 } Volume_Info;
 
-/* Function prototypes */
 int  get_volume_info(char *infile, Volume_Info *volume_info);
 void setup_input_icv(int icvid);
 void get_dimension_info(char *infile, int icvid, 
@@ -326,6 +422,124 @@ void save_volume_slice(int icvid, Volume_Info *volume_info,
                               int slice_num[], unsigned char *image,
                               double slice_min, double slice_max);
 void read_volume_data(int icvid, Volume_Info *volume_info, short *volume);
+
+/* mip.c */
+void MIP(void);
+
+/* motion.c */
+WHERE void Handle_Motion(XEvent *);
+
+/* nneighbour.c */
+WHERE void nneighbour_byte_to_byte(byte *oim, int ox, int oy, 
+                                   byte *nim, int nx, int ny);
+WHERE void nneighbour_short_to_short(short *oim, int ox, int oy, 
+                                     short *nim, int nx, int ny);
+WHERE void nneighbour_int_to_int(int *oim, int ox, int oy, 
+                                 int *nim, int nx, int ny);
+WHERE void nneighbour_long_to_long(int32_t *oim, int ox, int oy, 
+                                   int32_t *nim, int nx, int ny);
+WHERE void nneighbour_float_to_float(float *oim, int ox, int oy, 
+                                     float *nim, int nx, int ny);
+WHERE void nneighbour_double_to_double(double *oim, int ox, int oy, 
+                                       double *nim, int nx, int ny);
+WHERE void nneighbour_rgbp_to_rgbp(uint32_t *oim, int ox, int oy, 
+                                   uint32_t *nim, int nx, int ny);
+
+/* olinit.c */
+WHERE void olgx_init(void);
+
+/* profile.c */
+WHERE void H_Profile(void);
+WHERE void V_Profile(void);
+WHERE void H_Profile_Switch(void *);
+WHERE void V_Profile_Switch(void *);
+
+/* read.c */
+WHERE void Read_Byte(void);
+WHERE void Read_UByte(void);
+WHERE void Read_Short(void);
+WHERE void Read_UShort(void);
+WHERE void Read_Long(void);
+WHERE void Read_ULong(void);
+WHERE void Read_Float(void);
+WHERE void Read_Double(void);
+
+/* reshape.c */
+WHERE void Resize(int, int);
+WHERE void zoom(void *);
+WHERE void Crop(void *);
+WHERE void Flip_Image(void *);
+WHERE void Rotate_Image(void *);
+WHERE void Reorient_Volume(void *);
+WHERE void _Reorient_Volume(short volume[], int num_slices, int width, int height);
+
+/* roi.c */
+WHERE void image_stats(void *);
+WHERE void roi_stats(int, int, int, int, int);
+WHERE void draw_roi(int, int, int, int);
+
+/* scale.c */
+WHERE void Scale_Image(int min, int max);
+WHERE void Rescale(void *);
+WHERE void Auto_Scale(void *);
+WHERE void Scale_Short_to_Byte(short *s_im, int s_w, int s_h,
+                               byte *b_im,  int b_w, int b_h,
+                               int min, int max);
+
+/* selzoom.c */
+WHERE void Selective_Zoom(void *);
+WHERE void Trim(void);
+
+/* setcicon.c */
+WHERE void SetCIcon(Display *dsp, Window wnd, int state);
+
+/* setmicon.c */
+WHERE void SetMIcon(int state);
+
+/* tic.c */
+WHERE void TIC(void *);
+
+/* update.c */
+WHERE void
+  update_msgs(void),
+  update_sliders(void);
+
+/* winlev.c */
+WHERE void Window_Level(int lower, int upper);
+WHERE void toggle(void *);
+WHERE void inc_upper(void *);
+WHERE void dec_upper(void *);
+WHERE void inc_lower(void *);
+WHERE void dec_lower(void *);
+WHERE void inc_steps(void *);
+WHERE void dec_steps(void *);
+WHERE void Adjust_Upper_Slider(void *);
+WHERE void Adjust_Lower_Slider(void *);
+WHERE void Reset_Window_Level(void *);
+WHERE void Show_Window_Level(void);
+
+/* xbutton.c */
+WHERE XWIN *MakeXButton(int x, int y,
+                        unsigned width, unsigned height, unsigned bdwidth,
+                        ulong bdcolor, ulong bgcolor,
+                        Window parent, char *label,
+                        void (*button_action)(void *),
+                        void *action_data,
+                        int state);
+WHERE XWIN *MakeXSlider(int x, int y,
+                        unsigned slider_width, unsigned slider_height,
+                        unsigned left_label_width, unsigned right_label_width,
+                        unsigned value,
+                        ulong bdcolor, ulong bgcolor,
+                        Window parent,
+                        char *left_label, char *right_label,
+                        void (*slider_action)(void *),
+                        void *action_data);
+WHERE void draw_slider(XWIN *p_xwin, int state);
+
+/* ------------------------- MINC additions ------------------------------*/
+
+/* Function prototypes */
 
 /* global stuff */
 Volume_Info   minc_volume_info;

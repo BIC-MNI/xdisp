@@ -13,7 +13,7 @@
 #include "xdisp.h"
 
 /*--------------------------- update_msgs ---------------------------*/
-int update_msgs()
+void update_msgs(void)
 {
   D_SLIDER	*ud = (D_SLIDER *) Upper_Slider->data;
   D_SLIDER	*ld = (D_SLIDER *) Lower_Slider->data;
@@ -44,15 +44,15 @@ int update_msgs()
 	    (double)(rw_offset + ((double)(Lower-I_Min)*rw_scale)) );        
   }
   else if (Input_Data_Type==USHORT_DATA || Input_Data_Type==ULONG_DATA) {
-    sprintf(upper_msg,"Upper= %-8u ",
+    sprintf(upper_msg,"Upper= %-8lu ",
 	    (ulong)floor((rw_offset + ((double)(Upper-I_Min)*rw_scale))+0.5) );
-    sprintf(lower_msg,"Lower= %-8u ",
+    sprintf(lower_msg,"Lower= %-8lu ",
 	    (ulong)floor((rw_offset + ((double)(Lower-I_Min)*rw_scale))+0.5) );        
   }
   else if (Input_Data_Type==LONG_DATA) {
-    sprintf(upper_msg,"Upper= %-8d ",
+    sprintf(upper_msg,"Upper= %-8ld ",
 	    (long)floor((rw_offset + ((double)(Upper-I_Min)*rw_scale))+0.5) );
-    sprintf(lower_msg,"Lower= %-8d ",
+    sprintf(lower_msg,"Lower= %-8ld ",
 	    (long)floor((rw_offset + ((double)(Lower-I_Min)*rw_scale))+0.5) );        
   }
   else {
@@ -119,12 +119,11 @@ int update_msgs()
 
 
 /*--------------------------- update_sliders ---------------------------*/
-int update_sliders()
+void update_sliders(void)
 {
   D_SLIDER	*upper_data, *lower_data;
-  int   	label_w, x, cw;
+  int   	x, cw;
   float	d;
-  char  	ll[32], rl[12];
   D_SLIDER    *image_data[MAX_VAR_DIMS-2];
   int         idim;
     
@@ -155,48 +154,48 @@ int update_sliders()
   if (file_format==MINC_FORMAT ||
       file_format==ACR_NEMA_FORMAT ||
       Input_Data_Type >= FLOAT_DATA) {
-    sprintf(upper_data->left_label,"%8.3g\0",
+    sprintf(upper_data->left_label,"%8.3g",
 	    (double)(rw_offset + ((double)(S_Min-I_Min)*rw_scale)) );
-    sprintf(upper_data->right_label,"%-8.3g\0",
+    sprintf(upper_data->right_label,"%-8.3g",
 	    (double)(rw_offset + ((double)(S_Max-I_Min)*rw_scale)) );        
-    sprintf(lower_data->left_label,"%8.3g\0",
+    sprintf(lower_data->left_label,"%8.3g",
 	    (double)(rw_offset + ((double)(S_Min-I_Min)*rw_scale)) );
-    sprintf(lower_data->right_label,"%-8.3g\0",
+    sprintf(lower_data->right_label,"%-8.3g",
 	    (double)(rw_offset + ((double)(S_Max-I_Min)*rw_scale)) );        
   }
   else if (Input_Data_Type==USHORT_DATA || Input_Data_Type==ULONG_DATA) {
-    sprintf(upper_data->left_label,"%8u\0",
+    sprintf(upper_data->left_label,"%8lu",
 	    (ulong)floor((rw_offset + ((double)(S_Min-I_Min)*rw_scale))+0.5) );
-    sprintf(upper_data->right_label,"%-8u\0",
+    sprintf(upper_data->right_label,"%-8lu",
 	    (ulong)floor((rw_offset + ((double)(S_Max-I_Min)*rw_scale))+0.5) );        
-    sprintf(lower_data->left_label,"%8u\0",
+    sprintf(lower_data->left_label,"%8lu",
 	    (ulong)floor((rw_offset + ((double)(S_Min-I_Min)*rw_scale))+0.5) );
-    sprintf(lower_data->right_label,"%-8u\0",
+    sprintf(lower_data->right_label,"%-8lu",
 	    (ulong)floor((rw_offset + ((double)(S_Max-I_Min)*rw_scale))+0.5) );        
   }    
   else if (Input_Data_Type==LONG_DATA) {
-    sprintf(upper_data->left_label,"%8d\0",
+    sprintf(upper_data->left_label,"%8ld",
 	    (long)floor((rw_offset + ((double)(S_Min-I_Min)*rw_scale))+0.5) );
-    sprintf(upper_data->right_label,"%-8d\0",
+    sprintf(upper_data->right_label,"%-8ld",
 	    (long)floor((rw_offset + ((double)(S_Max-I_Min)*rw_scale))+0.5) );        
-    sprintf(lower_data->left_label,"%8d\0",
+    sprintf(lower_data->left_label,"%8ld",
 	    (long)floor((rw_offset + ((double)(S_Min-I_Min)*rw_scale))+0.5) );
-    sprintf(lower_data->right_label,"%-8d\0",
+    sprintf(lower_data->right_label,"%-8ld",
 	    (long)floor((rw_offset + ((double)(S_Max-I_Min)*rw_scale))+0.5) );        
   }    
   else {
-    sprintf(upper_data->left_label,"%7d\0",S_Min);
-    sprintf(upper_data->right_label,"%-7d\0",S_Max);
-    sprintf(lower_data->left_label,"%7d\0",S_Min);
-    sprintf(lower_data->right_label,"%-7d\0",S_Max);
+    sprintf(upper_data->left_label,"%7d",S_Min);
+    sprintf(upper_data->right_label,"%-7d",S_Max);
+    sprintf(lower_data->left_label,"%7d",S_Min);
+    sprintf(lower_data->right_label,"%-7d",S_Max);
   }
   for(idim=0; idim<ndimensions-2; idim++){
     if (slider_length[idim] > 1){
-      sprintf(image_data[idim]->left_label,"%7s:%-3d  1\0",
+      sprintf(image_data[idim]->left_label,"%7s:%-3d  1",
 	      (file_format == MINC_FORMAT ? 
 	       minc_volume_info.dimension_names[idim] : "Image"),
 	      slider_image[idim]+1);
-      sprintf(image_data[idim]->right_label,"%-3d\0",
+      sprintf(image_data[idim]->right_label,"%-3d",
 	      slider_length[idim]);
     }
   }

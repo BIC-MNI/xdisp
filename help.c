@@ -15,7 +15,7 @@
 #include "xdisp.h"
  
 /*---------------------------- Syntax-----------------------------*/
-int Syntax()
+void Syntax(char *cmd)
 {
   fprintf(stderr,"Usage: %s filename ",cmd);
   fprintf(stderr,"[-geometry WxH+x+y|-geom WxH+x+y] ");
@@ -56,7 +56,7 @@ int Syntax()
 
 
 /*----------------------------- Help -----------------------------*/
-int Help()
+void Help(void)
 {
   fprintf(stderr,"xdisp (%s): An image display utility for X systems.\n",version);
   fprintf(stderr,"Usage: xdisp filename [options]\n");
@@ -131,7 +131,7 @@ int Help()
 }
 
 /*----------------------------- online_Help -----------------------------*/
-int online_Help()
+void online_Help(void)
 {
   fprintf(stderr,"xdisp (%s): An image display utility for X systems.\n\n",version);
   fprintf(stderr,"Moving the mouse with the middle button depressed changes the window/level.\n");
@@ -187,7 +187,7 @@ int online_Help()
 
 
 /*----------------------------- FatalError -------------------------*/
-int FatalError (char *identifier)
+void FatalError (char *identifier)
 {
   fprintf(stderr, "%s: %s\n", cmd, identifier);
   exit_xdisp(-1);

@@ -39,8 +39,6 @@ void Create_EZ_Widgets()
 /*------------------------ ReInitialize --------------------------*/
 void ReInitialize()
 {
-  int			i, j;
-
   /* image dimensions, etc */
   oWidth = Width = oHeight = Height  = 0;
   minc_x_dim = minc_y_dim = minc_z_dim = minc_t_dim = -1;

@@ -15,7 +15,7 @@
 #include "xdisp.h"
 
 /*------------------- Initialize_Input_Widget() ---------------------*/
-void Initialize_Input_Widget()
+void Initialize_Input_Widget(void)
 {
   /* create and configure the input widget */
   Input_Widget = EZ_CreateFrame(NULL, fname); 
@@ -67,8 +67,10 @@ void Input_Widget_CallBack(EZ_Widget *widget, void *label)
 } 
 
 /*---------------------- Open_Input_Widget() ------------------------*/
-int Open_Input_Widget(char *label)
+void Open_Input_Widget(void *data)
 {
+  char *label = (char *) data;
+
   /* set the input label */
   EZ_ConfigureWidget(Input_Widget_Label,
   		     EZ_LABEL_STRING, label,  
@@ -89,7 +91,7 @@ int Open_Input_Widget(char *label)
 }
 
 /*-------------------- Close_Input_Widget() --------------------------*/
-void Close_Input_Widget()
+void Close_Input_Widget(void)
 {
   EZ_DeActivateWidget(Input_Widget);
 }

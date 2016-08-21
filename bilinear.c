@@ -26,9 +26,7 @@
  * Copyright (c), Bruce Pike 1993-1997
  */
 
-#include <math.h>
-
-typedef unsigned char byte;
+#include "xdisp.h"
 
 /*------------------- bilinear_byte_to_byte ----------------*/
 void bilinear_byte_to_byte (byte *oim, int ox, int oy, 
@@ -398,8 +396,8 @@ void bilinear_int_to_int (int *oim, int ox, int oy,
 }
 
 /*------------------- bilinear_long_to_long ----------------*/
-void bilinear_long_to_long (long *oim, int ox, int oy, 
-			    long *nim, int nx, int ny)
+void bilinear_long_to_long (int32_t *oim, int ox, int oy, 
+			    int32_t *nim, int nx, int ny)
 {
   int 	i, j, jo, jn, k1, k2, ind, row;
   int 	*r1, *r2, *col;

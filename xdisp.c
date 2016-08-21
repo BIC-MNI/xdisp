@@ -23,11 +23,9 @@
 #include <unistd.h>
 
 /*---------------------------- main -------------------------*/
-main(argc, argv)
-int   	argc;
-char 	**argv;
+int main(int argc, char **argv)
 {
-  int         i, j, fn_flag, err, y_skip;
+  int         i, j, fn_flag, y_skip;
   char        *display, *geom, *getenv();
   char        *cptr, *spawn_cmd, *spawn_cmd_root;
   XVisualInfo Vis_Info;
@@ -50,8 +48,6 @@ char 	**argv;
   xd_argv = argv;
   xd_argc = argc;
   for (i = 1; i<argc; i++) {
-
-    char *strind;
 
     if ((!strncmp(argv[i],"-geom",5)) || 
 	(!strncmp(argv[i],"-geometry",9))) { /* geometry */
@@ -390,7 +386,7 @@ char 	**argv;
   dispcells = DisplayCells(theDisp,theScreen);
   if (Verbose) {
     fprintf(stderr,
-    "The default visual (ID=0x%x) depth is %d bits, with %d colormap cells.\n",
+    "The default visual (ID=0x%lx) depth is %d bits, with %d colormap cells.\n",
     theVisual->visualid,theDepth,dispcells);
   }
 
@@ -406,7 +402,7 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = PseudoColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit PseudoColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit PseudoColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   else if ((Preferred_Visual_Class==DirectColor) &&
@@ -420,7 +416,7 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = DirectColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit DirectColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit DirectColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   else if ((Preferred_Visual_Class==TrueColor) &&
@@ -437,7 +433,7 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = TrueColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit TrueColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit TrueColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   /* Oh well, try for visuals in the following preferred order...
@@ -452,7 +448,7 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = PseudoColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit PseudoColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit PseudoColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   else if (XMatchVisualInfo(theDisp, theScreen, 24, TrueColor, &Vis_Info)) {
@@ -468,7 +464,7 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = TrueColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit TrueColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit TrueColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   else if (XMatchVisualInfo(theDisp, theScreen, 24, DirectColor, &Vis_Info)) {
@@ -481,23 +477,26 @@ char 	**argv;
     ColorMapSize = Vis_Info.colormap_size;
     Selected_Visual_Class = DirectColor;
     if (Verbose) 
-      fprintf(stderr,"%d bit DirectColor viusal (ID = 0x%x) selected.\n",
+      fprintf(stderr,"%d bit DirectColor visual (ID = 0x%lx) selected.\n",
 	      theDepth,theVisual->visualid);
   }
   else {
-    FatalError("Sorry, no 8 bit PseudoColor or 24 bit DirectColor or TrueColor viual.");
+    FatalError("Sorry, no 8 bit PseudoColor or 24 bit DirectColor or TrueColor visual.");
   }
   if (Selected_Visual_Class != Preferred_Visual_Class &&
       Preferred_Visual_Class!= -1) {
-    if (Selected_Visual_Class==PseudoColor)
-      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit PseudoColor viusal (ID = 0x%x) was selected instead.\n",
+    if (Selected_Visual_Class==PseudoColor) {
+      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit PseudoColor viusal (ID = 0x%lx) was selected instead.\n",
 	      theDepth,theVisual->visualid);
-    else if (Selected_Visual_Class==DirectColor)
-      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit DirectColor viusal (ID = 0x%x) was selected instead.\n",
+    }
+    else if (Selected_Visual_Class==DirectColor) {
+      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit DirectColor viusal (ID = 0x%lx) was selected instead.\n",
 	      theDepth,theVisual->visualid);
-    else                 
-      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit TrueColor viusal (ID = 0x%x) was selected instead.\n",
+    }
+    else {
+      if (Verbose) fprintf(stderr,"Preferred visual not available... a %d bit TrueColor viusal (ID = 0x%lx) was selected instead.\n",
 	      theDepth,theVisual->visualid);
+    }
   }
 
   if (ColorMapSize<16) 
@@ -552,7 +551,7 @@ char 	**argv;
 			     theDepth,	        /* the visual depth */
 			     ZPixmap,           /* format */
 			     0,     		/* data offset */
-			     byte_ColorBar,	/* pointer to the data */  
+			     (char *)byte_ColorBar,/* pointer to the data */  
 			     color_bar_width,   /* width in pixels */
 			     Height,		/* height in pixels */
 			     bitmap_pad,	/* bitmap pad */
@@ -565,7 +564,7 @@ char 	**argv;
 			  theDepth,
 			  ZPixmap,
 			  0,
-			  byte_Image,
+			  (char *)byte_Image,
 			  Width,
 			  Height,
 			  bitmap_pad,
@@ -703,9 +702,9 @@ char 	**argv;
     XMapWindow(theDisp,cmdW);
   }
   XFlush(theDisp);
-    
+
   /* Scale and Resize */
-  Rescale();
+  Rescale(NULL);
 
   /* Main loop */
   while(1){

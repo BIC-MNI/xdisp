@@ -68,7 +68,7 @@ void Initialize_Error_Widget()
 
 
 /*---------------------- Open_Error_Widget() ------------------------*/
-int Open_Error_Widget()
+void Open_Error_Widget(void)
 {
   /* activate and display the widget */
   EZ_ActivateWidget(Error_Widget); 
@@ -79,13 +79,13 @@ int Open_Error_Widget()
 }
 
 /*-------------------- Close_Error_Widget() --------------------------*/
-void Close_Error_Widget()
+void Close_Error_Widget(void *object, void *data)
 {
   EZ_DeActivateWidget(Error_Widget);
 }
 
 /*--------------------- EZW_Error() ---------------------------*/
-int EZW_Error(char *error_text)
+void EZW_Error(char *error_text)
 {
   EZ_TextProperty  *error_tp=NULL;
   

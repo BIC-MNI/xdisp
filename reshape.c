@@ -19,10 +19,9 @@
 #include <sys/stat.h>
 
 /*----------------------------- Resize -----------------------------*/
-int Resize(int w, int h)
+void Resize(int w, int h)
 {
   byte 	*tmp_byte;
-  short	*tmp_short;
   int	i;
 
   /* define new cursors */
@@ -40,8 +39,8 @@ int Resize(int w, int h)
     
   /* special case */
   if (w==zWidth && h==zHeight) {
-    theImage->data=&byte_Image[zWidth*zHeight*(bitmap_pad/8)*
-			      (load_all_images?image_number:0)];
+    theImage->data = (char *) &byte_Image[zWidth*zHeight*(bitmap_pad/8)*
+                                          (load_all_images?image_number:0)];
   }
   else {
     /* perform the interpolation on the byte_image */
@@ -77,9 +76,9 @@ int Resize(int w, int h)
 				  &byte_Image[(bitmap_pad/8)*w*h*i], w, h );
 	}
 	else {
-	  nneighbour_rgbp_to_rgbp ( &tmp_byte[(bitmap_pad/8)*zWidth*zHeight*i], 
+	  nneighbour_rgbp_to_rgbp ( (uint32_t *) &tmp_byte[(bitmap_pad/8)*zWidth*zHeight*i], 
 				    zWidth, zHeight,
-				    &byte_Image[(bitmap_pad/8)*w*h*i], w, h );
+				    (uint32_t *) &byte_Image[(bitmap_pad/8)*w*h*i], w, h );
 	}
       }
     }
@@ -88,8 +87,8 @@ int Resize(int w, int h)
     }
     
     /* set theImage variables */
-    theImage->data=&byte_Image[(bitmap_pad/8)*w*h*
-			      (load_all_images?image_number:0)];
+    theImage->data = (char *) &byte_Image[(bitmap_pad/8)*w*h*
+                                          (load_all_images?image_number:0)];
 
     /* clean up */
     free(tmp_byte);
@@ -122,7 +121,7 @@ int Resize(int w, int h)
 }
 
 /*-------------------------- zoom ---------------------------------*/
-int zoom(caddr_t data)
+void zoom(void *data)
 {
   int 	w, h, up;
 
@@ -148,14 +147,14 @@ int zoom(caddr_t data)
 
 
 /*---------------------------- Crop ------------------------------*/
-int Crop(caddr_t data)
+void Crop(void *data)
 {
-  int	i, j, index, im, im_index, w, h, x1, x2, y1, y2;
+  int	i, j, index, im, im_index, x1, x2, y1, y2;
 
   /* check that an roi is defined */
   if (roi_present != 1) {
     fprintf(stderr,"An ROI must be drawn before cropping\n");
-    return(1);
+    return;
   }
 
   /* define new cursors */
@@ -230,8 +229,8 @@ int Crop(caddr_t data)
   zWidth = theImage->width = abs(roi_x2 - roi_x1) + 1;
   theImage->bytes_per_line = (bitmap_pad/8)* (abs(roi_x2 - roi_x1) + 1);
   zHeight = theImage->height = abs(roi_y2 - roi_y1) + 1;
-  theImage->data = &byte_Image[(bitmap_pad/8)*zWidth*zHeight*
-			      (load_all_images?image_number:0)];
+  theImage->data = (char *) &byte_Image[(bitmap_pad/8)*zWidth*zHeight*
+                                        (load_all_images?image_number:0)];
   Width = abs(x2 - x1) + 1;
   Height = abs(y2 - y1) + 1;
 
@@ -255,7 +254,7 @@ int Crop(caddr_t data)
 }
 
 /*----------------------- Flip_Image -------------------------------*/
-int Flip_Image(caddr_t data)
+void Flip_Image(void *data)
 {
   int 	i, im, im_index, j, flip_y;
   short	*tmp_short;
@@ -365,7 +364,7 @@ int Flip_Image(caddr_t data)
 }
 
 /*----------------------- Rotate_Image -------------------------------*/
-int Rotate_Image()
+void Rotate_Image(void *data)
 {
   int 	i, im, im_index, j, tmp;
   short	*tmp_short;
@@ -451,7 +450,7 @@ int Rotate_Image()
 }
 
 /*----------------------- Reorient_Volume -------------------------------*/
-int Reorient_Volume()
+void Reorient_Volume(void *data)
 {
   int 	i, old_h, old_w, old_i, num_volumes;
   short 	*volume;
@@ -460,7 +459,7 @@ int Reorient_Volume()
   /* check that we have a volume */
   if ((num_images==1)||(!load_all_images)) {
     fprintf(stderr,"Only one image found!\n");
-    return(1);
+    return;
   }
 
   /* define new cursors */
@@ -519,7 +518,7 @@ int Reorient_Volume()
 }
 
 /*----------------------- _Reorient_Volume -------------------------------*/
-int _Reorient_Volume(short volume[], int num_slices, int width, int height)
+void _Reorient_Volume(short volume[], int num_slices, int width, int height)
 {
   int 	i, im, im_index, j, 
         old_h, old_w, old_i;

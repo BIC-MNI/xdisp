@@ -152,7 +152,7 @@ void acr_message_add_group(Acr_Message message, Acr_Group group)
           (acr_get_element_length(length_element) != ACR_SIZEOF_LONG)) {
          (void) fprintf(stderr, 
     "ACR error: First group added to message must contain message length\n");
-         exit_xdisp(EXIT_FAILURE);
+         return;
       }
 
       /* Set up the message length info */

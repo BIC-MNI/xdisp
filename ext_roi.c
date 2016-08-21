@@ -26,6 +26,7 @@ void delete_one_roi(ROI_LIST *r, ROI_LIST **list, STACKROI_LIST *sp);
 void delete_complete_roi_list(struct roi_list **list, STACKROI_LIST *sp);
 void delete_roi_list(STACKROI_LIST slice_array[], int slice_count);
 void add_ext_roi(byte *tmp_image1);
+STATUS create_roi_list_pointer(STACKROI_LIST *slice_ptr);
 
 
 void add_ext_roi(byte *tmp_image) {

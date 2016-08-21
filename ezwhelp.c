@@ -15,7 +15,7 @@
 #include "xdisp.h"
 
 /*-------------------- Initialize_Help_Widget() ---------------------*/
-void Initialize_Help_Widget() 
+void Initialize_Help_Widget(void) 
 {
   EZ_Widget    *tmp_w1, *tmp_w2;
 
@@ -61,7 +61,7 @@ void Initialize_Help_Widget()
 
 
 /*---------------------- Open_Help_Widget() ------------------------*/
-int Open_Help_Widget()
+void Open_Help_Widget(void *data)
 {
   /* activate and display the widget */
   EZ_ActivateWidget(Help_Widget); 
@@ -72,13 +72,13 @@ int Open_Help_Widget()
 }
 
 /*-------------------- Close_Help_Widget() --------------------------*/
-void Close_Help_Widget()
+void Close_Help_Widget(void *object, void *data)
 {
   EZ_DeActivateWidget(Help_Widget);
 }
 
 /*--------------------- EZW_Online_Help() ---------------------------*/
-int EZW_Online_Help()
+void EZW_Online_Help(void)
 {
   EZ_TextProperty  *title=NULL, 
                    *command=NULL, 

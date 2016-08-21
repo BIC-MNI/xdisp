@@ -24,22 +24,22 @@ void Handle_KeyPress(XEvent *event)
 
   /* do it */
   XLookupString(key_event,buf,128,&ks,&status);
-  if (buf[0]=='q' || buf[0]=='Q') Quit(); 
-  else if (buf[0]=='h' || buf[0]=='H' || buf[0]=='?') Open_Help_Widget();
-  else if (buf[0]=='b') Toggle_ColorBar();
-  else if (buf[0]=='i') Toggle_Interpolation();
-  else if (buf[0]=='C') Switch_Colormap();
+  if (buf[0]=='q' || buf[0]=='Q') Quit(NULL); 
+  else if (buf[0]=='h' || buf[0]=='H' || buf[0]=='?') Open_Help_Widget(NULL);
+  else if (buf[0]=='b') Toggle_ColorBar(NULL);
+  else if (buf[0]=='i') Toggle_Interpolation(NULL);
+  else if (buf[0]=='C') Switch_Colormap(NULL);
   else if (buf[0]=='v' || buf[0]=='V') 
     fprintf(stderr,"xdisp: %s\n",version);
-  else if (buf[0]=='c') Crop();
-  else if (buf[0]=='r') Rescale();
+  else if (buf[0]=='c') Crop(NULL);
+  else if (buf[0]=='r') Rescale(NULL);
   else if (buf[0]=='w') Show_Window_Level();
   else if (buf[0]=='s') roi_stats(0,0,Width-1,Height-1,0);
-  else if (buf[0]=='a') Auto_Scale();
-  else if (buf[0]=='p') ps_file((caddr_t)&zero); 
+  else if (buf[0]=='a') Auto_Scale(NULL);
+  else if (buf[0]=='p') ps_file((void *)&zero); 
   else if (buf[0]=='P') { 
     if (!(plot_active==-1)) {
-      Refresh();
+      Refresh(NULL);
       plot_active = -1;
       if ((plot_roi_size == 0)&&((zWidth<=Width)||(zHeight<=Height))) { /* draw a small cross hair */
 	XDrawLine(theDisp,mainW,grGC,
@@ -67,20 +67,20 @@ void Handle_KeyPress(XEvent *event)
       }
     }
     else {
-      Open_Plot_Widget();
+      Open_Plot_Widget(NULL);
     }
   }
-  else if (buf[0]=='f' || buf[0]=='F') ps_file((caddr_t)&one); 
-  else if (buf[0]=='e' || buf[0]=='E') ps_file((caddr_t)&two);
-  else if (buf[0]=='G') graphics_file((caddr_t)&gr_gif);
-  else if (buf[0]=='T') graphics_file((caddr_t)&gr_tiff);
-  else if (buf[0]=='B') flat_file((caddr_t)&zero);
-  else if (buf[0]=='S') flat_file((caddr_t)&one);
-  else if (buf[0]=='l') Load_All();
+  else if (buf[0]=='f' || buf[0]=='F') ps_file((void *)&one); 
+  else if (buf[0]=='e' || buf[0]=='E') ps_file((void *)&two);
+  else if (buf[0]=='G') graphics_file((void *)&gr_gif);
+  else if (buf[0]=='T') graphics_file((void *)&gr_tiff);
+  else if (buf[0]=='B') flat_file((void *)&zero);
+  else if (buf[0]=='S') flat_file((void *)&one);
+  else if (buf[0]=='l') Load_All(NULL);
   else if (buf[0]=='m') MIP();
-  else if (buf[0]=='M') matlab_file();
-  else if (buf[0]=='t') toggle();
-  else if (buf[0]=='o') Reorient_Volume();
+  else if (buf[0]=='M') matlab_file(NULL);
+  else if (buf[0]=='t') toggle(NULL);
+  else if (buf[0]=='o') Reorient_Volume(NULL);
   else if (buf[0]=='U') Open_Input_Widget("Upper:");
   else if (buf[0]=='L') Open_Input_Widget("Lower:");
   else if (buf[0]=='d'){ /* cycle current volume dimension */
@@ -126,7 +126,7 @@ void Handle_KeyPress(XEvent *event)
 		  w+(color_bar?color_bar_width:0),
 		  h+info_height);
   }
-  else if (buf[0]=='n' || buf[0]=='I') Reload();
+  else if (buf[0]=='n' || buf[0]=='I') Reload(NULL);
   else if (buf[0]=='z') { /* zoom down */
     w = zWidth/2>0 ? zWidth/2 : zWidth;
     h = zHeight/2>0 ? zHeight/2 : zHeight;
@@ -176,32 +176,32 @@ void Handle_KeyPress(XEvent *event)
 		  h+info_height);
   }
   else if (buf[0]=='') {  /* load new file in current xdisp window */
-    Open_File_Selector_Widget((caddr_t)&zero);
+    Open_File_Selector_Widget((void *)&zero);
   }
   else if (buf[0]=='') {  /* load new file and spawn new xdisp */
-    Open_File_Selector_Widget((caddr_t)&one);
+    Open_File_Selector_Widget((void *)&one);
   }
   else if (buf[0]=='	') {  /* ^I open mincheader info window */
-    Open_Info_Widget();
+    Open_Info_Widget(NULL);
   }
   else if (buf[0]=='') { /* flip image about x */
-    Flip_Image((caddr_t)&zero);
+    Flip_Image((void *)&zero);
   }
   else if (buf[0]=='') { /* flip image about y */
-    Flip_Image((caddr_t)&one);
+    Flip_Image((void *)&one);
   }
-  else if (buf[0]=='') TIC(); /* display a TIC */
+  else if (buf[0]=='') TIC(NULL); /* display a TIC */
   else if (buf[0]=='') { /* rotate image clockwise */
-    Rotate_Image();
+    Rotate_Image(NULL);
   }
   else if (buf[0]=='') { /* write clipped byte image */
-    flat_file((caddr_t)&two);
+    flat_file((void *)&two);
   }
   else if (buf[0]=='') { /* display horizontal profile */
-    H_Profile_Swicth(); 
+    H_Profile_Switch(NULL); 
   }
   else if (buf[0]=='') { /* display vertical profile */
-    V_Profile_Swicth(); 
+    V_Profile_Switch(NULL); 
   }
   else if (buf[0]=='') { /* display external ROIs*/
     if ( ext_roi_on ) {
