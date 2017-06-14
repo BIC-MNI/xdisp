@@ -708,7 +708,7 @@ int main(int argc, char **argv)
 
   /* Scale and Resize */
   Rescale(NULL);
-  printf("Main window id=%ld command window id=%ld\n",mainW,cmdW);
+  /*printf("Main window id=%ld command window id=%ld\n",mainW,cmdW);*/
 
   /* Main loop */
   while(1){
@@ -719,7 +719,7 @@ int main(int argc, char **argv)
       EZ_WidgetDispatchEvent(&theEvent);
     }
     EZ_CheckTimerEvents();
-    /*if(EZ_CheckAppInputs(1000)!= 0) EZ_SitForALittleBit(1000);*/
+    if(EZ_CheckAppInputs(1000)!= 0) EZ_SitForALittleBit(1000);
   }
   return 0;
 }
