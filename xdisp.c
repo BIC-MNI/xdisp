@@ -42,6 +42,10 @@ int main(int argc, char **argv)
   /* malloc space for spawn command */
   spawn_cmd_root = (char *) malloc(2048);
   spawn_cmd = (char *) malloc(2048);
+  
+  /* inital state*/
+  cmdW_Initial_State = NormalState; /*main window open*/
+  cmdW_State = IconicState; /*command window hidden*/
 
   /* Parse command line options */
   cmd = argv[0];
@@ -717,4 +721,5 @@ int main(int argc, char **argv)
     EZ_CheckTimerEvents();
     if(EZ_CheckAppInputs(1000)!= 0) EZ_SitForALittleBit(1000);
   }
+  return 0;
 }

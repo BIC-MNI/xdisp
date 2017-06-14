@@ -130,6 +130,7 @@ void  EZ_DisplayNWLabel(wptr, pixmap, fg, bg, disabledIn ,highlight,
      int       xoffset, yoffset;      /* start position in pixmap (Origin) */
      int       labeloffset;           /*  1 or 0. (Button down or not)   */
      int       disabledIn;            /* children of a disabled widget */
+     int       highlight;
      int       disp_sibling;          /* disp sibling NW labels ?  */
 {
   int       ox, oy,xstart, ystart, x,y,xx,yy,fillx,filly, padb, nhlight;

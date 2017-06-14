@@ -39,7 +39,7 @@ XWIN    *MakeXButton(
 {
   XWIN			*new_button;
   D_BUTTON    		*p_data;
-  XSizeHints  		bhints;    
+  XSizeHints  		*bhints;    
   XSetWindowAttributes 	xswa;
   unsigned int 		xswamask;
     
@@ -56,13 +56,14 @@ XWIN    *MakeXButton(
   }
 
   /* Set hints */
-  bhints.x=x;
-  bhints.y=y;
-  bhints.width=width;
-  bhints.height=height;
-  bhints.max_width = DisplayWidth(theDisp,theScreen);
-  bhints.max_height = DisplayHeight(theDisp,theScreen);
-  bhints.flags |= USSize | PMaxSize | USPosition;
+  bhints=XAllocSizeHints();
+  bhints->x=x;
+  bhints->y=y;
+  bhints->width=width;
+  bhints->height=height;
+  bhints->max_width = DisplayWidth(theDisp,theScreen);
+  bhints->max_height = DisplayHeight(theDisp,theScreen);
+  bhints->flags |= USSize | PMaxSize | USPosition;
 
   /* Set attributes */
   xswa.backing_store = Always;
@@ -83,7 +84,8 @@ XWIN    *MakeXButton(
   new_button->parent=parent;
   new_button->xid=XCreateSimpleWindow(theDisp,parent,x,y,width,height,
 				      0,bgcolor,bgcolor);  
-  XSetWMNormalHints(theDisp, new_button->xid, &bhints);
+  XSetWMNormalHints(theDisp, new_button->xid, bhints);
+  XFree(bhints);
    
   /* save new_button as data assocaited with this window ID and
    * the context "xwin_context"
@@ -124,7 +126,7 @@ XWIN    *MakeXSlider(
 {
   XWIN	*new_slider;
   D_SLIDER    *p_data;
-  XSizeHints  shints;    
+  XSizeHints  *shints;    
   XSetWindowAttributes 	xswa;
   unsigned int 		xswamask;
     
@@ -139,15 +141,15 @@ XWIN    *MakeXSlider(
     fprintf(stderr, "No memory for slider");
     exit_xdisp(1);
   }
-
+  shints=XAllocSizeHints();
   /* Set hints */
-  shints.x=x;
-  shints.y=y;
-  shints.width=slider_width+right_label_width+left_label_width+8;
-  shints.height=slider_height;
-  shints.max_width = DisplayWidth(theDisp,theScreen);
-  shints.max_height = DisplayHeight(theDisp,theScreen);
-  shints.flags |= USSize | PMaxSize | USPosition;
+  shints->x=x;
+  shints->y=y;
+  shints->width=slider_width+right_label_width+left_label_width+8;
+  shints->height=slider_height;
+  shints->max_width = DisplayWidth(theDisp,theScreen);
+  shints->max_height = DisplayHeight(theDisp,theScreen);
+  shints->flags |= USSize | PMaxSize | USPosition;
 
   /* Set attributes */
   xswa.backing_store = Always;
@@ -174,10 +176,10 @@ XWIN    *MakeXSlider(
   new_slider->event_handler=slider_handler;
   new_slider->parent=parent;
   new_slider->xid=XCreateSimpleWindow(theDisp,parent,x,y,
-				      shints.width,shints.height,
+				      shints->width,shints->height,
 				      0,bgcolor,bgcolor);  
-  XSetWMNormalHints(theDisp, new_slider->xid, &shints);
-   
+  XSetWMNormalHints(theDisp, new_slider->xid, shints);
+  XFree(shints);
   /* save new_slider as data assocaited with this window ID and
    * the context "xwin_context"
    */

@@ -321,7 +321,7 @@ int  EZ_XErrorHandler(display,error)
      XErrorEvent *error;
 {
   EZ_XErrorCode = error->error_code;
-#if 0
+/*#if 1*/
   if(EZ_XErrorCode != 0)
     {
       char buf[1024], mesg[1024], number[32], *mtype = "XlibMessage";
@@ -339,7 +339,7 @@ int  EZ_XErrorHandler(display,error)
 	}
       (void)fprintf(stderr, " (ResourceID=%lx, Serial=%ld)\n", error->resourceid, error->serial);
     }
-#endif
+/*#endif*/
   return(0);
 }
 

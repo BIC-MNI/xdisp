@@ -148,7 +148,10 @@ int EZ_FontWeightIsBold(name)
 void  EZ_InitFontList()
 {
   register int  i;  
-
+  int    (*OldErrorHandler)();
+  
+  OldErrorHandler = XSetErrorHandler(EZ_XErrorHandler);
+  
   if(EZ_FontList == (EZ_Font *)NULL)
     {
       EZ_NumFonts = EZ_DEFAULT_FONT_END + EZ_DEFAULT_FONT_BEGIN + 1;
@@ -166,6 +169,7 @@ void  EZ_InitFontList()
       for(i = EZ_DEFAULT_FONT_BEGIN; i <= EZ_DEFAULT_FONT_END; i++)
 	EZ_LoadXFont(EZ_DefaultFontNames[i]);
     }
+    XSetErrorHandler(OldErrorHandler);
 }
 void  EZ_DestroyFontList()
 {
@@ -212,7 +216,8 @@ int  EZ_LoadXFont(font_name)
   if(font_name == NULL) return(0);
   if( (xfont_struct = XLoadQueryFont(EZ_DisplayForWidgets, font_name))  == (XFontStruct *)NULL)
     {
-      (void) fprintf(stderr, "Font %s does not exist\n", font_name);
+      fprintf(stderr, "Font %s does not exist\n", font_name);
+      fprintf(stderr, "Error: %d\n", EZ_XErrorCode);
       return(0);
     }
   if(i == EZ_NumFonts)

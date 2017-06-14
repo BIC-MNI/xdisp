@@ -13,15 +13,14 @@
 /*---------------------------- HandleEvent --------------------------*/
 void HandleEvent(XEvent *event)
 {
-  if(theEvent.xany.window==mainW) {
+  if(event->xany.window==mainW) {
 
     switch (event->type) {
     case Expose: {
-      XExposeEvent *exp_event = (XExposeEvent *) event;
  
-      if (exp_event->window==mainW) {
-	DrawWindow(exp_event->x,exp_event->y,
-		   exp_event->width, exp_event->height);
+      if (event->xexpose.window==mainW && event->xexpose.count==0) {
+	DrawWindow(event->xexpose.x,event->xexpose.y,
+		   event->xexpose.width, event->xexpose.height);
       }
     }
     break;
@@ -66,7 +65,7 @@ void HandleEvent(XEvent *event)
     break;
 
     case ButtonPress: {
-      if (theEvent.xbutton.button==Button1) {
+      if (event->xbutton.button==Button1) {
 	if (selzoom_active) {
 	  Selective_Zoom((caddr_t)&one);
 	  break;
@@ -75,18 +74,18 @@ void HandleEvent(XEvent *event)
 	XFlush(theDisp);
 	if (roi_present) draw_roi(roi_x1, roi_y1, roi_x2, roi_y2);
 	roi_active = 1;
-	roi_x1 = theEvent.xmotion.x < zWidth ?
-	  (theEvent.xmotion.x>0 ?
-	   theEvent.xmotion.x : 0) : zWidth-1;
-	roi_y1 = theEvent.xmotion.y < zHeight ?
-	  (theEvent.xmotion.y>0 ?
-	   theEvent.xmotion.y : 0) : zHeight-1;
+	roi_x1 = event->xmotion.x < zWidth ?
+	  (event->xmotion.x>0 ?
+	   event->xmotion.x : 0) : zWidth-1;
+	roi_y1 = event->xmotion.y < zHeight ?
+	  (event->xmotion.y>0 ?
+	   event->xmotion.y : 0) : zHeight-1;
 	roi_x2 = roi_x1;
 	roi_y2 = roi_y1;
 	draw_roi(roi_x1, roi_y1, roi_x2, roi_y2);
 	break;
       } 
-      if (theEvent.xbutton.button==Button2) {
+      if (event->xbutton.button==Button2) {
 	XDefineCursor(theDisp,mainW,wlCursor);
 	XClearArea(theDisp,mainW,0,zHeight,
 		   zWidth,zHeight+info_height,False);
@@ -99,15 +98,13 @@ void HandleEvent(XEvent *event)
 	XFlush(theDisp);
 	break;
       } 
-      if (theEvent.xbutton.button==Button3) {
+      if (event->xbutton.button==Button3) {
 	/* note: not really 'iconic' anymore, simply map or unmap */
 	if (cmdW_State==NormalState) {
-	  XUnmapWindow(theDisp,cmdW);
-	  cmdW_State = IconicState;
-	}
-	else {
-	  XMapWindow(theDisp,cmdW);
-	  cmdW_State = NormalState;
+	  XUnmapWindow(theDisp, cmdW);
+	} else {
+	  XMapRaised(theDisp, cmdW);
+          XMapRaised(theDisp, cmdW);/*VF: don't understand why I need to events! Maybe somebody is eating up an extra event from the queue*/
 	}
 	break;
       } 
@@ -116,7 +113,7 @@ void HandleEvent(XEvent *event)
 
     case ButtonRelease: {
       int xa, xb, ya, yb;
-      if (theEvent.xbutton.button==Button1 && roi_active) {
+      if (event->xbutton.button==Button1 && roi_active) {
 	roi_active = 0;
 	xa = roi_x1*(Width-1)/(zWidth-1);
 	xb = roi_x2*(Width-1)/(zWidth-1);
@@ -126,9 +123,9 @@ void HandleEvent(XEvent *event)
 	XDefineCursor(theDisp,mainW,mainCursor);
 	XFlush(theDisp);
       }
-      if (theEvent.xbutton.button==Button2) {
+      if (event->xbutton.button==Button2) {
 	XDefineCursor(theDisp,mainW,mainCursor);
-	XFlush(theDisp);               
+	XFlush(theDisp);
 	if (Scale_Data && (oUpper != Upper || oLower != Lower)) {
 	  Rescale(NULL);
 	  Window_Level(Lower,Upper); 
@@ -175,64 +172,56 @@ void HandleEvent(XEvent *event)
     break;
                 
     case CirculateNotify:
+        break;
     case MapNotify:
+        break;
     case DestroyNotify:
     case GravityNotify:
     case ReparentNotify:
     default: 
     break;
     }  /* end of switch */
-  }
-
-  /* other command Window events */
-  if(theEvent.xany.window==cmdW) {
+  } else if(event->xany.window==cmdW) {
 
     switch (event->type) {
-    case Expose: {
+    case Expose: 
       update_msgs();
-    }
     break;
 
-    case EnterNotify: {
+    case EnterNotify: 
       if (Selected_Visual_Class==DirectColor)
 	XStoreColors(theDisp,NewCmap,newC,ColorMapSize); 
       if (Selected_Visual_Class!=TrueColor)
 	XInstallColormap(theDisp,NewCmap);
-    }
+    
     break;
 
-    case LeaveNotify: {
+    case LeaveNotify: 
       if (Selected_Visual_Class==DirectColor)
 	XStoreColors(theDisp,NewCmap,rootC,ColorMapSize); 
-    }
+    
     break;
 
-    case UnmapNotify: {
+    case UnmapNotify: 
       cmdW_State = IconicState;
-    }
-    break;
+      break;
             
-    case MapNotify: {
+    case MapNotify: 
       cmdW_State = NormalState;
-    }
-    break;
+      break;
 
-    case ConfigureNotify: {
-      XConfigureEvent *conf_event = (XConfigureEvent *) event;
-
-      if (conf_event->window == cmdW && 
-	  (conf_event->width != cmd_width ||
-	   conf_event->height != cmd_height))
-	XResizeWindow(theDisp,cmdW,cmd_width,cmd_height);
-    }
+    case ConfigureNotify: 
+      if( event->xconfigure.window == cmdW && 
+         (event->xconfigure.width != cmd_width ||
+          event->xconfigure.height != cmd_height) )
+        XResizeWindow(theDisp,cmdW,cmd_width,cmd_height);
     break;
 
     default: break;
     }
   }
-
   /* button press events */
-  if (XFindContext(theDisp, theEvent.xany.window, xwin_context,
+  if (XFindContext(theDisp, event->xany.window, xwin_context,
 		   (caddr_t *) &which_xwin)==0) {
     if(*(which_xwin->event_handler)!=NULL)
       (*(which_xwin->event_handler))(which_xwin);

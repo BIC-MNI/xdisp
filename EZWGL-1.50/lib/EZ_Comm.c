@@ -220,7 +220,7 @@ void EZ_RegisterApplication()
 		  XA_STRING, 8,
 		  PropModeReplace,
 		  (unsigned char *)str,
-		  4);
+		  strlen(str)+1);
   /* do this twice in order to stamp a server time to the property */
   {
     XEvent xevent;

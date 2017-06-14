@@ -70,12 +70,13 @@ typedef struct lex_unit_
 static lex_unit tokens[128];
 /****************************************************************/
 static int scan_number MY_ANSIARGS((char *str, int tidx));
-static int  parseString(str_) char *str_;
+static int  parseString(XrmValue value)
 {
   register int idx_, c;
   register int tidx;
-
-  for(idx_ = tidx = 0; tidx < 128 && str_[idx_] != '\0'; idx_++) 
+  char* str_=(char*)value.addr;
+  
+  for(idx_ = tidx = 0; tidx < 128 && idx_<value.size && str_[idx_] != '\0'; idx_++) 
     {
       if(isspace(str_[idx_]))  continue;
 
@@ -518,7 +519,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                 case EZ_HISTOGRAM_SAMPLE:
                 case EZ_SEPARATOR_STYLE:
                 case EZ_ROW_COLUMN_MAX_SIZE:
-                  ntokens = parseString(value.addr);
+                  ntokens = parseString(value);
 		  if(ntokens > 0) doitnot = getTokenIntValue(0, &i1);
 		  break;
 		case  EZ_DND_DRAG_CURSOR:
@@ -544,7 +545,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		case EZ_LED_PIXEL_SIZE:
 		case EZ_SHEET_HEADER_SIZE:
 		case EZ_SHEET_CELL_SIZE:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 1)
 		    {
 		      doitnot = getTokenIntValue(0, &i1);
@@ -553,7 +554,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		  else doitnot = 1;
 		  break; 
                 case EZ_TILE_ORIGIN:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 2)
 		    {
 		      doitnot = getTokenIntValue(0, &i1);
@@ -565,7 +566,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		case EZ_GRID_CELL_GEOMETRY:
 		case EZ_GRID_ROW_CONSTRAINS:
 		case EZ_GRID_COLUMN_CONSTRAINS:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 3)
 		    {
                       int jj;
@@ -588,7 +589,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                     EZ_ParseGeometry(value.addr, &bits, &i1,&i2,&i3,&i4);
                     if(bits != 15 /*(1|2|4|8)*/) /* all bits must be set */ 
                       {
-                        ntokens = parseString(value.addr);
+                        ntokens = parseString(value);
                         if(ntokens > 3)
                           {
                             doitnot =  getTokenIntValue(0, &i1);
@@ -601,7 +602,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                   }
 		break;
 		case EZ_GRID_CONSTRAINS:		  
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 4)
 		    {
                       int jj;
@@ -626,13 +627,13 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		case EZ_DIAL_VALUE:
                 case EZ_DIAL_SPAN:
                 case EZ_DIAL_RESOLUTION:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 0)
 		    doitnot =  getTokenFloatValue(0, &f1);
 		  else doitnot = 1;
 		  break;
 		case EZ_SMETER_VALUE_N:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 1)
 		    {
 		      int jj;
@@ -651,7 +652,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                 case EZ_TERM_COLOR_N:
                 case EZ_SPIN_VALUE:
                 case EZ_BAR_COLOR_N:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 1)
 		    {
 		      int jj;
@@ -672,7 +673,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                 case EZ_LOCATOR_XY:
                 case EZ_DIAL_RANGE:
                 case EZ_BAR_RANGE:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 1)
 		    {
 		      doitnot =  getTokenFloatValue(0, &f1);
@@ -681,7 +682,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		  else doitnot = 1;
 		  break;
 		case EZ_SMETER_RANGE_N:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 2)
 		    {
 		      int jj;
@@ -698,7 +699,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
 		  doitnot = 1;
 		  break;
 		case EZ_ROW_BG:
-		  ntokens = parseString(value.addr);
+		  ntokens = parseString(value);
 		  if(ntokens > 2)
 		    {
 		      char clr1[256], clr2[256];
@@ -747,7 +748,7 @@ static int EZ_GetSetWidgetResourcesWork(widget,db, pflag)
                 int repeat = (vtypes[mm] == EZ_REPEAT ? 1: 0);
                 doitnot = 0;
                 retValue++;
-                ntokens = parseString(value.addr);
+                ntokens = parseString(value);
                 if(ntokens >= mm)
                   {
                     for(jj = 0; jj < ntokens && repeat >= 0; jj += mm, repeat--)
@@ -898,7 +899,7 @@ static int  EZ_GetAndUseItemResourcesWithDBWork(item, db, pflag)
                     case EZ_FONT_ID:
                     case EZ_TEXT_LINE_LENGTH:
                     case EZ_ATTACH_INT_DATA:
-                      ntokens = parseString(value.addr);
+                      ntokens = parseString(value);
                       if(ntokens > 0) doitnot = getTokenIntValue(0, &i1);
                       break;
                     case  EZ_DND_DRAG_CURSOR:
@@ -908,7 +909,7 @@ static int  EZ_GetAndUseItemResourcesWithDBWork(item, db, pflag)
                     case EZ_LOCATION:
                     case EZ_SIZE:
                     case EZ_LABEL_SHADOW:
-                      ntokens = parseString(value.addr);
+                      ntokens = parseString(value);
                       if(ntokens > 1)
                         {
                           doitnot = getTokenIntValue(0, &i1);
@@ -922,7 +923,7 @@ static int  EZ_GetAndUseItemResourcesWithDBWork(item, db, pflag)
                         EZ_ParseGeometry(value.addr, &bits, &i1,&i2,&i3,&i4);
                         if(bits != 15 /*(1|2|4|8)*/) /* all bits must be set */ 
                           {
-                            ntokens = parseString(value.addr);
+                            ntokens = parseString(value);
                             if(ntokens > 3)
                               {
                                 doitnot =  getTokenIntValue(0, &i1);
@@ -1008,7 +1009,7 @@ int EZ_DecodeApplicationResourcesWithDB(db)
                   retValue++;
                   mm = (int)vtypes[0];
                   repeat = (vtypes[mm] == EZ_REPEAT? 1 : 0);
-                  ntokens = parseString(value.addr);
+                  ntokens = parseString(value);
                   doitnot = 0;
                   if(ntokens >= mm)
                     {

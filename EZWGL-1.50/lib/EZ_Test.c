@@ -32,7 +32,7 @@
 #include "EZ_Widget.h"
 
 
-EZ_TestWidget(widget) EZ_Widget *widget;
+void EZ_TestWidget(widget) EZ_Widget *widget;
 {
   EZ_ClearWidgetSizeComputedFlag(widget);
 }

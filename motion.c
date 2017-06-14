@@ -16,7 +16,7 @@ void Handle_Motion(XEvent *event)
   int 	pix, i, ind, ix, iy, ml8, ml9, ml10, xp, yp, dw, dh, flag; 
   float	fxp, fyp, rw_pix, rw_coord[MAX_VAR_DIMS],
         fx, fy, tmp1, tmp2, tmp3, tx, ty, tz;
-  char  orient_msg[32];
+  char  orient_msg[32]="";
   XEvent mEvent;
   
 

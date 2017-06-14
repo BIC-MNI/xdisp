@@ -412,7 +412,7 @@ int EZ_InitXrmAndX11(className, optstable, nopts,
   /*---------------------------------------------------------
    * Build resource data base, this is kind of crazy ! 
    *--------------------------------------------------------*/
-
+  EZ_Xrm_db=XrmGetStringDatabase("");
   /*
    * 1. Parse fallback resource. They are of the lowest priority.
    */
@@ -463,6 +463,7 @@ int EZ_InitXrmAndX11(className, optstable, nopts,
       {
 	XrmDatabase dspDb = XrmGetStringDatabase(cptr);
 	XrmCombineDatabase(dspDb, &EZ_Xrm_db, 1);
+        /*XFree(cptr);*/
       }
   }
   /* 
@@ -474,6 +475,7 @@ int EZ_InitXrmAndX11(className, optstable, nopts,
       {
 	XrmDatabase scrnDb = XrmGetStringDatabase(cptr);
 	XrmCombineDatabase(scrnDb, &EZ_Xrm_db, 1);
+        /*XFree(cptr);*/
       }
   }
   
