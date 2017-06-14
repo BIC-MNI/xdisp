@@ -70,7 +70,6 @@
 #include <X11/keysym.h>
 #include <X11/cursorfont.h>
 #include <olgx/olgx.h>
-#include "xwins.h"
 
 /* EZ Widget compile flag */
 #include <EZ.h>
@@ -88,6 +87,10 @@
 #endif
 typedef unsigned char byte;
 typedef int boolean;
+
+#include "xwins.h" /*uses ulong */
+
+
 
 /* string manipulation stuff */
 #define CENTERX(f,x,str) ((x)-XTextWidth(f,str,strlen(str))/2)

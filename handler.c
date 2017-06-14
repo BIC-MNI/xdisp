@@ -16,13 +16,13 @@ void HandleEvent(XEvent *event)
   if(event->xany.window==mainW) {
 
     switch (event->type) {
-    case Expose: {
+    case Expose: 
  
-      if (event->xexpose.window==mainW && event->xexpose.count==0) {
+      if (event->xexpose.count==0) {
 	DrawWindow(event->xexpose.x,event->xexpose.y,
 		   event->xexpose.width, event->xexpose.height);
       }
-    }
+    
     break;
 
     case EnterNotify: {
@@ -184,8 +184,10 @@ void HandleEvent(XEvent *event)
   } else if(event->xany.window==cmdW) {
 
     switch (event->type) {
-    case Expose: 
-      update_msgs();
+    case Expose:
+      if (event->xexpose.count==0)
+              update_msgs();
+      /*printf("Should expose cmdW\n");*/
     break;
 
     case EnterNotify: 
@@ -193,13 +195,12 @@ void HandleEvent(XEvent *event)
 	XStoreColors(theDisp,NewCmap,newC,ColorMapSize); 
       if (Selected_Visual_Class!=TrueColor)
 	XInstallColormap(theDisp,NewCmap);
-    
+      
     break;
 
     case LeaveNotify: 
       if (Selected_Visual_Class==DirectColor)
 	XStoreColors(theDisp,NewCmap,rootC,ColorMapSize); 
-    
     break;
 
     case UnmapNotify: 

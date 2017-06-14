@@ -13,7 +13,7 @@
 /*---------------------------- Handle_KeyPress ----------------------*/
 void Handle_KeyPress(XEvent *event)
 {
-  XKeyEvent      *key_event = (XKeyEvent *) event;
+  XKeyEvent      *key_event = &event->xkey;
   char           buf[128];
   KeySym         ks;
   XComposeStatus status;

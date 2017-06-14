@@ -18,7 +18,7 @@ void CreateMainWindow(char *name, char *geom, int argc, char **argv)
 {
   XSetWindowAttributes  xswa;
   unsigned int          xswamask;
-  XSizeHints            hints;
+  XSizeHints            *hints;
   int                   i, x, y;
   unsigned int          w, h;
 
@@ -27,13 +27,13 @@ void CreateMainWindow(char *name, char *geom, int argc, char **argv)
   i=XParseGeometry(geom,&x,&y,&w,&h);
   if (i&WidthValue)  zWidth = w - (color_bar ? color_bar_width : 0);
   if (i&HeightValue) zHeight = h;
-
+  hints = XAllocSizeHints();
   /* let the user select position if desired */
   if (i&XValue || i&YValue) {
-    hints.flags = USPosition;
+    hints->flags = USPosition;
   }
   else {
-    hints.flags = 0;
+    hints->flags = 0;
   }
 
   /* check specified window position */
@@ -43,13 +43,13 @@ void CreateMainWindow(char *name, char *geom, int argc, char **argv)
     y = XDisplayHeight(theDisp,theScreen)-zHeight-abs(y);
 
   /* set up hints */
-  hints.x = x;
-  hints.y = y;
-  hints.width = zWidth + (color_bar ? color_bar_width : 0);
-  hints.height = zHeight+info_height;
-  hints.max_width = DisplayWidth(theDisp,theScreen);
-  hints.max_height = DisplayHeight(theDisp,theScreen);
-  hints.flags |= PSize | PMaxSize;
+  hints->x = x;
+  hints->y = y;
+  hints->width = zWidth + (color_bar ? color_bar_width : 0);
+  hints->height = zHeight+info_height;
+  hints->max_width = DisplayWidth(theDisp,theScreen);
+  hints->max_height = DisplayHeight(theDisp,theScreen);
+  hints->flags |= PSize | PMaxSize;
 
   /* set attributes */
   xswa.colormap = NewCmap; 
@@ -69,7 +69,8 @@ void CreateMainWindow(char *name, char *geom, int argc, char **argv)
 
   /* set the main windows properties */
   XSetStandardProperties(theDisp,mainW,window_name,window_name,None,
-                         0,0,&hints);
+                         0,0,hints);
+  XFree(hints);
 }
 
 
@@ -85,33 +86,35 @@ void CreateCommandWindow(int x, int y,
 {
   XSetWindowAttributes xswa;
   unsigned int         xswamask;        
-  XSizeHints           hints;    
+  XSizeHints           *hints;    
 
+  hints = XAllocSizeHints();
   /* Set hints */
-  hints.x = x;
-  hints.y = y;
-  hints.width = (int)width;
-  hints.height = (int)height;
-  hints.max_width = DisplayWidth(theDisp,theScreen);
-  hints.max_height = DisplayHeight(theDisp,theScreen);
-  hints.flags =  h_flag | PSize | PMaxSize ;
+  hints->x = x;
+  hints->y = y;
+  hints->width = (int)width;
+  hints->height = (int)height;
+  hints->max_width = DisplayWidth(theDisp,theScreen);
+  hints->max_height = DisplayHeight(theDisp,theScreen);
+  hints->flags =  h_flag | PSize | PMaxSize ;
 
   /* set attributes */
   xswa.colormap = NewCmap;
   xswa.background_pixel = newC[bcol].pixel;
   xswa.border_pixel     = newC[fcol].pixel;
-  xswa.backing_store = Always; 
-  xswamask = CWColormap | CWBackPixel | CWBorderPixel | CWBackingStore;
+  /*xswa.backing_store = Always; */
+  xswamask = CWColormap | CWBackPixel | CWBorderPixel /*| CWBackingStore*/;
 
   /* Create the window */
   cmdW=XCreateWindow(theDisp,parent,x,y,width,height,
                      bdwidth,theDepth,CopyFromParent,theVisual,
                      xswamask,&xswa);
 
+  if (!cmdW) FatalError("Can't open command window");
   /* set the main windows properties */
   XSetStandardProperties(theDisp,cmdW,label,label,None,
-                         0,0,&hints);
-  if (!cmdW) FatalError("Can't open command window");
+                         0,0,hints);
+  XFree(hints);
 }
 
 /*--------------------------- Def_Cmd_Buttons ---------------------*/
