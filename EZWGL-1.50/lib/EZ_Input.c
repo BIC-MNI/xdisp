@@ -148,14 +148,17 @@ void EZ_RemoveInput(ptr)
 int  EZ_CheckAppInputs(length)
      unsigned long length;  /* time to wait */
 {
-  fd_mask     fd_masks[3 * EZ_FDMSIZE];
+  /*fd_mask     fd_masks[3 * EZ_FDMSIZE];*/
+  fd_set read_fd,write_fd,ex_fd;
+  
   EZ_InputId    *next, *tmpInputId, *head = &AppInputIdListHead;  
   int maxfd_1 = 0; 
   
   next = head->next;
   if(next != head)
     {
-      memset(fd_masks, 0, (3* EZ_FDMSIZE)*sizeof(fd_mask));
+      /*memset(fd_masks, 0, (3* EZ_FDMSIZE)*sizeof(fd_mask));*/
+      FD_ZERO(&read_fd);FD_ZERO(&write_fd);FD_ZERO(&ex_fd);
 
       while(next != head)
 	{
@@ -176,15 +179,13 @@ int  EZ_CheckAppInputs(length)
 		}
 	      else
 		{
-		  int elt = EZ_FDELT(fd);    /* which elt in fd_masks */
-		  int bit = EZ_FDMASK(fd);   /* which bit in **[elt]  */
-	      
+                  
 		  if(setmask & EZ_READABLE_MASK)
-		    fd_masks[elt] |= bit;
+                    FD_SET(fd,&read_fd);
 		  if(setmask & EZ_WRITABLE_MASK)
-		    fd_masks[elt+EZ_FDMSIZE] |= bit;
+                    FD_SET(fd,&write_fd);
 		  if(setmask & EZ_EXCEPTION_MASK)
-		    fd_masks[elt + 2*EZ_FDMSIZE] |= bit;
+                    FD_SET(fd,&ex_fd);
 		  
 		  next->mask = 0;
 		  if(maxfd_1 <= fd) maxfd_1 = fd + 1;
@@ -199,9 +200,9 @@ int  EZ_CheckAppInputs(length)
       struct timeval tmout;
       tmout.tv_usec = length % 1000000;
       tmout.tv_sec  = length / 1000000;
-      count = select(maxfd_1, (fd_set *) (&fd_masks[0]),
-		     (fd_set *)(&fd_masks[EZ_FDMSIZE]),
-		     (fd_set *)(&fd_masks[2*EZ_FDMSIZE]),
+      count = select(maxfd_1, &read_fd,
+		     &write_fd,
+		     &ex_fd,
 		     &tmout);
       if(count > 0)
 	{
@@ -212,14 +213,12 @@ int  EZ_CheckAppInputs(length)
 		{
 		  int fd = next->fd;
 		  int mask = 0;
-		  int elt = EZ_FDELT(fd);    /* which elt in fd_masks */
-		  int bit = EZ_FDMASK(fd);   /* which bit in **[elt]  */
-		  
-		  if(fd_masks[elt] & bit)
+	  
+		  if(FD_ISSET(fd,&read_fd))
 		    mask |= EZ_READABLE_MASK;
-		  if(fd_masks[elt+EZ_FDMSIZE] & bit)
+		  if(FD_ISSET(fd,&write_fd))
 		    mask |= EZ_WRITABLE_MASK;
-		  if(fd_masks[elt + 2*EZ_FDMSIZE] & bit)
+		  if(FD_ISSET(fd,&ex_fd))
 		    mask |= EZ_EXCEPTION_MASK;		    
 
 		  next->mask = (next->setMask) & mask;
