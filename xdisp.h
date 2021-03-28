@@ -121,7 +121,7 @@ WHERE ulong	    ol_pixvals[5];
 WHERE XColor	    ol_fg, ol_bg1, ol_bg2, ol_bg3, ol_white;
 
 /* EZ Widget stuff */
-EZ_Widget           *File_Selector_Widget, *File_Save_Widget, 
+WHERE EZ_Widget     *File_Selector_Widget, *File_Save_Widget, 
                     *Info_Widget, *Mincheader_Widget, *Info_Close_Button,
                     *Help_Widget, *Help_Text_Widget, *Help_Close_Button,
                     *Error_Widget, *Error_Text_Widget, *Error_Close_Button,
@@ -545,8 +545,8 @@ WHERE void draw_slider(XWIN *p_xwin, int state);
 /* Function prototypes */
 
 /* global stuff */
-Volume_Info   minc_volume_info;
-int	      minc_icvid;
+WHERE Volume_Info minc_volume_info;
+WHERE int	      minc_icvid;
 
 WHERE int     slider_image[MAX_VAR_DIMS-2], slider_length[MAX_VAR_DIMS-2];
 WHERE int     image_number, num_images, image_increment, current_dim;
