@@ -305,35 +305,35 @@ void Define_Cmd_Buttons(void)
   PrintButton = MakeXButton(next_button_x,next_button_y,
                             skip_x,button_height,
                             1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                            "Print",ps_file,(caddr_t)&zero, True);
+                            "Print",ps_file,(void *)&zero, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"PS File",7)+ec_w;
   PSFileButton = MakeXButton(next_button_x, next_button_y,
                              skip_x, button_height,
                              1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                             "PS File", ps_file, (caddr_t)&one, True);
+                             "PS File", ps_file, (void *)&one, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"EPS File",8)+ec_w;
   EPSFileButton = MakeXButton(next_button_x, next_button_y,
                               skip_x, button_height,
                               1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                              "EPS File", ps_file, (caddr_t)&two, True);
+                              "EPS File", ps_file, (void *)&two, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Byte File",9)+ec_w;
   ByteFileButton = MakeXButton(next_button_x, next_button_y,
                                skip_x, button_height,
                                1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                               "Byte File", flat_file, (caddr_t)&zero, True);
+                               "Byte File", flat_file, (void *)&zero, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Short File",10)+ec_w;
   ShortFileButton = MakeXButton(next_button_x, next_button_y,
                                 skip_x, button_height,
                                 1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                                "Short File", flat_file, (caddr_t)&one, True);
+                                "Short File", flat_file, (void *)&one, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Matlab File",11)+ec_w;
@@ -348,21 +348,21 @@ void Define_Cmd_Buttons(void)
   GIFFileButton = MakeXButton(next_button_x, next_button_y,
                               skip_x, button_height,
                               1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                              "GIF File", graphics_file, (caddr_t)&gr_gif, True);
+                              "GIF File", graphics_file, (void *)&gr_gif, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"TIFF File",9)+ec_w;
   TIFFFileButton = MakeXButton(next_button_x, next_button_y,
                                skip_x, button_height,
                                1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                               "TIFF File", graphics_file, (caddr_t)&gr_tiff, True);
+                               "TIFF File", graphics_file, (void *)&gr_tiff, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"PICT File",9)+ec_w;
   PICTFileButton = MakeXButton(next_button_x, next_button_y,
                                skip_x, button_height,
                                1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                               "PICT File", graphics_file, (caddr_t)&gr_pict, True);
+                               "PICT File", graphics_file, (void *)&gr_pict, True);
 
 
   next_button_x += skip_x + 6;
@@ -370,14 +370,14 @@ void Define_Cmd_Buttons(void)
   SGIFileButton = MakeXButton(next_button_x, next_button_y,
                               skip_x, button_height,
                               1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                              "SGI File", graphics_file, (caddr_t)&gr_sgi, True);
+                              "SGI File", graphics_file, (void *)&gr_sgi, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"RAST File",9)+ec_w;
   RASTFileButton = MakeXButton(next_button_x, next_button_y,
                                skip_x, button_height,
                                1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
-                               "RAST File", graphics_file, (caddr_t)&gr_rast, True);
+                               "RAST File", graphics_file, (void *)&gr_rast, True);
 
 
   /* create the image buttons */
@@ -387,34 +387,34 @@ void Define_Cmd_Buttons(void)
   ZoomUpButton = MakeXButton(next_button_x,next_button_y,
                              skip_x,button_height,
                              1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                             "Zoom +", zoom, (caddr_t)&one, True);
+                             "Zoom +", zoom, (void *)&one, True);
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Zoom -",6)+ec_w;        
   ZoomDownButton = MakeXButton(next_button_x,next_button_y,
                                skip_x,button_height,
                                1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                               "Zoom -", zoom, (caddr_t)&zero, True);
+                               "Zoom -", zoom, (void *)&zero, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Selective Zoom",14)+ec_w;        
   SelectiveZoomButton = MakeXButton(next_button_x,next_button_y,
                                     skip_x,button_height,
                                     1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                                    "Selective Zoom", Selective_Zoom, (caddr_t)&zero, True);
+                                    "Selective Zoom", Selective_Zoom, (void *)&zero, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Flip X",6)+ec_w;        
   FlipXButton = MakeXButton(next_button_x,next_button_y,
                             skip_x,button_height,
                             1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                            "Flip X", Flip_Image, (caddr_t)&zero, True);
+                            "Flip X", Flip_Image, (void *)&zero, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Flip Y",6)+ec_w;        
   FlipYButton = MakeXButton(next_button_x,next_button_y,
                             skip_x,button_height,
                             1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
-                            "Flip Y", Flip_Image, (caddr_t)&one, True);
+                            "Flip Y", Flip_Image, (void *)&one, True);
 
   next_button_x += skip_x + 6;
   skip_x = XTextWidth(ol_text_finfo,"Rotate",6)+ec_w;        
@@ -513,7 +513,7 @@ void Define_Cmd_Buttons(void)
         NextButton[idim] = MakeXButton(next_button_x,next_button_y,
                                        skip_x,button_height,
                                        1,newC[fcol].pixel,newC[bcol].pixel,cmdW, "Next", 
-                                       Increment_Image, (caddr_t)&constant[idim], 
+                                       Increment_Image, (void *)&constant[idim], 
                                        True);
 
         /* Draw Previous button */
@@ -522,7 +522,7 @@ void Define_Cmd_Buttons(void)
         PreviousButton[idim] = MakeXButton(next_button_x, next_button_y,
                                            skip_x, button_height,
                                            1, newC[fcol].pixel, newC[bcol].pixel, cmdW, "Previous", 
-                                           Decrement_Image, (caddr_t)&constant[idim], 
+                                           Decrement_Image, (void *)&constant[idim], 
                                            True);
 
         next_button_x += skip_x + 6;
@@ -535,7 +535,7 @@ void Define_Cmd_Buttons(void)
                                          label_w, extra_w, 0,
                                          ol_fg.pixel, ol_bg1.pixel, cmdW,
                                          ll, rl,
-                                         Adjust_Image_Slider, (caddr_t)&constant[idim]);
+                                         Adjust_Image_Slider, (void *)&constant[idim]);
 
       } /* end if */
     } /* end for */
@@ -551,7 +551,7 @@ void Define_Cmd_Buttons(void)
                                   skip_x,button_height,
                                   1,newC[fcol].pixel,newC[bcol].pixel,cmdW,
                                   "Next", 
-                                  Increment_Image, (caddr_t)&constant[0], 
+                                  Increment_Image, (void *)&constant[0], 
                                   True);
 
       next_button_x += skip_x + 6;
@@ -560,7 +560,7 @@ void Define_Cmd_Buttons(void)
                                       skip_x, button_height,
                                       1, newC[fcol].pixel, newC[bcol].pixel, cmdW,
                                       "Previous", 
-                                      Decrement_Image, (caddr_t)&constant[0], 
+                                      Decrement_Image, (void *)&constant[0], 
                                       True);
 
       next_button_x += skip_x + 6;
@@ -574,7 +574,7 @@ void Define_Cmd_Buttons(void)
                                     label_w, extra_w, 0,
                                     ol_fg.pixel, ol_bg1.pixel, cmdW,
                                     ll, rl,
-                                    Adjust_Image_Slider, (caddr_t)&constant[0]);
+                                    Adjust_Image_Slider, (void *)&constant[0]);
     }
 
   }

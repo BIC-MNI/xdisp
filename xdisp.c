@@ -13,6 +13,13 @@
  */
 
 #define MAIN
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <strings.h>
+
 #include "xdisp.h"
 #include "cross_hr.bit"
 #include <time.h>

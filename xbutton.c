@@ -91,7 +91,7 @@ XWIN    *MakeXButton(
    * the context "xwin_context"
    */
   if (XSaveContext(theDisp,new_button->xid,xwin_context,
-		   (caddr_t) new_button) != 0) {
+		   (void *) new_button) != 0) {
     fprintf(stderr,"Error saving xwin_context data");
     exit_xdisp(1);
   }
@@ -184,7 +184,7 @@ XWIN    *MakeXSlider(
    * the context "xwin_context"
    */
   if (XSaveContext(theDisp,new_slider->xid,xwin_context,
-		   (caddr_t) new_slider) != 0) {
+		   (void *) new_slider) != 0) {
     fprintf(stderr,"Error saving xwin_context data");
     exit_xdisp(1);
   }
