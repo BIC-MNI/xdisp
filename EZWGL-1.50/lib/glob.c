@@ -319,7 +319,7 @@ glob_vector (pat, dir)
 	    }
 	  lastlink = nextlink;
 	  nextlink->name = nextname;
-	  bcopy (dp->d_name, nextname, D_NAMLEN (dp) + 1);
+	  memcpy (dp->d_name, nextname, D_NAMLEN (dp) + 1);
 	  ++count;
 	}
     }
@@ -439,7 +439,7 @@ glob_filename (pathname)
       directory_len = (filename - pathname) + 1;
       directory_name = (char *) alloca (directory_len + 1);
 
-      bcopy (pathname, directory_name, directory_len);
+      memcpy (pathname, directory_name, directory_len);
       directory_name[directory_len] = '\0';
       ++filename;
     }
@@ -531,7 +531,7 @@ glob_filename (pathname)
       result[0] = (char *) malloc (directory_len + 1);
       if (result[0] == NULL)
 	goto memory_error;
-      bcopy (directory_name, result[0], directory_len + 1);
+      memcpy (directory_name, result[0], directory_len + 1);
       result[1] = NULL;
       return (result);
     }

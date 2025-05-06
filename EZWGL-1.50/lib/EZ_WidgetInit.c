@@ -994,7 +994,7 @@ void EZ_GetVersionNumbers( mj, mi) int *mj, *mi;
 
 EZ_Widget *EZ_GetBubbleHelp() { return(EZ_BubbleHelp);}
 
-void EZ_StartAsIcon(v) 
+void EZ_StartAsIcon(int v) 
 {  EZ_TopWinState = (v != 0 ? IconicState: NormalState);}
 /*************************************************************************/
 void EZ_FixFocusHighlightBorder(wptr, drawable, w, h, padb)
