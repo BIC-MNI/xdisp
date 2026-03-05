@@ -34,6 +34,10 @@
 #  include "ansi_stdlib.h"
 #endif /* HAVE_STDLIB_H */
 
+#if defined (HAVE_UNISTD_H)
+# include <unistd.h>
+#endif
+
 #include "tilde.h"
 #include <sys/types.h>
 #include <pwd.h>

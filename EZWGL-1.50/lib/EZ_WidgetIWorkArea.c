@@ -1086,6 +1086,7 @@ void  EZ_IWorkAreaInsertItems(widget, items, n)
 void EZ_IWorkAreaDeleteItemO(widget, item, disp)
      EZ_Widget *widget;
      EZ_Item *item;
+     int disp;
 {
   if(widget && item)
     {

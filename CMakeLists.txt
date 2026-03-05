@@ -3,7 +3,7 @@
 # Project name
 project (xdisp C)
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.10)
 
 
 SET(XDISP_PACKAGE_VERSION_MAJOR 4)

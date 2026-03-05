@@ -20,6 +20,10 @@
 #include <malloc.h>
 #endif
 
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include "olgx_impl.h"
