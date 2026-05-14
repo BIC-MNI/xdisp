@@ -215,7 +215,7 @@ void EZ_RemveWidgetFromDnDList(widget)
 /***************************************************************************************/
 void EZ_GrabButtonRelease()
 {
-  int    (*OldErrorHandler)();
+  XErrorHandler OldErrorHandler;
   Window         cwindow;
   char           *p, *q;
   EZ_ApplRoster *roster = EZ_OpenEZWGLRoster(0);
@@ -277,7 +277,7 @@ void EZ_GrabButtonRelease()
 /***************************************************************************************/
 void EZ_UngrabButtonRelease()
 {
-  int    (*OldErrorHandler)();
+  XErrorHandler OldErrorHandler;
   Window         cwindow;
   char           *p, *q;
   EZ_ApplRoster *roster = EZ_OpenEZWGLRoster(0);
@@ -1575,7 +1575,7 @@ void EZ_SelectInput(win, mask) Window win; long mask;
         }
       if(doit)
         {
-          int    (*OldErrorHandler)();
+          XErrorHandler OldErrorHandler;
           OldErrorHandler = XSetErrorHandler(EZ_XErrorHandler);
           XSelectInput(EZ_Display, win, mask);
           XSetErrorHandler(OldErrorHandler);            

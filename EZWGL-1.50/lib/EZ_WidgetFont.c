@@ -148,7 +148,7 @@ int EZ_FontWeightIsBold(name)
 void  EZ_InitFontList()
 {
   register int  i;  
-  int    (*OldErrorHandler)();
+  XErrorHandler OldErrorHandler;
   
   OldErrorHandler = XSetErrorHandler(EZ_XErrorHandler);
   
