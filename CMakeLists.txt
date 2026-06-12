@@ -7,8 +7,10 @@ cmake_minimum_required(VERSION 3.10)
 
 # Vintage X11 widget code (olgx, EZWGL) uses K&R-style empty () prototypes.
 # C23 (GCC 15+ default) treats () as (void), breaking calls with arguments.
-# Compile xdisp as C17 where () still means "unspecified arguments".
-set(CMAKE_C_STANDARD 17)
+# Compile xdisp as C11 where () still means "unspecified arguments". C11 is
+# used (not C17) because CMAKE_C_STANDARD only accepts 17 from CMake 3.21+,
+# and this builds on older CMake (3.18 on Debian 11); C11 is equally pre-C23.
+set(CMAKE_C_STANDARD 11)
 
 
 SET(XDISP_PACKAGE_VERSION_MAJOR 4)
