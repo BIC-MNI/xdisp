@@ -12,6 +12,12 @@ cmake_minimum_required(VERSION 3.10)
 # and this builds on older CMake (3.18 on Debian 11); C11 is equally pre-C23.
 set(CMAKE_C_STANDARD 11)
 
+# olgx/EZWGL are 1990s C that call POSIX functions (e.g. gethostname) without
+# including their declaring headers. Modern clang (macOS) makes an implicit
+# function declaration a hard error; downgrade it to a warning so this vintage
+# code still builds. The calls are ABI-compatible (int-returning libc funcs).
+add_compile_options(-Wno-error=implicit-function-declaration)
+
 
 SET(XDISP_PACKAGE_VERSION_MAJOR 4)
 SET(XDISP_PACKAGE_VERSION_MINOR 3)
