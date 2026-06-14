@@ -5,6 +5,17 @@ project (xdisp C)
 
 cmake_minimum_required(VERSION 3.10)
 
+# Build the vintage olgx/EZWGL widget code (1990s C) on modern toolchains:
+# - C11 (not the GCC 15+ C23 default) so empty () prototypes keep K&R
+#   unspecified-args semantics. C11 (not C17) for CMake 3.18 (Debian 11).
+# - gnu extensions so platform headers expose POSIX/BSD types the code uses
+#   (e.g. macOS <net/if.h> only declares u_char under _DARWIN_C_SOURCE).
+# - downgrade implicit-function-declaration (e.g. gethostname) from error to
+#   warning; modern clang makes it fatal by default.
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_EXTENSIONS ON)
+add_compile_options(-Wno-error=implicit-function-declaration)
+
 
 SET(XDISP_PACKAGE_VERSION_MAJOR 4)
 SET(XDISP_PACKAGE_VERSION_MINOR 3)
