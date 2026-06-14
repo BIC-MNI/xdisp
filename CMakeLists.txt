@@ -11,6 +11,10 @@ cmake_minimum_required(VERSION 3.10)
 # used (not C17) because CMAKE_C_STANDARD only accepts 17 from CMake 3.21+,
 # and this builds on older CMake (3.18 on Debian 11); C11 is equally pre-C23.
 set(CMAKE_C_STANDARD 11)
+# Keep GNU/BSD extensions (gnu11, not strict c11) so platform headers expose
+# POSIX/BSD types the vintage code relies on -- e.g. macOS <net/if.h> only
+# declares u_char when _DARWIN_C_SOURCE is set, which strict -std=c11 disables.
+set(CMAKE_C_EXTENSIONS ON)
 
 # olgx/EZWGL are 1990s C that call POSIX functions (e.g. gethostname) without
 # including their declaring headers. Modern clang (macOS) makes an implicit
