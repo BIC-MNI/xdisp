@@ -223,7 +223,7 @@ void HandleEvent(XEvent *event)
   }
   /* button press events */
   if (XFindContext(theDisp, event->xany.window, xwin_context,
-		   (void * *) &which_xwin)==0) {
+		   (XPointer *) &which_xwin)==0) {
     if(*(which_xwin->event_handler)!=NULL)
       (*(which_xwin->event_handler))(which_xwin);
     if (Scale_Data && (oUpper != Upper || oLower != Lower)) {
