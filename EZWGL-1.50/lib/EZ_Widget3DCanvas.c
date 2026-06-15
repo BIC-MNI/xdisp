@@ -367,7 +367,7 @@ void EZ_Get3DCanvasSize(canvas, w_ret, h_ret)
 XImage *EZ_ReadDrawable2XImage(drawable, x, y, w, h)
      Drawable drawable; int x, y, w, h;
 {
-  int    (*OldErrorHandler)();
+  XErrorHandler OldErrorHandler;
   XImage *image;
 
   EZ_XErrorCode = 0;

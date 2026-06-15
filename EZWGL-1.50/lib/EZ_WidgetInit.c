@@ -1068,7 +1068,7 @@ int EZ_QueryPixelValue(widget, x, y, pv)
       if(x >= 0 && x < EZ_WidgetWidth(widget) && 
          y >=0 && y <= EZ_WidgetHeight(widget))
         {
-          int    (*OldErrorHandler)();
+          XErrorHandler OldErrorHandler;
           XImage *image;
           EZ_XErrorCode = 0;
           OldErrorHandler = XSetErrorHandler(EZ_XErrorHandler);
