@@ -69,6 +69,10 @@
 
 #include "EZ_Widget.h"
 
+/* O_NDELAY / O_RDWR / F_SETFL live in <fcntl.h>. Linux pulls it in
+ * transitively, but macOS does not, so include it explicitly. */
+#include <fcntl.h>
+
 /* Consistent defines - please report on the necessity
  * @ Unixware: defines (__svr4__)
  */
