@@ -46,7 +46,13 @@ SET(PACKAGE_VERSION "${XDISP_PACKAGE_VERSION_MAJOR}.${XDISP_PACKAGE_VERSION_MINO
 SET(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 
 ADD_DEFINITIONS(-DHAVE_CONFIG_H)
-ADD_DEFINITIONS(-D_XOPEN_SOURCE=500)
+# On Apple, _XOPEN_SOURCE forces _POSIX_C_SOURCE, which hides the BSD types
+# u_char/u_short that <net/if.h> (pulled in via <sys/ioctl.h> in EZWGL) needs.
+# Skip it on Apple so the default _DARWIN_C_SOURCE (full) namespace applies.
+# This matches the guard already present in EZWGL-1.50/CMakeLists.txt.
+IF(NOT APPLE)
+  ADD_DEFINITIONS(-D_XOPEN_SOURCE=500)
+ENDIF(NOT APPLE)
 
 # aliases
 SET(VERSION "${PACKAGE_VERSION}")
